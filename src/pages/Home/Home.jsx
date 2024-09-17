@@ -1,8 +1,9 @@
+import HomeBannerSlider from "../../Components/LandingPageComponent/HomeBannerSlider";
 
 const Home = () => {
     return (
         <div>
-            <h1>Hello World</h1>
+            <HomeBannerSlider/>
         </div>
     );
 };

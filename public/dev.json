@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "name": "Md. Sajidul Islam",
+        "role": "Team Lead",
+        "email": "",
+        "facebook": "https://www.facebook.com/Sajid941",
+        "linkedin": "https://www.linkedin.com/in/sajid941"
+    },
+    {
+        "id": 2,
+        "name": "Rubaeid Sanjid",
+        "role": "Team Member",
+        "email": "",
+        "facebook": "https://www.facebook.com/Piyal.24",
+        "linkedin": "https://www.linkedin.com/in/rubaeid-sanjid"
+    },
+    {
+        "id": 3,
+        "name": "Fabian Roy",
+        "role": "Team Manager",
+        "email": "fabianroylikhon@gmail.com",
+        "facebook": "https://www.facebook.com/fabianroy.code",
+        "linkedin": "https://www.linkedin.com/in/fabianroy"
+    },
+    {
+        "id": 4,
+        "name": "Safin Ahmed",
+        "role": "Team Member",
+        "email": "",
+        "facebook": "https://www.facebook.com/safin.mdsafib",
+        "linkedin": "https://www.linkedin.com/in/safin24"
+    },
+    {
+        "id": 5,
+        "name": "RK Shawn",
+        "role": "Team Member",
+        "email": "",
+        "facebook": "https://www.facebook.com/rayhanul.shawn.95",
+        "linkedin": "https://www.linkedin.com/in/rayhanul-karim-8584042a2"
+    },
+    {
+        "id": 6,
+        "name": "Joy Chandra Uday",
+        "role": "Team Member",
+        "email": "",
+        "facebook": "https://www.facebook.com/joychandraudayy",
+        "linkedin": "https://www.linkedin.com/in/joychandrauday"
+    }
+]

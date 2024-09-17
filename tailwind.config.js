@@ -9,7 +9,6 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Configure your color palette here
         primary: '#007BFF',
         body: '#ffffff',
         neutral: "#F8F9FA",
@@ -22,9 +21,9 @@ export default {
         roboto: '"Roboto", system-ui',
       },
       backgroundImage: {
-        
+        // Add your custom backgrounds here
       },
     },
   },
-  plugins: [require("daisyui")],
-}
+  plugins: [daisyui],
+};

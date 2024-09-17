@@ -1,4 +1,3 @@
-import HomeBannerSlider from "../../Components/LandingPageComponent/HomeBannerSlider";
 
 const Home = () => {
     return (

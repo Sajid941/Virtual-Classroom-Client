@@ -15,6 +15,7 @@ export default {
         neutral: "#F8F9FA",
         neutraldark: "#343A40",
         secondary: "#004085",
+        accent: "#FFC107",
       },
       fontFamily: {
         inter: '"Inter", system-ui',

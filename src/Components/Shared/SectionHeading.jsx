@@ -1,9 +1,9 @@
 import React from 'react';
 
-const SectionHeading = () => {
+const SectionHeading = ({heading}) => {
     return (
-        <div>
-            heading
+        <div className='text-center font-extrabold text-secondary my-3 text-3xl'>
+            {heading}
         </div>
     );
 };

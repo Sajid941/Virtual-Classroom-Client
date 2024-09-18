@@ -1,6 +1,5 @@
 import React from 'react';
-import { FaHome } from "react-icons/fa";
-import img from '../../assets/classNet.png'
+
 const ErrorPage = () => {
     return (
         <div className='min-h-screen flex items-center justify-center'>

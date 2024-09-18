@@ -6,4 +6,6 @@
 ### Installed Frameworks and Library
 - tailwind css
 - daisy ui 
-- sweeper slider
+- Swiper slider
+- react-icons
+

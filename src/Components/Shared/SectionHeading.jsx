@@ -1,4 +1,3 @@
-import React from 'react';
 
 const SectionHeading = ({heading}) => {
     return (
@@ -9,3 +8,4 @@ const SectionHeading = ({heading}) => {
 };
 
 export default SectionHeading;
+

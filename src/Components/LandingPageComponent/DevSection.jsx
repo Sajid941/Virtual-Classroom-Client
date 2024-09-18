@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const DevSection = () => {
 
-    const [dev, setDev] = useState(null)
+    const [dev, setDev] = useState([]);
 
     useEffect(() => {
         fetch('dev.json')
@@ -14,7 +14,17 @@ const DevSection = () => {
 
     return (
         <div>
-            <p>{dev?.name}</p>
+            <p>
+                {
+                    dev.map((dev, index) => {
+                        return (
+                            <div key={index}>
+                                <h2>{dev.name}</h2>
+                            </div>
+                        )
+                    })
+                }
+            </p>
         </div>
     );
 };

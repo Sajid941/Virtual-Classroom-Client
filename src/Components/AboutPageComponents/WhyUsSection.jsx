@@ -18,7 +18,7 @@ const WhyUsSection = () => {
         <div className="flex-1">
           <h3 className="font-medium md:text-lg mb-5">
             <span className="text-[#004085] font-semibold">
-              > User-Friendly Interface:
+            {">"} User-Friendly Interface:
             </span>{" "}
             No steep learning curve. Our clean, intuitive design ensures that
             both teachers and students can focus on learning, not navigating
@@ -26,7 +26,7 @@ const WhyUsSection = () => {
           </h3>
 
           <h3 className="font-medium md:text-lg mb-5">
-            <span className="text-[#004085] font-semibold"> > Secure Api:</span>{" "}
+            <span className="text-[#004085] font-semibold"> {">"} Secure Api:</span>{" "}
             We prioritize the safety of your data. All communications and
             materials are protected with end-to-end encryption, ensuring your
             privacy.
@@ -35,9 +35,9 @@ const WhyUsSection = () => {
           <h3 className="font-medium md:text-lg mb-5">
             <span className="text-[#004085] font-semibold">
               {" "}
-              > Continuous Innovation:
+              {">"} Continuous Innovation:
             </span>{" "}
-            We're always improving. With regular updates and new features, we
+            We are always improving. With regular updates and new features, we
             ensure our platform evolves with the needs of our users.
           </h3>
         </div>

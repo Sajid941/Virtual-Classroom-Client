@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const DetailedDiscussion = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [discussion, setDiscussion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -35,16 +36,23 @@ const DetailedDiscussion = () => {
     fetchDiscussion();
   }, [slug]);
 
+  const handleGoBack = () => {
+    navigate(-1); // Navigates back to the previous page
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="wrapper">
-      <div className="header">
-        
-      </div>
-      <div className="discussionWrap">
-        <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+      <div className="discussionWrap pb-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl border mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+          <button
+            onClick={handleGoBack}
+            className="mb-4 text-blue-500 hover:underline"
+          >
+            ← Go Back
+          </button>
           {discussion ? (
             <div>
               <div className="flex items-center mb-4">
@@ -78,7 +86,7 @@ const DetailedDiscussion = () => {
                   {discussion.replies.map((reply) => (
                     <li
                       key={reply.replyId}
-                      className=" mb-6 bg-gray-100 p-4 rounded-lg transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-lg cursor-pointer"
+                      className="mb-6 bg-gray-100 p-4 rounded-lg transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-lg cursor-pointer"
                     >
                       <p className="text-gray-700">{reply.content}</p>
                       <div className="mt-2 flex items-center text-sm text-gray-600">

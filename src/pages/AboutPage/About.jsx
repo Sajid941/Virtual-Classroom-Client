@@ -1,4 +1,5 @@
 import OfferSection from "../../Components/AboutPageComponents/OfferSection";
+import WhyUsSection from "../../Components/AboutPageComponents/WhyUsSection";
 
 const About = () => {
     return (
@@ -6,6 +7,7 @@ const About = () => {
             about page
             <p>This is the about page.</p>
             <OfferSection></OfferSection>
+            <WhyUsSection></WhyUsSection>
         </div>
     );
 };

@@ -1,3 +1,6 @@
+import JoinUsSection from "../../Components/AboutPageComponents/JoinUsSection";
+import OfferSection from "../../Components/AboutPageComponents/OfferSection";
+import WhyUsSection from "../../Components/AboutPageComponents/WhyUsSection";
 import Breadcrumbs from "../../Components/Breadcrumbs/Breadcrumbs";
 
 const AboutPage = () => {
@@ -16,6 +19,11 @@ const AboutPage = () => {
         <div className="h-[300px] bg-[#004085] bg-opacity-75"></div>
         <Breadcrumbs breadCrumbs={breadCrumbs} />
       </header>
+      <main>
+        <OfferSection></OfferSection>
+        <WhyUsSection></WhyUsSection>
+        <JoinUsSection></JoinUsSection>
+      </main>
     </>
   );
 };

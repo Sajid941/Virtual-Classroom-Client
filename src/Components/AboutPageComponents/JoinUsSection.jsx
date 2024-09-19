@@ -10,7 +10,7 @@ const JoinUsSection = () => {
 
       <div className="flex flex-col lg:flex-row items-center justify-center gap-10 my-12">
         <div className="flex-1">
-          <h3 className="font-bold md:text-lg text-right">
+          <h3 className="font-bold md:text-lg text-center lg:text-right">
             EduSphere is here to help teachers and students alike embrace the
             future of learning. Our platform simplifies the complexities of
             education and provides all the tools needed to succeed in a digital

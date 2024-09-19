@@ -6,7 +6,7 @@ import { MdQuiz } from "react-icons/md";
 const FeaturesSection = () => {
   return (
     <div className="mt-3 md:mt-10 md:mx-10">
-      <div className="grid md:grid-cols-2 gap-2 md:gap-6">
+      <div className="grid lg:grid-cols-2 gap-2 md:gap-6">
         <div className="bg-[#F3F3F3] rounded-lg flex md:p-8 p-2 gap-2 md:gap-6 shadow-lg">
           <div>
             <h1 className="font-bold text-2xl md:text-[36px] text-[#004085] text-right">
@@ -66,7 +66,7 @@ const FeaturesSection = () => {
           </div>
         </div>
       </div>
-      <div className="bg-[#F3F3F3] rounded-lg md:w-1/2 flex md:mt-6 mt-2 mx-auto md:p-8 p-2 gap-2 md:gap-6 shadow-lg">
+      <div className="bg-[#F3F3F3] rounded-lg lg:w-1/2 flex md:mt-6 mt-2 mx-auto md:p-8 p-2 gap-2 md:gap-6 shadow-lg">
         <div>
           <h1 className="font-bold text-2xl md:text-[36px] text-[#004085] text-right">
             Quiz Module

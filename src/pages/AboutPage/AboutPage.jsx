@@ -4,6 +4,8 @@ import WhyUsSection from "../../Components/AboutPageComponents/WhyUsSection";
 import Breadcrumbs from "../../Components/Breadcrumbs/Breadcrumbs";
 
 const AboutPage = () => {
+  const breadCrumbs = [{ path: "/", label: "Home" }, { label: "About Us" }];
+
   return (
     <>
       <header
@@ -15,9 +17,9 @@ const AboutPage = () => {
       >
         {/* overlay */}
         <div className="h-[300px] bg-[#004085] bg-opacity-75"></div>
-        <Breadcrumbs />
+        <Breadcrumbs breadCrumbs={breadCrumbs} />
       </header>
-      <main>
+      <main className="md:px-10 lg:px-28">
         <OfferSection></OfferSection>
         <WhyUsSection></WhyUsSection>
         <JoinUsSection></JoinUsSection>

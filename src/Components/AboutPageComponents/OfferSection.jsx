@@ -9,7 +9,7 @@ const OfferSection = () => {
     <div className="container mx-auto px-3 lg:px-12">
       <SectionHeading heading={"What We Offer"}></SectionHeading>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 my-9">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 my-9">
         <div className="bg-[#F3F3F3] rounded-lg flex md:p-8 p-2 gap-2 md:gap-6 shadow-lg">
           <div>
             <h1 className="font-bold text-2xl md:text-3xl mb-2 text-[#004085] text-right">

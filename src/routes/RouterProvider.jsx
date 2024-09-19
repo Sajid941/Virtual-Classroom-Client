@@ -4,6 +4,8 @@ import Home from "../pages/Home/Home";
 import About from "../pages/AboutPage/About";
 import ErrorPage from "../Components/Shared/ErrorPage";
 import Forum from "../pages/Forum/Forum";
+import DetailedDescussion from "../Components/DashboardComponent/Forum/DetailedDescussion";
+import ForumBody from "../Components/DashboardComponent/Forum/ForumBody";
 
 const router = createBrowserRouter([
     {
@@ -32,7 +34,11 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/forum",
-                element: <Forum/>
+                element: <ForumBody />
+            },
+            {
+                path: "/forum/discussion/:slug",
+                element: <DetailedDescussion/>
             },
         ]
     }

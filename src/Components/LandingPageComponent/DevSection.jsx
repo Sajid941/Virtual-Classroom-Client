@@ -20,7 +20,7 @@ const DevSection = () => {
                 {
                     dev.map((dev, index) => {
                         return (
-                            <div key={index} className="flex flex-col text-center items-center justify-center p-8 bg-[#FFC107]">
+                            <div key={index} className="flex flex-col text-center items-center justify-center p-8 bg-[#FFC107] rounded-lg shadow-lg transition duration-700 hover:-translate-y-2">
                                 <FaUser className='text-5xl text-secondary' />
                                 <p className="text-3xl mt-4 font-bold text-black">{dev.name}</p>
                                 <p className="font-light">{dev?.email}</p>

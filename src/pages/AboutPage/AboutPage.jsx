@@ -1,5 +1,6 @@
 import JoinUsSection from "../../Components/AboutPageComponents/JoinUsSection";
 import OfferSection from "../../Components/AboutPageComponents/OfferSection";
+import OurMission from "../../Components/AboutPageComponents/OurMission";
 import WhyUsSection from "../../Components/AboutPageComponents/WhyUsSection";
 import Breadcrumbs from "../../Components/Breadcrumbs/Breadcrumbs";
 
@@ -20,6 +21,7 @@ const AboutPage = () => {
         <Breadcrumbs breadCrumbs={breadCrumbs} />
       </header>
       <main className="md:px-10 lg:px-28">
+        <OurMission />
         <OfferSection></OfferSection>
         <WhyUsSection></WhyUsSection>
         <JoinUsSection></JoinUsSection>

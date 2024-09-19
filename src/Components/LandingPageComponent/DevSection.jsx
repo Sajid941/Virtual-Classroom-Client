@@ -15,7 +15,7 @@ const DevSection = () => {
 
     return (
         <div className="max-w-screen-xl mx-auto my-20">
-             <h1 className="text-3xl md:text-5xl text-center mb-10 md:mb-16 font-bold text-secondary">Developer Team</h1>
+             <h1 className="text-3xl md:text-6xl text-center mb-10 md:mb-16 font-extrabold text-secondary">Developer Team</h1>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-8 md:mx-0">
                 {
                     dev.map((dev, index) => {

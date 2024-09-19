@@ -7,7 +7,7 @@ const WhyUsSection = () => {
 
       <div className="flex flex-col lg:flex-row items-center gap-10 mt-9">
         <div className="flex-1">
-          <h3 className="font-bold md:text-lg text-right">
+          <h3 className="font-bold md:text-lg text-center lg:text-right">
             We’re more than just a virtual classroom platform—we’re a community.
             Whether you’re an educator looking to enhance your teaching tools or
             a student seeking a flexible learning environment, EduSphere offers

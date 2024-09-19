@@ -19,7 +19,7 @@ const AboutPage = () => {
         <div className="h-[300px] bg-[#004085] bg-opacity-75"></div>
         <Breadcrumbs breadCrumbs={breadCrumbs} />
       </header>
-      <main>
+      <main className="md:px-10 lg:px-28">
         <OfferSection></OfferSection>
         <WhyUsSection></WhyUsSection>
         <JoinUsSection></JoinUsSection>

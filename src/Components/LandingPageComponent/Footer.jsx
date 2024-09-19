@@ -6,7 +6,7 @@ const Footer = () => {
             <footer className="footer footer-center bg-secondary text-white rounded p-10">
                 <nav className="grid grid-flow-col gap-4 font-inter font-light">
                     <NavLink to='/'><a className="link link-hover">Home</a></NavLink>
-                    <NavLink to='/about'><a className="link link-hover">About us</a></NavLink>
+                    <NavLink to='/aboutUs'><a className="link link-hover">About us</a></NavLink>
                     <NavLink to='/forum'><a className="link link-hover">Forum</a></NavLink>
                 </nav>
                 <nav>

@@ -15,12 +15,12 @@ const DevSection = () => {
 
     return (
         <div className="max-w-screen-xl mx-auto my-20">
-             <h1 className="text-3xl md:text-5xl text-center mb-10 md:mb-16 font-bold text-secondary">Developer Team</h1>
+             <h1 className="text-3xl md:text-6xl text-center mb-10 md:mb-16 font-extrabold text-secondary">Developer Team</h1>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-8 md:mx-0">
                 {
                     dev.map((dev, index) => {
                         return (
-                            <div key={index} className="flex flex-col text-center items-center justify-center p-8 bg-[#FFC107]">
+                            <div key={index} className="flex flex-col text-center items-center justify-center p-8 bg-[#FFC107] rounded-lg shadow-lg transition duration-700 hover:-translate-y-2">
                                 <FaUser className='text-5xl text-secondary' />
                                 <p className="text-3xl mt-4 font-bold text-black">{dev.name}</p>
                                 <p className="font-light">{dev?.email}</p>

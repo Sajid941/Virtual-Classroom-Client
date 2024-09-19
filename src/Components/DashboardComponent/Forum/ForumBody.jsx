@@ -86,7 +86,7 @@ const ForumBody = () => {
                 placeholder="Search discussions..."
                 value={searchTerm}
                 onChange={handleSearchChange}
-                className="border p-2 rounded-lg w-full lg:w-1/3 basis-4/6 shadow-md"
+                className="border h-12 text-center p-2 rounded-lg w-full lg:w-1/3 basis-4/6 shadow-md"
               />
               <div className="basis-1/6 ">
                 <button

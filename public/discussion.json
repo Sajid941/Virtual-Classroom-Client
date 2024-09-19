@@ -1,0 +1,137 @@
+[
+  {
+    "discussionId": "1",
+    "title": "Best Practices for React State Management",
+    "slug": "best-practices-for-react-state-management",
+    "content": "What are the best practices for managing state in large React applications? I’ve been using Redux, but I’m wondering if there are any more modern approaches that are better suited for my project.",
+    "author": {
+      "name": "JohnDoe123",
+      "profilePic": "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+    },
+    "createdAt": "2024-09-15T12:34:00Z",
+    "category": "React",
+    "views": 1200,
+    "replies": [
+      {
+        "replyId": "101",
+        "content": "You can try using React's Context API with custom hooks. It simplifies state management without the boilerplate of Redux.",
+        "author": "ReactGuru",
+        "createdAt": "2024-09-16T09:12:00Z"
+      },
+      {
+        "replyId": "102",
+        "content": "I recommend trying Zustand for lightweight state management, it’s easier to set up than Redux.",
+        "author": "TechNerd",
+        "createdAt": "2024-09-16T14:30:00Z"
+      }
+    ]
+  },
+  {
+    "discussionId": "2",
+    "title": "How to Improve SEO for a Single Page Application?",
+    "slug": "how-to-improve-seo-for-a-single-page-application",
+    "content": "I'm working on an SPA built with Vue.js, and I’m facing issues with SEO. Any tips on improving SEO performance for SPAs?",
+    "author": {
+      "name": "SEOEnthusiast",
+      "profilePic": "https://cdn-icons-png.flaticon.com/512/9187/9187604.png"
+    },
+    "createdAt": "2024-09-12T10:45:00Z",
+    "category": "SEO",
+    "views": 950,
+    "replies": [
+      {
+        "replyId": "103",
+        "content": "You should consider using server-side rendering (SSR) with Nuxt.js to improve SEO for your Vue.js SPA.",
+        "author": "VueExpert",
+        "createdAt": "2024-09-13T08:15:00Z"
+      },
+      {
+        "replyId": "104",
+        "content": "Also, make sure to generate meta tags dynamically using Vue Meta and handle URL routing properly.",
+        "author": "WebMaster",
+        "createdAt": "2024-09-13T12:22:00Z"
+      }
+    ]
+  },
+  {
+    "discussionId": "3",
+    "title": "Handling Large Datasets in Node.js",
+    "slug": "handling-large-datasets-in-nodejs",
+    "content": "I’m working with a Node.js backend and I need to handle processing a large dataset efficiently. Any suggestions on how to optimize performance?",
+    "author": {
+      "name": "DataDev",
+      "profilePic": "https://cdn-icons-png.flaticon.com/512/219/219969.png"
+    },
+    "createdAt": "2024-09-10T16:20:00Z",
+    "category": "Node.js",
+    "views": 2100,
+    "replies": [
+      {
+        "replyId": "105",
+        "content": "You can use streams to process the data in chunks instead of loading everything into memory at once.",
+        "author": "NodePro",
+        "createdAt": "2024-09-11T11:00:00Z"
+      },
+      {
+        "replyId": "106",
+        "content": "If your dataset is in a database, look into pagination or batch processing to manage large queries.",
+        "author": "DBAdmin",
+        "createdAt": "2024-09-11T13:45:00Z"
+      }
+    ]
+  },
+  {
+    "discussionId": "4",
+    "title": "Tips for Building a Scalable REST API",
+    "slug": "tips-for-building-a-scalable-rest-api",
+    "content": "I’m developing a REST API for my project and need advice on making it scalable for handling a large number of requests. What are the best strategies?",
+    "author": {
+      "name": "APIBuilder",
+      "profilePic": "https://example.com/profiles/apibuilder.jpg"
+    },
+    "createdAt": "2024-09-08T08:15:00Z",
+    "category": "API Development",
+    "views": 1875,
+    "replies": [
+      {
+        "replyId": "107",
+        "content": "Try implementing rate limiting and caching to reduce server load and speed up responses.",
+        "author": "BackendPro",
+        "createdAt": "2024-09-09T10:05:00Z"
+      },
+      {
+        "replyId": "108",
+        "content": "You can use a load balancer to distribute traffic across multiple instances for better scalability.",
+        "author": "ScalabilityExpert",
+        "createdAt": "2024-09-09T14:12:00Z"
+      }
+    ]
+  },
+  {
+    "discussionId": "5",
+    "title": "Best Frontend Framework for Mobile-First Development",
+    "slug": "best-frontend-framework-for-mobile-first-development",
+    "content": "I’m looking for suggestions on the best frontend framework for building mobile-first web applications. What would you recommend?",
+    "author": {
+      "name": "MobileDev",
+      "profilePic": "https://example.com/profiles/mobiledev.jpg"
+    },
+    "createdAt": "2024-09-05T14:30:00Z",
+    "category": "Frontend Development",
+    "views": 1340,
+    "replies": [
+      {
+        "replyId": "109",
+        "content": "Tailwind CSS with React or Vue.js is a great combination for building mobile-first apps.",
+        "author": "FrontendNinja",
+        "createdAt": "2024-09-06T09:20:00Z"
+      },
+      {
+        "replyId": "110",
+        "content": "Consider using Svelte for mobile-first apps, as it has a small bundle size and fast performance.",
+        "author": "WebArchitect",
+        "createdAt": "2024-09-06T13:40:00Z"
+      }
+    ]
+  }
+]

@@ -8,8 +8,9 @@ const Forum = () => {
     <div className="min-h-screen bg-white">
       <ForumNav />
       <div className="wrap container mx-auto">
-        <ForumBody />
+        <Outlet/>
       </div>
+      
     </div>
   );
 };

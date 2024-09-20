@@ -1,7 +1,5 @@
-import React from "react";
 import ForumNav from "../../Components/DashboardComponent/Forum/ForumNav";
 import { Outlet, ScrollRestoration } from "react-router-dom";
-import ForumBody from "../../Components/DashboardComponent/Forum/ForumBody";
 
 const Forum = () => {
   return (

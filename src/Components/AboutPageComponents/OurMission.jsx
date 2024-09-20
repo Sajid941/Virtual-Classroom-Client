@@ -2,7 +2,7 @@ import SectionHeading from "../Shared/SectionHeading";
 
 const OurMission = () => {
   return (
-    <div>
+    <div className="my-40">
       <SectionHeading heading={"Our Mission"} />
       <p className="font-bold md:text-lg max-w-xl mx-auto text-center ">
         Our mission is to bridge the gap between traditional classrooms and

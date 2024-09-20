@@ -14,7 +14,7 @@ const HomeBannerSlider = () => {
           clickable: true,
         }}
         autoplay={{
-          delay: 2000,
+          delay: 2500,
           disableOnInteraction: true,
         }}
         navigation={true}
@@ -50,7 +50,7 @@ const HomeBannerSlider = () => {
               </p>
               <div className="btnWrap flex justify-center items-center gap-3">
                 <Link
-                  to={"/about"}
+                  to={"/aboutUs"}
                   className="btn rounded-none bg-transparent border text-white border-white font-semibold"
                 >
                   Learn More
@@ -101,7 +101,7 @@ const HomeBannerSlider = () => {
                 </p>
                 <div className="btnWrap flex justify-center md:justify-start items-center gap-3">
                   <Link
-                    to={"/courses"}
+                    to={"/forum"}
                     className="btn rounded-none bg-transparent border text-white border-white font-semibold"
                   >
                     Join Our Forum

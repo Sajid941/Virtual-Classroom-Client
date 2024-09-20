@@ -1,6 +1,6 @@
 import React from "react";
 import ForumNav from "../../Components/DashboardComponent/Forum/ForumNav";
-import { Outlet } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 import ForumBody from "../../Components/DashboardComponent/Forum/ForumBody";
 
 const Forum = () => {
@@ -10,7 +10,7 @@ const Forum = () => {
       <div className="wrap container mx-auto">
         <Outlet/>
       </div>
-      
+      <ScrollRestoration />
     </div>
   );
 };

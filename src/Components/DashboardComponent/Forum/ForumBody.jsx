@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SidebarForum from "./SidebarForum";
 import ForumCards from "./ForumCards";
+import { ScrollRestoration } from "react-router-dom";
 
 const ForumBody = () => {
   const [discussions, setDiscussions] = useState([]);
@@ -117,6 +118,7 @@ const ForumBody = () => {
           />
         </div>
       </div>
+      <ScrollRestoration />
     </div>
   );
 };

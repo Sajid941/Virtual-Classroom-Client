@@ -1,15 +1,16 @@
-
+import PropTypes from 'prop-types'
 import logo from "../../assets/classNetLogowhite.png";
 import logoBlue from "../../assets/classNetLogoPrimary.png";
 import { Link, useLocation } from "react-router-dom";
-const Navbar = () => {
-  const { pathname } = useLocation()
 
+const Navbar = ({handleToggleDrawer}) => {
+  const { pathname } = useLocation()
   const user = null;
   return (
     <div>
       <div className="navbar container mx-auto md:px-10 lg:px-20 w-full h-full gap-6 lg:gap-0  z-[999]">
         <div className="flex-1">
+          <button onClick={handleToggleDrawer} className="btn md:hidden">Open</button>
           <a href="/">
             <img
               src={pathname === "/" || pathname === "/aboutUs" ? logo : logoBlue}
@@ -75,3 +76,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
+Navbar.propTypes = {
+  handleToggleDrawer: PropTypes.bool
+}

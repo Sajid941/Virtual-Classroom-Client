@@ -21,6 +21,7 @@ The project utilizes modern web development technologies, including React, Tailw
 - **react-router-dom**: For handling routing within the application.
 - **Swiper**: A modern touch slider library for creating highly customizable carousels.
 - **react-icons**: Icon library for easily adding scalable vector icons to the interface.
+- **moment-js**: Parse, validate, manipulate and display dates and times in JavaScript.
 
 ### Installed Frameworks and Libraries
 - **Tailwind CSS**: A utility-first CSS framework for rapidly building custom designs.

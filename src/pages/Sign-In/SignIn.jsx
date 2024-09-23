@@ -24,7 +24,7 @@ const SignIn = () => {
     <div className="min-h-screen flex flex-col md:flex-row items-center justify-around container mx-auto ">
       {/* Left Column - Logo */}
       <div className="md:w-1/2 lg:1/3 flex justify-center flex-col items-center p-10">
-        <img src={logo} alt="Logo" className="w-52 object-contain" />
+        <img src={logo} alt="Logo" className="lg:w-52 w-44 object-contain" />
         <div className="text-wrap mt-3 text-center">
           <h1 className="text-secondary font-extrabold text-5xl">ClassNet</h1>
           <p className="text-gray-600 font-semibold text-lg">

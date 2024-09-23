@@ -1,14 +1,18 @@
 
 import logo from "../../assets/classNetLogowhite.png";
-import { Link } from "react-router-dom";
+import logoBlue from "../../assets/classNetLogoPrimary.png";
+import { Link, useParams } from "react-router-dom";
 const Navbar = () => {
+  const path = useParams()
   const user = null;
   return (
     <div>
       <div className="navbar container mx-auto md:px-10 lg:px-20 w-full h-full gap-6 lg:gap-0  z-[999]">
         <div className="flex-1">
           <a className="">
-            <img src={logo} alt="" className="lg:w-3/6 w-full " />
+            {
+              path==='/'? <img src={logo} alt="" className="lg:w-3/6 w-full " /> :<img src={logoBlue} alt="" className="lg:w-3/6 w-full " />
+            }
           </a>
         </div>
         <div className="flex-none">

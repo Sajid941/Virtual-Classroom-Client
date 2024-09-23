@@ -8,7 +8,11 @@ import ForumBody from "../Components/DashboardComponent/Forum/ForumBody";
 import AboutPage from "../pages/AboutPage/AboutPage";
 import SignIn from "../pages/Sign-In/SignIn";
 import Dashboard from "../pages/Dashboard/Dashboard";
+<<<<<<< HEAD
 import SignUp from "../pages/Sign-Up/SignUp";
+=======
+import DashboardHome from "../pages/DashboardPages/DashboardHome";
+>>>>>>> 1d1ea73ae9fc0c442ab6c19db690617e89c60369
 
 const router = createBrowserRouter([
 
@@ -32,9 +36,10 @@ const router = createBrowserRouter([
         element: <AboutPage />,
       },
 
-      
+
     ],
   },
+
   //authentication
   {
     path: "/signIn",
@@ -44,6 +49,7 @@ const router = createBrowserRouter([
     path: "/signUp",
     element: <SignUp />,
   },
+
   // Forum Page routes
   {
     path: "/forum",
@@ -65,7 +71,14 @@ const router = createBrowserRouter([
   // Dashboard Routes
   {
     path: "/dashboard",
-    element: <Dashboard />
+    element: <Dashboard />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <DashboardHome />
+      }
+    ]
   }
 ]);
 

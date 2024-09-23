@@ -16,14 +16,14 @@ const Dashboard = () => {
                 <Navbar handleToggleDrawer={handleToggleDrawer} />
             </nav>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10 pt-28 px-5 md:px-10 lg:px-20">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 pt-28 px-5 md:px-10 lg:px-20">
                 <aside className="">
                     <Drawer isDrawerOpen={isDrawerOpen} handleToggleDrawer={handleToggleDrawer} />
                 </aside>
-                <main className="col-span-5 md:col-span-2 lg:col-span-3 border border-black md:ml-80 lg:ml-28 xl:ml-16 ">
+                <main className="md:col-span-2 lg:col-span-2 border border-black md:ml-80 lg:ml-28 xl:ml-16 2xl:ml-2 ">
                     <Outlet />
                 </main>
-                <aside className="md:hidden lg:block">
+                <aside className="hidden lg:block ml-10">
                     <LeaderBoard />
                 </aside>
             </div>

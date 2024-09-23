@@ -1,0 +1,19 @@
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+  }
+  
+  .dashboard-link{
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 500;
+}

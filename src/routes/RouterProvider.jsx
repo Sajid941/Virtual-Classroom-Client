@@ -8,6 +8,7 @@ import ForumBody from "../Components/DashboardComponent/Forum/ForumBody";
 import AboutPage from "../pages/AboutPage/AboutPage";
 import SignIn from "../pages/Sign-In/SignIn";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import SignUp from "../pages/Sign-Up/SignUp";
 
 const router = createBrowserRouter([
 
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/signUp",
-    element: <AboutPage />,
+    element: <SignUp />,
   },
   // Forum Page routes
   {

@@ -1,9 +1,16 @@
 import PropTypes from 'prop-types'
 import "./Drawer.css"
+import { SiGoogleclassroom } from "react-icons/si";
+import { IoHomeOutline } from "react-icons/io5";
+import { AiOutlineSchedule } from "react-icons/ai";
+import { MdAssignmentAdd } from "react-icons/md";
+import { IoCreateOutline } from "react-icons/io5";
+
+import { NavLink } from 'react-router-dom';
 const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
     return (
-        <div className='fixed ml-5'>
-            <div className="drawer lg:drawer-open">
+        <div className='fixed ml-5 z-20'>
+            <div className="drawer md:drawer-open">
                 <input id="my-drawer-2" type="checkbox" className="drawer-toggle" checked={isDrawerOpen} onChange={handleToggleDrawer} />
                 <div className="drawer-content flex flex-col items-center justify-center">
                     {/* Page content here */}
@@ -11,14 +18,41 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                         Open drawer
                     </label>
                 </div>
-                <div className="drawer-side">
+                <div className="drawer-side shadow-md">
                     <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-                    <ul className="scrollbar-hide overflow-auto mb-2 border-2 h-4/5 rounded-2xl w-80 p-4">
+                    <ul className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2  h-screen md:h-4/5 md:rounded-2xl w-64 p-4 pl-8 space-y-5 pt-10">
                         {/* Sidebar content Trinidad & Tobagohere */}
-                        <li><a>Sidebar Item Bulgaria1</a></li>
-                        <li><a>Sidebar Item Niue2</a></li>
-                        <li><a>Sidebar Item Kenya2</a></li>
-                        <li><a>Sidebar Item Ghana2</a></li>
+                        <li>
+                            <NavLink className="dashboard-link">
+                                <IoHomeOutline  size={25}/>
+                                Home
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink className="dashboard-link">
+                                <SiGoogleclassroom size={25}/>
+                                My Classes
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink className="dashboard-link">
+                                <AiOutlineSchedule  size={25}/>
+                                Schedules
+                            </NavLink>
+                        </li>
+                        <li>
+                            <md className="dashboard-link">
+                                <MdAssignmentAdd  size={25}/>
+                                Assignments
+                            </md>
+                        </li>
+                        <li>
+                            <NavLink className="dashboard-link">
+                                <IoCreateOutline  size={25}/>
+                                Create A Class
+                            </NavLink>
+                        </li>
+
                     </ul>
                 </div>
             </div>

@@ -4,7 +4,7 @@ import Navbar from "../Components/Shared/Navbar";
 
 const Root = () => {
   return (
-    <div>
+    <div className="bg-white">
       <div className="top-5 absolute z-10 w-full ">
         <Navbar />
       </div>

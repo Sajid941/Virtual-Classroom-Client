@@ -6,6 +6,7 @@ import Forum from "../pages/Forum/Forum";
 import DetailedDescussion from "../Components/DashboardComponent/Forum/DetailedDescussion";
 import ForumBody from "../Components/DashboardComponent/Forum/ForumBody";
 import AboutPage from "../pages/AboutPage/AboutPage";
+import SignIn from "../pages/Sign-In/SignIn";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,14 @@ const router = createBrowserRouter([
       },
       {
         path: "/aboutUs",
+        element: <AboutPage />,
+      },
+      {
+        path: "/sign-in",
+        element: <SignIn />,
+      },
+      {
+        path: "/sign-up",
         element: <AboutPage />,
       },
     ],

@@ -7,6 +7,7 @@ import { MdAssignmentAdd } from "react-icons/md";
 import { IoCreateOutline } from "react-icons/io5";
 
 import { NavLink } from 'react-router-dom';
+import DashboardSidebar from '../DashboardSidebar/DashboardSidebar';
 const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
     return (
         <div className='fixed ml-5 z-20'>
@@ -24,38 +25,38 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                         {/* Sidebar content Trinidad & Tobagohere */}
                         <ul className='space-y-5 p-5 pl-8'>
                             <li>
-                                <NavLink className="dashboard-link">
+                                <NavLink to="/dashboard" className="dashboard-link">
                                     <IoHomeOutline size={25} />
                                     Home
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink className="dashboard-link">
+                                <NavLink to="/myClasses" className="dashboard-link">
                                     <SiGoogleclassroom size={25} />
                                     My Classes
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink className="dashboard-link">
+                                <NavLink to="/schedules" className="dashboard-link">
                                     <AiOutlineSchedule size={25} />
                                     Schedules
                                 </NavLink>
                             </li>
                             <li>
-                                <md className="dashboard-link">
+                                <NavLink to="/assignments" className="dashboard-link">
                                     <MdAssignmentAdd size={25} />
                                     Assignments
-                                </md>
+                                </NavLink>
                             </li>
                             <li>
-                                <NavLink className="dashboard-link">
+                                <NavLink to="createClass" className="dashboard-link">
                                     <IoCreateOutline size={25} />
                                     Create A Class
                                 </NavLink>
                             </li>
                         </ul>
-                        <div className="bg-[#004085] lg:hidden text-white w-full h-full">
-                            <h1>Hello world</h1>
+                        <div className="bg-[#004085] lg:hidden text-white w-full  p-5">
+                            <DashboardSidebar />
                         </div>
 
                     </div>

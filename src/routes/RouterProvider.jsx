@@ -7,8 +7,11 @@ import DetailedDescussion from "../Components/DashboardComponent/Forum/DetailedD
 import ForumBody from "../Components/DashboardComponent/Forum/ForumBody";
 import AboutPage from "../pages/AboutPage/AboutPage";
 import SignIn from "../pages/Sign-In/SignIn";
+import Dashboard from "../pages/Dashboard/Dashboard";
 
 const router = createBrowserRouter([
+
+  // Root routes
   {
     path: "/",
     element: <Root />,
@@ -27,9 +30,19 @@ const router = createBrowserRouter([
         path: "/aboutUs",
         element: <AboutPage />,
       },
-      
+
+      {
+        path: "/signIn",
+        element: <SignIn />,
+      },
+      {
+        path: "/signUp",
+        element: <AboutPage />,
+      },
     ],
   },
+
+  // Forum Page routes
   {
     path: "/forum",
     element: <Forum />,
@@ -45,14 +58,13 @@ const router = createBrowserRouter([
       },
     ],
   },
+\
+
+  // Dashboard Routes
   {
-    path: "/sign-in",
-    element: <SignIn />,
-  },
-  {
-    path: "/sign-up",
-    element: <AboutPage />,
-  },
+    path: "/dashboard",
+    element: <Dashboard />
+  }
 ]);
 
 export default router;

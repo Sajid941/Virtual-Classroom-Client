@@ -17,3 +17,8 @@
     font-size: 18px;
     font-weight: 500;
 }
+
+.dashboard-link.active{
+  color: #004085;
+  font-weight: 700;
+}

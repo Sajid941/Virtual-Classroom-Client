@@ -5,7 +5,7 @@ import Navbar from "../Components/Shared/Navbar";
 const Root = () => {
   return (
     <div>
-      <div className=" absolute z-10 w-full ">
+      <div className="absolute z-10 w-full ">
         <Navbar />
       </div>
       <Outlet />

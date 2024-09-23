@@ -11,7 +11,7 @@ const Navbar = () => {
         <div className="flex-1">
           <a className="">
             {
-              path==='/'? <img src={logo} alt="" className="lg:w-3/6 w-full " /> :<img src={logoBlue} alt="" className="lg:w-3/6 w-full " />
+              path === '/' ? <img src={logo} alt="" className="lg:w-3/6 w-full " /> : <img src={logoBlue} alt="" className="lg:w-3/6 w-full " />
             }
           </a>
         </div>
@@ -52,13 +52,13 @@ const Navbar = () => {
             <>
               <div className="flex items-center gap-3 justify-center">
                 <Link
-                  to={"/signin"}
+                  to={"/signIn"}
                   className="btn border-[3px] bg-transparent text-white border-white font-semibold lg:w-32 rounded-full"
                 >
                   Log In
                 </Link>
                 <Link
-                  to={"/signup"}
+                  to={"/signUp"}
                   className="btn border-none capitalize bg-accent font-semibold lg:w-32 rounded-full"
                 >
                   Register

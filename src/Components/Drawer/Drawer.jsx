@@ -26,7 +26,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                 </div>
                 <div className="drawer-side shadow-md">
                     <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-                    <div className="scrollbar-hide overflow-auto mb-2 md:border-2  h-screen md:h-4/5 md:rounded-2xl w-64 space-y-5 pt-12 md:pt-5">
+                    <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2  h-screen md:h-4/5 md:rounded-2xl w-64 space-y-5 pt-12 md:pt-5">
                         {/* Sidebar content Trinidad & Tobagohere */}
                         <ul className='space-y-5 p-5 pl-8'>
                             <li>

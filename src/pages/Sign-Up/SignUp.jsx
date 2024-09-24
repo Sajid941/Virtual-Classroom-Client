@@ -1,14 +1,27 @@
 import { useForm } from "react-hook-form";
 import logo from "../../assets/classNet.png";
 import { Helmet } from "react-helmet-async";
+import useAuth from "../../CustomHooks/useAuth";
 
 const SignUp = () => {
+  //data from context api
+  const { createUser } = useAuth();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    //create a user with firebase
+    createUser(data.email, data.password)
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div className="min-h-screen flex flex-col md:flex-row justify-around items-center container mx-auto">
       <Helmet>

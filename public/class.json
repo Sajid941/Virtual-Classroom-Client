@@ -1,0 +1,162 @@
+[
+  {
+    "classId": "c001",
+    "className": "The Law of Thermodynamics",
+    "section": "11/B",
+    "subject": "Physics",
+    "teacher": {
+      "teacherId": "t001",
+      "name": "Willy Swik"
+    },
+    "classImage": "https://i.ibb.co/ngh5dsy/ivan-aleksic-PDRFee-Dni-Ck-unsplash.jpg",
+    "resources": [
+      {
+        "resourceId": "r001",
+        "type": "ZIP",
+        "description": "Lab results and experiment data"
+      },
+      {
+        "resourceId": "r002",
+        "type": "Code",
+        "description": "Sample Python script for thermodynamics"
+      },
+      {
+        "resourceId": "r003",
+        "type": "Comments",
+        "description": "Discussion forum on Thermodynamics"
+      }
+    ],
+    "students": [
+      {
+        "name": "Alice Smith",
+        "email": "alice.smith@example.com",
+        "messages": [
+          {
+            "user": "Alice Smith",
+            "text": "Hi, I have a question about the homework.",
+            "time": "2024-09-25 10:00 AM",
+            "replies": [
+              {
+                "user": "John Doe",
+                "text": "Sure, Alice! What is your question?",
+                "time": "2024-09-25 10:05 AM"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "classId": "c002",
+    "className": "Introduction to Organic Chemistry",
+    "section": "12/A",
+    "subject": "Chemistry",
+    "teacher": {
+      "teacherId": "t002",
+      "name": "Sarah Johnson"
+    },
+    "classImage": "https://i.ibb.co/XYZ/example2.jpg",
+    "resources": [
+      {
+        "resourceId": "r004",
+        "type": "ZIP",
+        "description": "Molecular structures diagrams"
+      },
+      {
+        "resourceId": "r005",
+        "type": "Code",
+        "description": "Simulation script for organic reactions"
+      },
+      {
+        "resourceId": "r006",
+        "type": "Comments",
+        "description": "Forum on organic chemistry queries"
+      }
+    ]
+  },
+  {
+    "classId": "c003",
+    "className": "Advanced Algebra",
+    "section": "10/C",
+    "subject": "Mathematics",
+    "teacher": {
+      "teacherId": "t003",
+      "name": "Mark Spencer"
+    },
+    "classImage": "https://i.ibb.co/ABC/example3.jpg",
+    "resources": [
+      {
+        "resourceId": "r007",
+        "type": "ZIP",
+        "description": "Algebraic equations worksheets"
+      },
+      {
+        "resourceId": "r008",
+        "type": "Code",
+        "description": "Algebra solving script in MATLAB"
+      },
+      {
+        "resourceId": "r009",
+        "type": "Comments",
+        "description": "Discussion on algebraic concepts"
+      }
+    ]
+  },
+  {
+    "classId": "c004",
+    "className": "World History - Renaissance",
+    "section": "9/A",
+    "subject": "History",
+    "teacher": {
+      "teacherId": "t004",
+      "name": "Emily Richards"
+    },
+    "classImage": "https://i.ibb.co/DEF/example4.jpg",
+    "resources": [
+      {
+        "resourceId": "r010",
+        "type": "ZIP",
+        "description": "Presentation slides on the Renaissance"
+      },
+      {
+        "resourceId": "r011",
+        "type": "Code",
+        "description": "Interactive timeline tool"
+      },
+      {
+        "resourceId": "r012",
+        "type": "Comments",
+        "description": "Forum on historical impacts of the Renaissance"
+      }
+    ]
+  },
+  {
+    "classId": "c005",
+    "className": "Introduction to Economics",
+    "section": "11/D",
+    "subject": "Economics",
+    "teacher": {
+      "teacherId": "t005",
+      "name": "David Green"
+    },
+    "classImage": "https://i.ibb.co/GHI/example5.jpg",
+    "resources": [
+      {
+        "resourceId": "r013",
+        "type": "ZIP",
+        "description": "Economic models and graphs"
+      },
+      {
+        "resourceId": "r014",
+        "type": "Code",
+        "description": "Data analysis script in R"
+      },
+      {
+        "resourceId": "r015",
+        "type": "Comments",
+        "description": "Forum on global economic trends"
+      }
+    ]
+  }
+]

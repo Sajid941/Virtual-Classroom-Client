@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams, useNavigate } from "react-router-dom";
 
 const DetailedDiscussion = () => {
@@ -45,6 +46,9 @@ const DetailedDiscussion = () => {
 
   return (
     <div className="wrapper">
+      <Helmet>
+        <title>{discussion?.title} | Discussion</title>
+      </Helmet>
       <div className="discussionWrap pb-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl border mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
           <button

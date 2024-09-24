@@ -115,6 +115,7 @@ const ForumBody = () => {
             categories={categories}
             setFilteredDiscussions={setFilteredDiscussions}
             discussions={discussions}
+            setCategories={setCategories}
           />
         </div>
       </div>

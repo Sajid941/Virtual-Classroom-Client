@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import logo from "../../assets/classNet.png";
 import { useForm } from "react-hook-form";
 import { FaGoogle, FaGithub } from "react-icons/fa";
@@ -22,6 +23,9 @@ const SignIn = () => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row items-center justify-around container mx-auto ">
+      <Helmet>
+        <title>Sign In | Class Net</title>
+      </Helmet>
       {/* Left Column - Logo */}
       <div className="md:w-1/2 lg:1/3 flex justify-center flex-col items-center p-10">
         <img src={logo} alt="Logo" className="lg:w-52 w-44 object-contain" />

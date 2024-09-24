@@ -5,7 +5,7 @@ const DashboardHome = () => {
     return (
         <div>
             <div className="rounded-lg shadow-lg border w-full">
-                <div className="bg-[url('https://i.ibb.co/ngh5dsy/ivan-aleksic-PDRFee-Dni-Ck-unsplash.jpg')] bg-cover h-[300px] text-white relative">
+                <div className="bg-[url('https://i.ibb.co/ngh5dsy/ivan-aleksic-PDRFee-Dni-Ck-unsplash.jpg')] bg-cover h-[200px] md:h-[250px] lg:h-[300px] text-white relative">
                     <div className="bg-black/30 w-full h-full absolute"></div>
                     <div className="relative px-5 py-5">
                         <h2 className="font-bold text-lg z-10">The law of Thermodynamics</h2>

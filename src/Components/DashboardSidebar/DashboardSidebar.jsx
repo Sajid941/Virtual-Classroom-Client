@@ -10,7 +10,7 @@ const DashboardSidebar = () => {
         return () => clearInterval(interval)
     }, [])
     return (
-        <div>
+        <div className="">
             <div className="border-b-2 pb-5">
                 <h1 className="text-xl font-semibold">{moment().format('MMMM D, YYYY')}</h1>
                 <h1 className="text-xl font-semibold">{time}</h1>

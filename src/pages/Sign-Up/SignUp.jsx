@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import logo from "../../assets/classNet.png";
+import { Helmet } from "react-helmet-async";
 
 const SignUp = () => {
   const {
@@ -10,6 +11,9 @@ const SignUp = () => {
   const onSubmit = (data) => console.log(data);
   return (
     <div className="min-h-screen flex flex-col md:flex-row justify-around items-center container mx-auto">
+      <Helmet>
+        <title>Sign Up | Class Net</title>
+      </Helmet>
       <div>
         {/* left side */}
         <img src={logo} className="w-52 object-contain" alt="Logo" />

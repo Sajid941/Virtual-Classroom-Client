@@ -24,7 +24,7 @@ const SignIn = () => {
       .catch((err) => {
         console.log(err);
       });
-
+  }
 
 
   const handleGoogleSignIn = () => {
@@ -77,9 +77,8 @@ const SignIn = () => {
               id="email"
               type="email"
               {...register("email", { required: "Email is required" })}
-              className={`mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-accent focus:border-accent ${
-                errors.email ? "border-red-500" : ""
-              }`}
+              className={`mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-accent focus:border-accent ${errors.email ? "border-red-500" : ""
+                }`}
               placeholder="Enter your email"
             />
             {errors.email && (
@@ -101,9 +100,8 @@ const SignIn = () => {
               id="password"
               type="password"
               {...register("password", { required: "Password is required" })}
-              className={`mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-accent focus:border-accent ${
-                errors.password ? "border-red-500" : ""
-              }`}
+              className={`mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-accent focus:border-accent ${errors.password ? "border-red-500" : ""
+                }`}
               placeholder="Enter your password"
             />
             {errors.password && (

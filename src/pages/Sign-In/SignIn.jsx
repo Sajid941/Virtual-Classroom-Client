@@ -32,8 +32,8 @@ const SignIn = () => {
       .catch((err) => {
         console.log(err);
       });
+    }
 
-  }
 
   const handleGoogleSignIn = () => {
 

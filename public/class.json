@@ -142,21 +142,7 @@
     },
     "classImage": "https://i.ibb.co/GHI/example5.jpg",
     "resources": [
-      {
-        "resourceId": "r013",
-        "type": "ZIP",
-        "description": "Economic models and graphs"
-      },
-      {
-        "resourceId": "r014",
-        "type": "Code",
-        "description": "Data analysis script in R"
-      },
-      {
-        "resourceId": "r015",
-        "type": "Comments",
-        "description": "Forum on global economic trends"
-      }
+      
     ]
   }
 ]

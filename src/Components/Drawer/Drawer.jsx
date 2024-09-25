@@ -1,25 +1,24 @@
-
-import PropTypes from 'prop-types'
-import "./Drawer.css"
+import PropTypes from "prop-types";
+import "./Drawer.css";
 
 import { SiGoogleclassroom } from "react-icons/si";
 import { IoHomeOutline } from "react-icons/io5";
 import { AiOutlineSchedule } from "react-icons/ai";
-import { MdAssignmentAdd } from "react-icons/md";
+import { MdAssignmentAdd, MdAddToPhotos } from "react-icons/md";
 import { IoCreateOutline } from "react-icons/io5";
 import { GrDocumentPerformance } from "react-icons/gr";
-import { MdAddToPhotos } from "react-icons/md";
 
 import { NavLink } from "react-router-dom";
 import DashboardSidebar from "../DashboardSidebar/DashboardSidebar";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import useRole from '../../CustomHooks/useRole';
+import useRole from "../../CustomHooks/useRole";
 
 const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
-  const role = useRole();
+  const { role } = useRole();
 
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isJoinClassFormOpen, setIsJoinClassFormOpen] = useState(false); // New state for Join Class form
 
   const {
     register,
@@ -39,7 +38,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
 
   const onSubmit = (data) => {
     const classData = {
-      classId: generateUniqueClassCode(), // Generate the unique class code
+      classId: generateUniqueClassCode(),
       className: data.className,
       section: data.section,
       subject: data.subject,
@@ -47,19 +46,22 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
         teacherId: "t001",
         name: "Willy Swik",
       },
-      students: [{
-
-      }],
+      students: [{}],
       classImage:
         "https://i.ibb.co/ngh5dsy/ivan-aleksic-PDRFee-Dni-Ck-unsplash.jpg",
-      resources: [
-        
-      ],
+      resources: [],
       quizzes: [],
       assignments: [],
     };
     console.log(classData);
     setIsFormOpen(false);
+  };
+
+  const onJoinClassSubmit = (data) => {
+    const classCode = data.classCode;
+    // Implement logic here to join the class using classCode, such as making an API call.
+    console.log("Joining class with code:", classCode);
+    setIsJoinClassFormOpen(false);
   };
 
   return (
@@ -140,10 +142,13 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/joinClass" className="dashboard-link">
+                    <button
+                      onClick={() => setIsJoinClassFormOpen(true)} // Open the Join Class form
+                      className="dashboard-link"
+                    >
                       <MdAddToPhotos size={25} />
                       Join A Class
-                    </NavLink>
+                    </button>
                   </li>
                 </>
               )}
@@ -155,8 +160,9 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
         </div>
       </div>
 
+      {/* Create Class Form */}
       {isFormOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 ">
+        <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="bg-white p-6 rounded-lg shadow-lg w-2/5"
@@ -244,12 +250,59 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
           </form>
         </div>
       )}
+
+      {/* Join Class Form */}
+      {isJoinClassFormOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50">
+          <form
+            onSubmit={handleSubmit(onJoinClassSubmit)} // Handle class join
+            className="bg-white p-6 rounded-lg shadow-lg w-2/5"
+          >
+            <h2 className="text-xl font-bold mb-4">Join a Class</h2>
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-1">
+                Class Code
+              </label>
+              <input
+                type="text"
+                {...register("classCode", {
+                  required: "Class code is required",
+                })}
+                className={`w-full p-2 border rounded ${
+                  errors.classCode ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {errors.classCode && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.classCode.message}
+                </p>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setIsJoinClassFormOpen(false)}
+                className="bg-red-500 text-white py-2 px-4 rounded w-full mt-2"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+              >
+                Join Class
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Drawer;
+
 Drawer.propTypes = {
-    isDrawerOpen: PropTypes.bool,
-    handleToggleDrawer: PropTypes.bool
-}
+  isDrawerOpen: PropTypes.bool,
+  handleToggleDrawer: PropTypes.func,
+};

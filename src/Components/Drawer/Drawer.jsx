@@ -14,9 +14,11 @@ import { NavLink } from "react-router-dom";
 import DashboardSidebar from "../DashboardSidebar/DashboardSidebar";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import useRole from '../../CustomHooks/useRole';
 
 const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
-  const user = "teacher";
+  const role = useRole();
+
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const {
@@ -98,7 +100,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                   Assignments
                 </NavLink>
               </li>
-              {user === "teacher" && (
+              {role === "teacher" && (
                 <>
                   <li>
                     <NavLink to="/myClasses" className="dashboard-link">
@@ -123,7 +125,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                   </li>
                 </>
               )}
-              {user === "student" && (
+              {role === "student" && (
                 <>
                   <li>
                     <NavLink to="/myClasses" className="dashboard-link">

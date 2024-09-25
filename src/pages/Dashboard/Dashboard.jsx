@@ -12,8 +12,8 @@ const Dashboard = () => {
   };
   return (
     <>
-      <NavDashboard />
-      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-10 lg:pt-32 px-5 ">
+      <NavDashboard handleToggleDrawer={handleToggleDrawer} />
+      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-10 pt-16 md:pt-28 px-5 md:px-10 lg:px-20">
         <aside className="">
           <Drawer
             isDrawerOpen={isDrawerOpen}
@@ -21,11 +21,11 @@ const Dashboard = () => {
           />
         </aside>
 
-        <main className="md:col-span-2 lg:col-span-2 ">
+        <main className="md:col-span-2 lg:col-span-2  md:ml-80 xl:ml-16 2xl:ml-2">
           <Outlet />
         </main>
 
-        <aside className="hidden xl:block pr-10">
+        <aside className="hidden xl:block pr-10 ">
           <div className="fixed right-16 h-4/5 border rounded-lg bg-[#004085] text-white py-10 px-5 w-72">
             <DashboardSidebar />
           </div>

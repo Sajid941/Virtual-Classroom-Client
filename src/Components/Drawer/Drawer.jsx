@@ -1,5 +1,7 @@
-import PropTypes from "prop-types";
-import "./Drawer.css";
+
+import PropTypes from 'prop-types'
+import "./Drawer.css"
+
 import { SiGoogleclassroom } from "react-icons/si";
 import { IoHomeOutline } from "react-icons/io5";
 import { AiOutlineSchedule } from "react-icons/ai";
@@ -7,6 +9,7 @@ import { MdAssignmentAdd } from "react-icons/md";
 import { IoCreateOutline } from "react-icons/io5";
 import { GrDocumentPerformance } from "react-icons/gr";
 import { MdAddToPhotos } from "react-icons/md";
+
 import { NavLink } from "react-router-dom";
 import DashboardSidebar from "../DashboardSidebar/DashboardSidebar";
 import { useState } from "react";
@@ -244,3 +247,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
 };
 
 export default Drawer;
+Drawer.propTypes = {
+    isDrawerOpen: PropTypes.bool,
+    handleToggleDrawer: PropTypes.bool
+}

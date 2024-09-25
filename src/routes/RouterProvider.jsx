@@ -12,6 +12,7 @@ import SignUp from "../pages/Sign-Up/SignUp";
 import DashboardBody from "../pages/DashboardPages/DashboardBody";
 import DetailedClass from "../pages/DashboardPages/DetailedClass";
 
+
 const router = createBrowserRouter([
 
   // Root routes
@@ -74,6 +75,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/dashboard",
+
         element: <DashboardBody />
       },
     ]

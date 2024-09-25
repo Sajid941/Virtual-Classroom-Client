@@ -13,6 +13,7 @@ const DevSection = () => {
                 setDev(data);
             })
     })
+    console.log(dev);
 
     return (
         <div className="max-w-screen-xl mx-auto my-20">

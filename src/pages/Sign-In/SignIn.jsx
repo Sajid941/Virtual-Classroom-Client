@@ -25,7 +25,7 @@ const SignIn = () => {
         console.log(err);
       });
 
-
+    }
 
   const handleGoogleSignIn = () => {
 

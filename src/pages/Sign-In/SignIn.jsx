@@ -5,10 +5,16 @@ import { FaGithub } from "react-icons/fa";
 import sideImg from '../../assets/images/undraw_my_app_re_gxtj.svg'
 
 import useAuth from "../../CustomHooks/useAuth";
+
 import { Link } from 'react-router-dom';
+
+import { useNavigate } from "react-router-dom";
+
 const SignIn = () => {
   //data from context api
   const { logInUser, signInWithGoogle } = useAuth();
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -34,10 +40,9 @@ const SignIn = () => {
     signInWithGoogle()
       .then((result) => {
         console.log(result.user);
+        navigate("/dashboard");
       })
       .catch((err) => console.log(err));
-
-    alert("Google Sign In");
   };
 
   const handleGitHubSignIn = () => {

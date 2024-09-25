@@ -1,4 +1,3 @@
-import React from "react";
 import logos from "../../../assets/classNetLogoPrimary.png";
 
 const NavDashboard = () => {
@@ -14,7 +13,7 @@ const NavDashboard = () => {
 
       <div className="flex-1">
         <a href="/" aria-label="Home">
-          <img src={logos} alt="ClassNet Logo" className="w-3/5" />
+          <img src={logos} alt="ClassNet Logo" className="w-28 md:w-52" />
         </a>
       </div>
 

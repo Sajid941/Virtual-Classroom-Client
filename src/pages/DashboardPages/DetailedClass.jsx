@@ -1,10 +1,11 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GoFileCode, GoComment, GoFileZip } from "react-icons/go";
 import { AiOutlineLeft } from "react-icons/ai"; // Import the left arrow icon
 import { useParams, useNavigate } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
+import AddAssignmentModal from "../../Components/AssignmentModal/AddAssignmentModal";
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -14,6 +15,8 @@ const DetailedClass = () => {
   const [error, setError] = useState(null);
   const [students, setStudents] = useState([]);
   const [role, setRole] = useState("teacher"); // Set the role here, can be "teacher" or "student"
+
+  const [isModalOpen, setIsModalOpen] = useState(false); //assignment modal state
 
   // Initialize React Hook Form
   const { register, handleSubmit, reset } = useForm();
@@ -54,11 +57,13 @@ const DetailedClass = () => {
         text: data.message,
         time: new Date().toLocaleString(), // Format the current date and time
         replies: [], // Initialize with an empty array for replies
-        profileImage: "https://via.placeholder.com/40" // Placeholder for profile image
+        profileImage: "https://via.placeholder.com/40", // Placeholder for profile image
       };
 
       // Find the currently logged-in student (this is a placeholder)
-      const currentStudent = students.find(student => student.email === "alice.smith@example.com"); // Replace with actual logged-in student's email
+      const currentStudent = students.find(
+        (student) => student.email === "alice.smith@example.com"
+      ); // Replace with actual logged-in student's email
 
       if (currentStudent) {
         currentStudent.messages.push(newMessage);
@@ -162,9 +167,18 @@ const DetailedClass = () => {
               ) : role === "teacher" ? (
                 <div className="text-center">
                   <p>No assignments available.</p>
-                  <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
+                  >
                     Add Assignment
                   </button>
+
+                  {/* Modal for adding assignment */}
+                  <AddAssignmentModal
+                    isOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                  ></AddAssignmentModal>
                 </div>
               ) : (
                 <p>No assignments available.</p>
@@ -204,30 +218,50 @@ const DetailedClass = () => {
                 <ul className="space-y-3">
                   {students.map((student) =>
                     student.messages.map((message, index) => (
-                      <li key={index} className="flex items-start p-3 bg-gray-100 rounded-lg">
+                      <li
+                        key={index}
+                        className="flex items-start p-3 bg-gray-100 rounded-lg"
+                      >
                         <img
-                          src={message.profileImage || "https://via.placeholder.com/40"} // Placeholder for profile image
+                          src={
+                            message.profileImage ||
+                            "https://via.placeholder.com/40"
+                          } // Placeholder for profile image
                           alt={`${message.user}'s profile`}
                           className="w-10 h-10 rounded-full mr-3"
                         />
                         <div>
                           <p className="font-semibold">{message.user}</p>
                           <p className="text-gray-600">{message.text}</p>
-                          <p className="text-xs text-gray-500">{message.time}</p>
+                          <p className="text-xs text-gray-500">
+                            {message.time}
+                          </p>
                           {message.replies.length > 0 && (
                             <div className="ml-5 mt-2">
                               <h3 className="font-semibold">Replies:</h3>
                               {message.replies.map((reply, replyIndex) => (
-                                <div key={replyIndex} className="bg-blue-100 p-2 rounded-lg mt-1 flex items-start">
+                                <div
+                                  key={replyIndex}
+                                  className="bg-blue-100 p-2 rounded-lg mt-1 flex items-start"
+                                >
                                   <img
-                                    src={reply.profileImage || "https://via.placeholder.com/40"} // Placeholder for reply profile image
+                                    src={
+                                      reply.profileImage ||
+                                      "https://via.placeholder.com/40"
+                                    } // Placeholder for reply profile image
                                     alt={`${reply.user}'s profile`}
                                     className="w-8 h-8 rounded-full mr-2"
                                   />
                                   <div>
-                                    <p className="font-semibold">{reply.user}</p>
-                                    <p className="text-gray-600">{reply.text}</p>
-                                    <p className="text-xs text-gray-500">{reply.time}</p>
+                                    <p className="font-semibold">
+                                      {reply.user}
+                                    </p>
+                                    <p className="text-gray-600">
+                                      {reply.text}
+                                    </p>
+                                    <p className="text-xs text-gray-500">
+                                      {reply.time}
+                                    </p>
                                   </div>
                                 </div>
                               ))}

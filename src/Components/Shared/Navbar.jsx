@@ -1,11 +1,15 @@
 import logo from "../../assets/classNetLogowhite.png";
 import logoBlue from "../../assets/classNetLogoPrimary.png";
 import { Link, useLocation } from "react-router-dom";
+import useUser from "../../CustomHooks/useUser";
+import { useContext } from "react";
+import { AuthContext } from "../../Provider/AuthProvider";
 
 const Navbar = () => {
   const { pathname } = useLocation();
-  const user = null; // Replace with actual user state
-
+  const {user,logOut} = useContext(AuthContext); // Replace with actual user state 
+  const userdb=useUser()
+  console.log(userdb);
   return (
     <div>
       <div className="navbar pt-5 mx-auto md:px-10 lg:px-20 w-full h-full gap-6 lg:gap-0 z-[999]">
@@ -34,7 +38,7 @@ const Navbar = () => {
 
                     alt="User Avatar"
 
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                    src={user?.photoURL}
                   />
                 </div>
               </div>
@@ -52,7 +56,7 @@ const Navbar = () => {
                   <a>Settings</a>
                 </li>
                 <li>
-                  <a>Logout</a>
+                  <a onClick={logOut}>Logout</a>
                 </li>
               </ul>
             </div>

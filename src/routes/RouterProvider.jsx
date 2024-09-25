@@ -9,7 +9,9 @@ import AboutPage from "../pages/AboutPage/AboutPage";
 import SignIn from "../pages/Sign-In/SignIn";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import SignUp from "../pages/Sign-Up/SignUp";
-import DashboardHome from "../pages/DashboardPages/DashboardHome";
+import DashboardBody from "../pages/DashboardPages/DashboardBody";
+import DetailedClass from "../pages/DashboardPages/DetailedClass";
+
 
 const router = createBrowserRouter([
 
@@ -73,9 +75,14 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/dashboard",
-        element: <DashboardHome />
-      }
+
+        element: <DashboardBody />
+      },
     ]
+  },
+  {
+    path: "/class/:id",
+    element: <DetailedClass />
   }
 ]);
 

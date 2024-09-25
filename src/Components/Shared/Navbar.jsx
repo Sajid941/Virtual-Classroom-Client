@@ -1,24 +1,25 @@
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 import logo from "../../assets/classNetLogowhite.png";
 import logoBlue from "../../assets/classNetLogoPrimary.png";
 import { Link, useLocation } from "react-router-dom";
-import { TiThMenu } from "react-icons/ti";
 
-const Navbar = ({ handleToggleDrawer }) => {
-  const { pathname } = useLocation()
-  const user = null;
+const Navbar = () => {
+  const { pathname } = useLocation();
+  const user = null; // Replace with actual user state
+
   return (
     <div>
-      <div className="navbar pt-5   mx-auto md:px-10 lg:px-20 w-full h-full gap-6 lg:gap-0  z-[999]">
+      <div className="navbar pt-5 mx-auto md:px-10 lg:px-20 w-full h-full gap-6 lg:gap-0 z-[999]">
         <div className="flex-1">
-          <button onClick={handleToggleDrawer} hidden={pathname !== "/dashboard"} className="md:hidden pr-3">
-            <TiThMenu size={20} />
-          </button>
+          
           <a href="/">
             <img
-              src={pathname === "/" || pathname === "/aboutUs" ? logo : logoBlue}
+              src={
+                pathname === "/" || pathname === "/aboutUs" ? logo : logoBlue
+              }
               alt="logo"
-              className="w-28 md:w-52 " />
+              className="w-28 md:w-52"
+            />
           </a>
         </div>
         <div className="flex-none">
@@ -31,7 +32,9 @@ const Navbar = ({ handleToggleDrawer }) => {
               >
                 <div className="w-10 rounded-full">
                   <img
-                    alt="Tailwind CSS Navbar component"
+
+                    alt="User Avatar"
+
                     src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
                   />
                 </div>
@@ -55,22 +58,22 @@ const Navbar = ({ handleToggleDrawer }) => {
               </ul>
             </div>
           ) : (
-            <>
-              <div className="flex items-center gap-3 justify-center">
-                <Link
-                  to={"/signIn"}
-                  className="btn btn-xs md:btn-md border-[3px] bg-transparent text-accent border-accent hover:bg-accent hover:border-accent hover:text-black font-semibold lg:w-32 rounded-full"
-                >
-                  Log In
-                </Link>
-                <Link
-                  to={"/signUp"}
-                  className="btn btn-xs md:btn-md border-[3px] border-accent capitalize bg-accent hover:bg-transparent hover:border-accent hover:text-accent font-semibold lg:w-32 rounded-full"
-                >
-                  Register
-                </Link>
-              </div>
-            </>
+
+            <div className="flex items-center gap-3 justify-center">
+              <Link
+                to={"/signIn"}
+                className="btn btn-xs md:btn-md border-[3px] bg-transparent text-accent border-accent hover:bg-accent hover:border-accent hover:text-black font-semibold lg:w-32 rounded-full"
+              >
+                Log In
+              </Link>
+              <Link
+                to={"/signUp"}
+                className="btn btn-xs md:btn-md border-[3px] border-accent capitalize bg-accent hover:bg-transparent hover:border-accent hover:text-accent font-semibold lg:w-32 rounded-full"
+              >
+                Register
+              </Link>
+            </div>
+
           )}
         </div>
       </div>
@@ -78,7 +81,5 @@ const Navbar = ({ handleToggleDrawer }) => {
   );
 };
 
+
 export default Navbar;
-Navbar.propTypes = {
-  handleToggleDrawer: PropTypes.bool
-}

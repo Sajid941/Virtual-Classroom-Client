@@ -2,10 +2,12 @@ import { Helmet } from "react-helmet-async";
 import logo from "../../assets/classNet.png";
 import { useForm } from "react-hook-form";
 import { FaGoogle, FaGithub } from "react-icons/fa";
+
 import useAuth from "../../CustomHooks/useAuth";
 const SignIn = () => {
   //data from context api
   const { logInUser, signInWithGoogle } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -13,6 +15,7 @@ const SignIn = () => {
   } = useForm();
 
   const onSubmit = (data) => {
+
     //log in an user
     logInUser(data.email, data.password)
       .then((result) => {
@@ -21,15 +24,17 @@ const SignIn = () => {
       .catch((err) => {
         console.log(err);
       });
-    alert("Form Data:", data);
-  };
+
+
 
   const handleGoogleSignIn = () => {
+
     signInWithGoogle()
       .then((result) => {
         console.log(result.user);
       })
       .catch((err) => console.log(err));
+
     alert("Google Sign In");
   };
 

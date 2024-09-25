@@ -115,6 +115,7 @@ const DetailedClass = () => {
             <Tab>Quizzes</Tab>
             <Tab>Chat</Tab> {/* Changed Comments to Chat */}
             <Tab>Students</Tab>
+            <a href="https://meet.google.com/jji-qbba-pdw" title="Click to join" target="_blank" className="btn bg-none border-4 border-gray-300 bg-green-600 hover:bg-green-600 hover:text-white text-white m-4">Join Meet</a>
           </TabList>
 
           {/* Resources Tab */}

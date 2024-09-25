@@ -1,10 +1,9 @@
-import React from 'react';
 import { GoFileCode, GoComment, GoFileZip } from "react-icons/go";
 import { Link } from 'react-router-dom';
-
+import PropTypes from 'prop-types'
 const ClassCard = ({ classData }) => {
     return (
-        <Link to={`/class/${classData.classId}`} className="rounded-lg shadow border w-full my-4">
+        <Link to={`/class/${classData.classId}`} className="rounded-lg shadow w-full my-4">
             <div
                 className="bg-cover h-[200px] md:h-[250px] lg:h-[300px] text-white relative"
                 style={{ backgroundImage: `url(${classData.classImage})` }}
@@ -18,7 +17,7 @@ const ClassCard = ({ classData }) => {
                     </p>
                 </div>
             </div>
-            <div className="px-4 py-2 bg-[#004085] text-white flex justify-between items-center">
+            <div className="px-4 py-2 mb-5 bg-[#004085] text-white flex justify-between items-center">
                 <p>Conducting By: <span className="font-semibold">{classData.teacher.name}</span></p>
                 <div className="flex space-x-2">
                     {classData?.resources.map((resource, index) => (
@@ -35,3 +34,6 @@ const ClassCard = ({ classData }) => {
 };
 
 export default ClassCard;
+ClassCard.propTypes = {
+    classData: PropTypes.object,
+}

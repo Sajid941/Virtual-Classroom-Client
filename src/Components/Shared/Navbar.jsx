@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import logo from "../../assets/classNetLogowhite.png";
 import logoBlue from "../../assets/classNetLogoPrimary.png";
 import { Link, useLocation } from "react-router-dom";

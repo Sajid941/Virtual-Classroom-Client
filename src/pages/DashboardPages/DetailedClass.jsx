@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { GoFileCode, GoComment, GoFileZip } from "react-icons/go";
 import { AiOutlineLeft } from "react-icons/ai"; // Import the left arrow icon
 import { useParams, useNavigate } from "react-router-dom";
@@ -88,7 +88,7 @@ const DetailedClass = () => {
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="relative z-10 flex flex-col items-center justify-center h-full px-5">
           <button
-            className="absolute top-5 left-5 flex items-center bg-blue-600 text-white px-4 py-2 rounded-md"
+            className="absolute top-5 left-5 flex items-center bg-[#004085] text-white px-4 py-2 rounded-md"
             onClick={() => navigate(-1)}
           >
             <AiOutlineLeft className="mr-2" /> {/* Arrow Icon */}
@@ -137,7 +137,7 @@ const DetailedClass = () => {
                 ) : role === "teacher" ? (
                   <div className="text-center">
                     <p>No resources available.</p>
-                    <button className="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg">
+                    <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">
                       Add Resource
                     </button>
                   </div>
@@ -162,7 +162,7 @@ const DetailedClass = () => {
               ) : role === "teacher" ? (
                 <div className="text-center">
                   <p>No assignments available.</p>
-                  <button className="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg">
+                  <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">
                     Add Assignment
                   </button>
                 </div>
@@ -186,7 +186,7 @@ const DetailedClass = () => {
               ) : role === "teacher" ? (
                 <div className="text-center">
                   <p>No quizzes available.</p>
-                  <button className="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg">
+                  <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">
                     Add Quiz
                   </button>
                 </div>
@@ -246,7 +246,7 @@ const DetailedClass = () => {
                   {...register("message", { required: true })}
                 ></textarea>
                 <button
-                  className="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg"
+                  className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
                   type="submit"
                 >
                   Send

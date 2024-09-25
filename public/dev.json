@@ -3,9 +3,11 @@
         "id": 1,
         "name": "Md. Sajidul Islam",
         "role": "Team Lead",
-        "email": "sajidislam941@gmail.com",
+        "email": "sajidislam.webdev@gmail.com",
         "facebook": "https://www.facebook.com/Sajid941",
-        "linkedin": "https://www.linkedin.com/in/sajid941"
+        "linkedin": "https://www.linkedin.com/in/sajid941",
+        "image": "https://i.postimg.cc/sxW1R041/450851564-867436028570822-941180109073173851-n.jpg"
+        
     },
     {
         "id": 2,
@@ -13,7 +15,8 @@
         "role": "Team Member",
         "email": "rubaeid.sanjid@gmail.com",
         "facebook": "https://www.facebook.com/Piyal.24",
-        "linkedin": "https://www.linkedin.com/in/rubaeid-sanjid"
+        "linkedin": "https://www.linkedin.com/in/rubaeid-sanjid",
+        "image": "https://i.postimg.cc/3rkvBtps/Portfolio-Profile-De-QI9b-FK.jpg"
     },
     {
         "id": 3,
@@ -21,7 +24,8 @@
         "role": "Team Member",
         "email": "fabianroylikhon@gmail.com",
         "facebook": "https://www.facebook.com/fabianroy.code",
-        "linkedin": "https://www.linkedin.com/in/fabianroy"
+        "linkedin": "https://www.linkedin.com/in/fabianroy",
+        "image": "https://i.postimg.cc/CKLxjZkd/1690466986940.jpg"
     },
     {
         "id": 4,
@@ -37,7 +41,8 @@
         "role": "Team Member",
         "email": "rkshawn975@gmail.com",
         "facebook": "https://www.facebook.com/rayhanul.shawn.95",
-        "linkedin": "https://www.linkedin.com/in/rayhanul-karim-8584042a2"
+        "linkedin": "https://www.linkedin.com/in/rayhanul-karim-8584042a2",
+        "image": "https://i.postimg.cc/j2BqgQVK/1701324555255.jpg"
     },
     {
         "id": 6,
@@ -45,6 +50,7 @@
         "role": "Team Member",
         "email": "joychandraud@gmail.com",
         "facebook": "https://www.facebook.com/joychandraudayy",
-        "linkedin": "https://www.linkedin.com/in/joychandrauday"
+        "linkedin": "https://www.linkedin.com/in/joychandrauday",
+        "image": "https://i.postimg.cc/B6ktkGDd/wallhaven-zm25yj-1920x1080.png"
     }
 ]

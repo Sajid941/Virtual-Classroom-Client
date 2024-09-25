@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
+import useRole from "../../CustomHooks/useRole";
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -13,8 +14,7 @@ const DetailedClass = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [students, setStudents] = useState([]);
-  const [role, setRole] = useState("teacher"); // Set the role here, can be "teacher" or "student"
-
+  const {role} =useRole()
   // Initialize React Hook Form
   const { register, handleSubmit, reset } = useForm();
 

@@ -16,8 +16,6 @@ const DetailedClass = () => {
   const [students, setStudents] = useState([]);
   const [role, setRole] = useState("teacher"); // Set the role here, can be "teacher" or "student"
 
-  const [isModalOpen, setIsModalOpen] = useState(false); //assignment modal state
-
   // Initialize React Hook Form
   const { register, handleSubmit, reset } = useForm();
 

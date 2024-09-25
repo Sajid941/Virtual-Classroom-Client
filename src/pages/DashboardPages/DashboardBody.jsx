@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import{ useState, useEffect } from "react";
 import ClassCard from "./ClassCard";
 
 const DashboardBody = () => {
@@ -14,7 +14,7 @@ const DashboardBody = () => {
   console.log(classes);
   return (
     <div>
-      <div className="min-h-screen w-full">
+      <div className="w-full">
         {/* Map over the classes and render ClassCard for each */}
         {classes.length > 0 ? (
           classes.map((classData) => (

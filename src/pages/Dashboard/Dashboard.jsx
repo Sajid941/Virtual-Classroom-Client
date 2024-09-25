@@ -13,7 +13,7 @@ const Dashboard = () => {
   return (
     <>
       <NavDashboard />
-      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-10 lg:pt-32 px-5 ">
+      <div className="grid md:grid-cols-2 xl:grid-cols-5 gap-10 lg:pt-32 px-5 ">
         <aside className="">
           <Drawer
             isDrawerOpen={isDrawerOpen}
@@ -21,7 +21,7 @@ const Dashboard = () => {
           />
         </aside>
 
-        <main className="md:col-span-2 lg:col-span-2 ">
+        <main className="md:col-span-2 lg:col-span-2  md:ml-80 xl:ml-16 2xl:ml-2">
           <Outlet />
         </main>
 

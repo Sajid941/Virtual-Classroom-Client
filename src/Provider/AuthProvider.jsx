@@ -64,6 +64,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     setUser,
     setLoading,
+    updateUserProfile,
     createUser,
     logInUser,
     signInWithGoogle,

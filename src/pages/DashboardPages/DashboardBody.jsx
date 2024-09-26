@@ -1,8 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import ClassCard from "./ClassCard";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
+import Loading from "../../Components/Loading";
 
 const DashboardBody = () => {
   const { user } = useContext(AuthContext); // Get the logged-in user's data
@@ -26,11 +27,7 @@ const DashboardBody = () => {
 
   // Handle loading state
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <span className="loading loading-dots loading-lg"></span>
-      </div>
-    );
+    return <Loading />
   }
 
   // Handle error state

@@ -6,12 +6,12 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
 
-import AddAssignmentModal from "../../Components/AssignmentModal/AddAssignmentModal";
 
 import useRole from "../../CustomHooks/useRole";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
+import AddAssignmentModal from "../../Components/AddAssignmentModal/AddAssignmentModal";
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -215,10 +215,7 @@ const DetailedClass = () => {
                   </button>
 
                   {/* Modal for adding assignment */}
-                  <AddAssignmentModal
-                    isOpen={isModalOpen}
-                    onRequestClose={() => setIsModalOpen(false)}
-                  ></AddAssignmentModal>
+                  <AddAssignmentModal isOpen={isModalOpen} onRequestClose={()=>setIsModalOpen(false)}></AddAssignmentModal>
                 </div>
               ) : (
                 <p>No assignments available.</p>

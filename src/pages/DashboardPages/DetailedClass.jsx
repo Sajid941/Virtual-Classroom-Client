@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { GoFileCode, GoComment, GoFileZip } from "react-icons/go";
 import { AiOutlineLeft } from "react-icons/ai"; // Import the left arrow icon
 import { useParams, useNavigate } from "react-router-dom";
@@ -6,12 +6,12 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
 
-import AddAssignmentModal from "../../Components/AssignmentModal/AddAssignmentModal";
 
 import useRole from "../../CustomHooks/useRole";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
+import AddAssignmentModal from "../../Components/AddAssignmentModal/AddAssignmentModal";
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -24,6 +24,7 @@ const DetailedClass = () => {
 
   // Initialize React Hook Form
   const { register, handleSubmit, reset } = useForm();
+
   const axiosPublic = useAxiosPublic();
   const [isModalOpen, setIsModalOpen] = useState(false);
   // Fetch classes based on the user's email
@@ -214,10 +215,7 @@ const DetailedClass = () => {
                   </button>
 
                   {/* Modal for adding assignment */}
-                  <AddAssignmentModal
-                    isOpen={isModalOpen}
-                    onRequestClose={() => setIsModalOpen(false)}
-                  ></AddAssignmentModal>
+                  <AddAssignmentModal isOpen={isModalOpen} onRequestClose={()=>setIsModalOpen(false)} classId={classData.classId}></AddAssignmentModal>
                 </div>
               ) : (
                 <p>No assignments available.</p>

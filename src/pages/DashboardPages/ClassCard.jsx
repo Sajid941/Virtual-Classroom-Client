@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
 const ClassCard = ({ classData }) => {
     return (
-        <Link to={`/class/${classData.classId}`} className="rounded-lg shadow w-full my-4">
+        <Link to={`/class/${classData.classId}`} className="rounded shadow w-full my-4">
             <div
-                className="bg-cover h-[200px] md:h-[250px] lg:h-[300px] text-white relative"
+                className="bg-cover h-[200px] md:h-[250px] lg:h-[300px] text-white relative roundd"
                 style={{ backgroundImage: `url(${classData.classImage})` }}
             >
                 <div className="bg-black/30 w-full h-full absolute"></div>

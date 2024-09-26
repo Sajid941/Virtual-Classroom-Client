@@ -65,7 +65,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
   };
 
   return (
-    <div className="fixed ml-5 z-20">
+    <div className="fixed z-20">
       <div className="drawer md:drawer-open">
         <input
           id="my-drawer-2"
@@ -88,7 +88,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2 h-screen md:h-4/5 md:rounded-2xl w-64 space-y-5 pt-24 md:pt-5">
+          <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2 h-screen md:h-4/5 md:rounded-xl w-64 space-y-5 pt-24 md:pt-5">
             <ul className="space-y-5 p-5 pl-8">
               <li>
                 <NavLink to="/dashboard" className="dashboard-link">

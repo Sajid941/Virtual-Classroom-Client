@@ -1,51 +1,94 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GoFileCode, GoComment, GoFileZip } from "react-icons/go";
 import { AiOutlineLeft } from "react-icons/ai"; // Import the left arrow icon
 import { useParams, useNavigate } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
+
 import AddAssignmentModal from "../../Components/AssignmentModal/AddAssignmentModal";
+
+import useRole from "../../CustomHooks/useRole";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+import { AuthContext } from "../../Provider/AuthProvider";
+
 
 const DetailedClass = () => {
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [classData, setClassData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
   const [students, setStudents] = useState([]);
-  const [role, setRole] = useState("teacher"); // Set the role here, can be "teacher" or "student"
+
+  const { role } = useRole();
 
   // Initialize React Hook Form
   const { register, handleSubmit, reset } = useForm();
+  const axiosPublic = useAxiosPublic();
 
+  // Fetch classes based on the user's email
+  const {
+    data: classData = [], 
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["class", id], // Unique key for caching
+    queryFn: async () => {
+      if (!user?.email) return []; // Prevent query if email is not available
+      const res = await axiosPublic.get(`classes/classid?id=${id}`);
+      return res.data;
+    },
+    keepPreviousData: true,
+    enabled: !!user?.email, // Only run the query if the user has an email
+  });
+
+  // Handle loading state
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <span className="loading loading-dots loading-lg"></span>
+      </div>
+    );
+  }
+
+  // Handle error state
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <h1 className="text-error">
+          An error occurred while fetching class data. Please try again later.
+        </h1>
+      </div>
+    );
+  }
   // Fetch class data from JSON file
-  useEffect(() => {
-    const fetchClassData = async () => {
-      try {
-        const response = await fetch("/class.json");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        const classDetail = data.find((item) => item.classId === id);
+  // useEffect(() => {
+  //   const fetchClassData = async () => {
+  //     try {
+  //       const response = await fetch("/class.json");
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       const data = await response.json();
+  //       const classDetail = data.find((item) => item.classId === id);
 
-        if (!classDetail) {
-          setError("Class not found");
-        } else {
-          setClassData(classDetail);
-          setStudents(classDetail.students || []);
-        }
-      } catch (error) {
-        console.error("Error fetching class data:", error);
-        setError("Failed to load class data");
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       if (!classDetail) {
+  //         setError("Class not found");
+  //       } else {
+  //         setClassData(classDetail);
+  //         setStudents(classDetail.students || []);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching class data:", error);
+  //       setError("Failed to load class data");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchClassData();
-  }, [id]);
+  //   fetchClassData();
+  // }, [id]);
 
   // Handle sending a message
   const onSubmit = (data) => {
@@ -71,15 +114,6 @@ const DetailedClass = () => {
       reset(); // Clear the form
     }
   };
-
-  // Render loading state or error message
-  if (loading) {
-    return <div className="text-center py-10">Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center py-10 text-red-600">{error}</div>;
-  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -118,7 +152,14 @@ const DetailedClass = () => {
             <Tab>Quizzes</Tab>
             <Tab>Chat</Tab> {/* Changed Comments to Chat */}
             <Tab>Students</Tab>
-            <a href="https://meet.google.com/jji-qbba-pdw" title="Click to join" target="_blank" className="btn bg-none border-4 border-gray-300 bg-green-600 hover:bg-green-600 hover:text-white text-white m-4">Join Meet</a>
+            <a
+              href="https://meet.google.com/jji-qbba-pdw"
+              title="Click to join"
+              target="_blank"
+              className="btn bg-none border-4 border-gray-300 bg-green-600 hover:bg-green-600 hover:text-white text-white m-4"
+            >
+              Join Meet
+            </a>
           </TabList>
 
           {/* Resources Tab */}

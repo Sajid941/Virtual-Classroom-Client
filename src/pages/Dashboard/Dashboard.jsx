@@ -26,7 +26,7 @@ const Dashboard = () => {
         </main>
 
         <aside className="hidden xl:block pr-10">
-          <div className="fixed right-16 h-4/5 border rounded-lg bg-[#004085] text-white py-10 px-5 w-72">
+          <div className="fixed right-4 h-4/5 border rounded-lg bg-[#004085] text-white py-10 px-5 w-72">
             <DashboardSidebar />
           </div>
         </aside>

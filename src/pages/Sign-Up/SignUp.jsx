@@ -4,12 +4,15 @@ import { Helmet } from "react-helmet-async";
 import useAuth from "../../CustomHooks/useAuth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { useNavigate } from 'react-router-dom';
+import { useContext } from "react";
+import { AuthContext } from "../../Provider/AuthProvider";
 
 const SignUp = () => {
   // data from context api
   const { createUser } = useAuth();
   const navigate =useNavigate()
   const axiosPublic = useAxiosPublic();
+  const {user}=useContext(AuthContext)
   const {
     register,
     handleSubmit,
@@ -45,7 +48,9 @@ const SignUp = () => {
       console.error("Error during signup:", error);
     }
   };
-
+  if(user){
+    navigate("/")
+  }
   return (
     <div className="min-h-screen flex flex-col md:flex-row justify-around items-center container mx-auto">
       <Helmet>

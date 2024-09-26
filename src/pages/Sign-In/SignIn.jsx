@@ -4,14 +4,18 @@ import { useForm } from "react-hook-form";
 import { FaGithub } from "react-icons/fa";
 import sideImg from "../../assets/images/undraw_my_app_re_gxtj.svg";
 import useAuth from "../../CustomHooks/useAuth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+import { useContext } from "react";
+import { AuthContext } from "../../Provider/AuthProvider";
 
 const SignIn = () => {
   // Data from context API
   const { logInUser, signInWithGoogle } = useAuth();
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
+  const location=useLocation()
+  const {user} =useContext(AuthContext)
 
   const {
     register,
@@ -24,7 +28,7 @@ const SignIn = () => {
     logInUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
-        navigate("/dashboard");
+        navigate(location?.state ? location.state : "/dashboard");
       })
       .catch((err) => {
         console.log(err);
@@ -54,7 +58,7 @@ const SignIn = () => {
       } else {
         // User does not exist, save to the database
         await axiosPublic.post("/users", userData);
-        navigate("/dashboard");
+        navigate(location?.state ? location.state : "/dashboard");
       }
     } catch (error) {
       console.log("Error during Google sign-in:", error);
@@ -66,6 +70,9 @@ const SignIn = () => {
     alert("GitHub Sign In");
   };
 
+  if (user) {
+    return navigate('/')
+  }
   return (
 
     <div className='flex items-center justify-center h-screen'>

@@ -5,11 +5,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
+
+import AddAssignmentModal from "../../Components/AssignmentModal/AddAssignmentModal";
+
 import useRole from "../../CustomHooks/useRole";
 import AddAssignmentModal from "../../Components/AddAssignmentModal/AddAssignmentModal";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
+
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -17,7 +21,9 @@ const DetailedClass = () => {
   const navigate = useNavigate();
 
   const [students, setStudents] = useState([]);
+
   const { role } = useRole();
+
   // Initialize React Hook Form
   const { register, handleSubmit, reset } = useForm();
 

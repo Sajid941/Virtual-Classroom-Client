@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form"; // Import useForm from react-hook-for
 import AddAssignmentModal from "../../Components/AssignmentModal/AddAssignmentModal";
 
 import useRole from "../../CustomHooks/useRole";
-import AddAssignmentModal from "../../Components/AddAssignmentModal/AddAssignmentModal";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";

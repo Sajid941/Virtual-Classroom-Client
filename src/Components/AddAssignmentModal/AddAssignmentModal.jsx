@@ -3,13 +3,15 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdAssignmentAdd } from "react-icons/md";
 import Modal from "react-modal";
+import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 
-const AddAssignmentModal = ({ isOpen, onRequestClose }) => {
-  const { register, handleSubmit } = useForm();
+const AddAssignmentModal = ({ isOpen, onRequestClose, classId }) => {
+  const { register, handleSubmit, reset } = useForm();
 
   const [file, setFile] = useState();
+  const axiosPublic = useAxiosPublic();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const formData = new FormData();
 
     formData.append("title", data.title);
@@ -18,7 +20,23 @@ const AddAssignmentModal = ({ isOpen, onRequestClose }) => {
     if (file) {
       formData.append("file", file);
     }
+
+    try {
+      const response = await axiosPublic.patch(`/classes/${classId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }
+      })
+
+      console.log("submitted:", response.data);
+
+      reset();
+      onRequestClose();
+    } catch (error) {
+      console.error("assignment not submitted", error);
+    }
   };
+
   return (
     <div className="">
       <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
@@ -89,6 +107,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose }) => {
 AddAssignmentModal.propTypes = {
   isOpen: PropTypes.bool,
   onRequestClose: PropTypes.func,
+  classId: PropTypes.string
 };
 
 export default AddAssignmentModal;

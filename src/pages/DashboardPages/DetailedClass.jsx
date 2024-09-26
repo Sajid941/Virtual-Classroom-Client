@@ -5,6 +5,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
+
+import AddAssignmentModal from "../../Components/AssignmentModal/AddAssignmentModal";
+
 import useRole from "../../CustomHooks/useRole";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
@@ -16,14 +19,16 @@ const DetailedClass = () => {
   const navigate = useNavigate();
 
   const [students, setStudents] = useState([]);
+
   const { role } = useRole();
+
   // Initialize React Hook Form
   const { register, handleSubmit, reset } = useForm();
   const axiosPublic = useAxiosPublic();
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // Fetch classes based on the user's email
   const {
-    data: classData = [], 
+    data: classData = [],
     isLoading,
     isError,
   } = useQuery({
@@ -132,7 +137,7 @@ const DetailedClass = () => {
             Section: {classData.section} | Subject: {classData.subject}
           </p>
           <p className="text-lg font-semibold">
-            Conducted by: {classData.teacher.name}
+            Conducted by: {classData.teacher?.name}
           </p>
         </div>
       </div>
@@ -201,9 +206,18 @@ const DetailedClass = () => {
               ) : role === "teacher" ? (
                 <div className="text-center">
                   <p>No assignments available.</p>
-                  <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
+                  >
                     Add Assignment
                   </button>
+
+                  {/* Modal for adding assignment */}
+                  <AddAssignmentModal
+                    isOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                  ></AddAssignmentModal>
                 </div>
               ) : (
                 <p>No assignments available.</p>

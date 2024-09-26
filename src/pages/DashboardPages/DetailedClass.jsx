@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { GoFileCode, GoComment, GoFileZip } from "react-icons/go";
 import { AiOutlineLeft } from "react-icons/ai"; // Import the left arrow icon
 import { useParams, useNavigate } from "react-router-dom";
@@ -135,7 +135,7 @@ const DetailedClass = () => {
             Section: {classData.section} | Subject: {classData.subject}
           </p>
           <p className="text-lg font-semibold">
-            Conducted by: {classData.teacher.name}
+            Conducted by: {classData?.teacher?.name}
           </p>
         </div>
       </div>
@@ -164,7 +164,7 @@ const DetailedClass = () => {
             <div className="bg-white p-6 shadow rounded-lg mb-6">
               <h2 className="text-2xl font-semibold mb-4">Resources</h2>
               <div className="flex flex-wrap space-x-4">
-                {classData?.resources.length ? (
+                {classData?.resources?.length ? (
                   classData.resources.map((resource, index) => (
                     <button
                       key={index}
@@ -330,7 +330,7 @@ const DetailedClass = () => {
           <TabPanel>
             <div className="bg-white p-6 shadow rounded-lg mb-6">
               <h2 className="text-2xl font-semibold mb-4">Students</h2>
-              {students.length ? (
+              {students?.length ? (
                 <ul>
                   {students.map((student, index) => (
                     <li key={index} className="p-2 border-b">

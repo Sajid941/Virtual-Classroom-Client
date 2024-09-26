@@ -31,9 +31,9 @@ const DevSection = () => {
                                 <p className="text-xl font-semibold mt-2 text-secondary rounded-xl">{dev.role}</p>
                                 <hr className="w-full mt-2" />
                                 <div className="flex justify-center items-center mt-4 gap-3">
-                                    <a className="text-3xl" href={dev.linkedin} target="_blank" rel="noreferrer"><FaLinkedin></FaLinkedin></a>
-                                    <a className="text-3xl" href={dev.github} target="_blank" rel="noreferrer"><FaGithub></FaGithub></a>
-                                    <a className="text-3xl" href={dev.facebook} target="_blank" rel="noreferrer"><FaFacebook></FaFacebook></a>
+                                    <a className="text-3xl text-blue-700" href={dev.linkedin} target="_blank" rel="noreferrer"><FaLinkedin></FaLinkedin></a>
+                                    <a className="text-3xl text-gray-700" href={dev.github} target="_blank" rel="noreferrer"><FaGithub></FaGithub></a>
+                                    <a className="text-3xl text-blue-600" href={dev.facebook} target="_blank" rel="noreferrer"><FaFacebook></FaFacebook></a>
                                 </div>
 
                             </div>

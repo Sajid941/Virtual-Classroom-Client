@@ -1,28 +1,49 @@
 import { useForm } from "react-hook-form";
 import logo from "../../assets/classNet.png";
 import { Helmet } from "react-helmet-async";
-
 import useAuth from "../../CustomHooks/useAuth";
+import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
-  //data from context api
+  // data from context api
   const { createUser } = useAuth();
-
+  const navigate =useNavigate()
+  const axiosPublic = useAxiosPublic();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    //create a user with firebase
-    createUser(data.email, data.password)
-      .then((result) => {
-        console.log(result.user);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const onSubmit = async (data) => {
+    try {
+      // Create a user with Firebase
+      const result = await createUser(data.email, data.password);
+      if (result.user) {
+        // Prepare the user data for the database
+        const userData = {
+          name: data.name,
+          email: data.email,
+          role: data.role,
+          photoURL: result.user.photoURL || "", // Optional, if you want to store the photo URL
+        };
+
+        // Post user data to your database
+        const response = await axiosPublic.post("/users", userData);
+        if (response.status === 201) {
+          navigate("/signin");
+        } else {
+          alert("Error creating user, please try again.");
+        }
+        console.log(
+          "User data successfully saved to the database:",
+          response.data
+        );
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+    }
   };
 
   return (
@@ -62,7 +83,7 @@ const SignUp = () => {
               placeholder="Enter your name"
               {...register("name", { required: "Name is required" })}
               className={`mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-accent focus:border-accent ${
-                errors.email ? "border-red-500" : ""
+                errors.name ? "border-red-500" : ""
               }`}
             />
             {errors.name && (

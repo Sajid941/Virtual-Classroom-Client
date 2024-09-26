@@ -1,16 +1,19 @@
 import logo from "../../assets/classNetLogowhite.png";
 import logoBlue from "../../assets/classNetLogoPrimary.png";
 import { Link, useLocation } from "react-router-dom";
+import useUser from "../../CustomHooks/useUser";
+import { useContext } from "react";
+import { AuthContext } from "../../Provider/AuthProvider";
 
 const Navbar = () => {
   const { pathname } = useLocation();
-  const user = null; // Replace with actual user state
-
+  const { user, logOut } = useContext(AuthContext);
+  const { userdb, isLoading, isError } = useUser();
+  
   return (
     <div>
       <div className="navbar pt-5 mx-auto md:px-10 lg:px-20 w-full h-full gap-6 lg:gap-0 z-[999]">
         <div className="flex-1">
-          
           <a href="/">
             <img
               src={
@@ -30,12 +33,7 @@ const Navbar = () => {
                 className="btn btn-ghost btn-circle avatar"
               >
                 <div className="w-10 rounded-full">
-                  <img
-
-                    alt="User Avatar"
-
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
+                  <img alt="User Avatar" src={user?.photoURL} />
                 </div>
               </div>
               <ul
@@ -43,42 +41,40 @@ const Navbar = () => {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
               >
                 <li>
-                  <a className="justify-between">
+                  <Link to="/profile" className="justify-between">
                     Profile
-                    <span className="badge">New</span>
-                  </a>
+                    {userdb?.newNotifications && <span className="badge">New</span>}
+                  </Link>
                 </li>
                 <li>
-                  <a>Settings</a>
+                  <Link to="/settings">Settings</Link>
                 </li>
                 <li>
-                  <a>Logout</a>
+                  <a onClick={logOut}>Logout</a>
                 </li>
               </ul>
             </div>
           ) : (
-
             <div className="flex items-center gap-3 justify-center">
               <Link
-                to={"/signIn"}
+                to="/signIn"
                 className="btn btn-xs md:btn-md border-[3px] bg-transparent text-accent border-accent hover:bg-accent hover:border-accent hover:text-black font-semibold lg:w-32 rounded-full"
               >
                 Log In
               </Link>
               <Link
-                to={"/signUp"}
+                to="/signUp"
                 className="btn btn-xs md:btn-md border-[3px] border-accent capitalize bg-accent hover:bg-transparent hover:border-accent hover:text-accent font-semibold lg:w-32 rounded-full"
               >
                 Register
               </Link>
             </div>
-
           )}
         </div>
       </div>
+      {isLoading && <div className="loading loading-ball loading-lg"></div>}
+      {isError && <div className="text-center text-red-600">Error fetching user data</div>}
     </div>
   );
 };
-
-
 export default Navbar;

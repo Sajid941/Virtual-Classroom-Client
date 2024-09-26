@@ -1,5 +1,7 @@
-import PropTypes from "prop-types";
-import "./Drawer.css";
+
+import PropTypes from 'prop-types'
+import "./Drawer.css"
+
 import { SiGoogleclassroom } from "react-icons/si";
 import { IoHomeOutline } from "react-icons/io5";
 import { AiOutlineSchedule } from "react-icons/ai";
@@ -7,6 +9,7 @@ import { MdAssignmentAdd } from "react-icons/md";
 import { IoCreateOutline } from "react-icons/io5";
 import { GrDocumentPerformance } from "react-icons/gr";
 import { MdAddToPhotos } from "react-icons/md";
+
 import { NavLink } from "react-router-dom";
 import DashboardSidebar from "../DashboardSidebar/DashboardSidebar";
 import { useState } from "react";
@@ -81,7 +84,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2 h-screen md:h-4/5 md:rounded-2xl w-64 space-y-5 pt-12 md:pt-5">
+          <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2 h-screen md:h-4/5 md:rounded-2xl w-64 space-y-5 pt-24 md:pt-5">
             <ul className="space-y-5 p-5 pl-8">
               <li>
                 <NavLink to="/dashboard" className="dashboard-link">
@@ -244,3 +247,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
 };
 
 export default Drawer;
+Drawer.propTypes = {
+    isDrawerOpen: PropTypes.bool,
+    handleToggleDrawer: PropTypes.bool
+}

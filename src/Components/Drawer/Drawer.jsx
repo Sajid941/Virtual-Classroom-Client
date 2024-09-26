@@ -16,13 +16,14 @@ import useRole from "../../CustomHooks/useRole";
 import useUser from "../../CustomHooks/useUser";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 
-
 const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
-  const {userdb}=useUser();
+  const [classCode, setClassCode] = useState(""); // state for storing class code
+  const { userdb } = useUser();
   const { role } = useRole();
   const axiosPublic = useAxiosPublic();
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isJoinClassFormOpen, setIsJoinClassFormOpen] = useState(false); // New state for Join Class form
+  const [isJoinClassFormOpen, setIsJoinClassFormOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // New state for modal visibility
 
   const {
     register,
@@ -40,7 +41,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
     return code;
   };
 
-  const onSubmit = async(data) => {
+  const onSubmit = async (data) => {
     const classData = {
       classId: generateUniqueClassCode(),
       className: data.className,
@@ -48,39 +49,70 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
       subject: data.subject,
       teacher: {
         name: userdb.name,
-        email: userdb.email
+        email: userdb.email,
       },
       students: [],
-      classImage: "https://i.ibb.co/ngh5dsy/ivan-aleksic-PDRFee-Dni-Ck-unsplash.jpg", 
+      classImage:
+        "https://i.ibb.co/ngh5dsy/ivan-aleksic-PDRFee-Dni-Ck-unsplash.jpg",
       resources: [],
       quizzes: [],
-      assignments: []
+      assignments: [],
     };
-    
-    //post the data to the server
 
     try {
       // Posting data to the server
-      const response = await axiosPublic.post('/classes', classData);
-
+      const response = await axiosPublic.post("/classes", classData);
       if (response.status === 201) {
-        console.log('Class added successfully')
+        setClassCode(response?.data.classId);
         setIsFormOpen(false);
+        setIsModalOpen(true); // Open the modal after successful save
       }
     } catch (error) {
-      console.error('Error posting data:', error);
-      alert('Failed to post data');
+      console.error("Error posting data:", error);
+      alert("Failed to post data");
     }
-   
-
-    // console.log(classData);
-    // setIsFormOpen(false);
   };
 
-  const onJoinClassSubmit = (data) => {
+  const onJoinClassSubmit = async (data) => {
     const classCode = data.classCode;
-    // Implement logic here to join the class using classCode, such as making an API call.
     console.log("Joining class with code:", classCode);
+  
+    try {
+      // Fetch class by class code
+      const response = await axiosPublic.get(`/classes/classid?id=${classCode}`);
+  
+      if (response?.data) {
+        const classData = response.data;
+        
+        // Check if the class exists
+        if (classData) {
+          // Prepare student data
+          const studentData = {
+            name: userdb.name,
+            email: userdb.email,
+          };
+  
+          // Patch the class with the new student data
+          const patchResponse = await axiosPublic.patch(
+            `/classes/${classData._id}/students`, // Assuming this is the correct endpoint
+            { students: [...classData.students, studentData] } // Add the new student to the existing array
+          );
+  
+          if (patchResponse.status === 200) {
+            console.log("Student successfully added to the class");
+            alert("Successfully joined the class");
+          } else {
+            console.error("Failed to add the student to the class");
+          }
+        } else {
+          alert("Class not found.");
+        }
+      }
+    } catch (error) {
+      console.error("Error joining class:", error);
+      alert("An error occurred while joining the class.");
+    }
+  
     setIsJoinClassFormOpen(false);
   };
 
@@ -110,6 +142,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
           ></label>
           <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2 h-screen md:h-4/5 md:rounded-xl w-64 space-y-5 pt-24 md:pt-5">
             <ul className="space-y-5 p-5 pl-8">
+              {/* Sidebar Links */}
               <li>
                 <NavLink to="/dashboard" className="dashboard-link">
                   <IoHomeOutline size={25} />
@@ -163,7 +196,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                   </li>
                   <li>
                     <button
-                      onClick={() => setIsJoinClassFormOpen(true)} // Open the Join Class form
+                      onClick={() => setIsJoinClassFormOpen(true)}
                       className="dashboard-link"
                     >
                       <MdAddToPhotos size={25} />
@@ -188,6 +221,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
             className="bg-white p-6 rounded-lg shadow-lg w-2/5"
           >
             <h2 className="text-xl font-bold mb-4">Create a Class</h2>
+            {/* Form Fields */}
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">
                 Class Name
@@ -237,21 +271,6 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                 </p>
               )}
             </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Room</label>
-              <input
-                type="text"
-                {...register("room", { required: "Room is required" })}
-                className={`w-full p-2 border rounded ${
-                  errors.room ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.room && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.room.message}
-                </p>
-              )}
-            </div>
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -275,7 +294,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
       {isJoinClassFormOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50">
           <form
-            onSubmit={handleSubmit(onJoinClassSubmit)} // Handle class join
+            onSubmit={handleSubmit(onJoinClassSubmit)}
             className="bg-white p-6 rounded-lg shadow-lg w-2/5"
           >
             <h2 className="text-xl font-bold mb-4">Join a Class</h2>
@@ -314,6 +333,36 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
               </button>
             </div>
           </form>
+        </div>
+      )}
+
+      {/* Modal for displaying Class Code */}
+      {/* Modal for displaying Class Code */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 className="text-xl font-bold mb-4">
+              Class Created Successfully!
+            </h2>
+            <p className="text-lg">
+              Class Code: <span className="font-bold">{classCode}</span>
+              {/* Copy Button */}
+              <button
+                onClick={() => navigator.clipboard.writeText(classCode)}
+                className="mt-2 ml-4 bg-gray-200 text-gray-800 py-2 px-4 rounded hover:bg-gray-300"
+              >
+                Copy Class Code
+              </button>
+            </p>
+
+            {/* Close Button */}
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
     </div>

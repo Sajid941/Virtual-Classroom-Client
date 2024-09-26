@@ -5,8 +5,8 @@
     "section": "11/B",
     "subject": "Physics",
     "teacher": {
-      "teacherId": "t001",
-      "name": "Willy Swik"
+      "name": "Brenden Rutledge",
+      "email": "teacher@class.com"
     },
     "classImage": "https://i.ibb.co/ngh5dsy/ivan-aleksic-PDRFee-Dni-Ck-unsplash.jpg",
     "resources": [
@@ -43,6 +43,13 @@
               }
             ]
           }
+        ]
+      }
+      {
+        "name": "Claire Bernard",
+        "email": "student@class.com",
+        "messages": [
+          
         ]
       }
     ]

@@ -14,8 +14,8 @@ const SignIn = () => {
   const { logInUser, signInWithGoogle } = useAuth();
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
-  const location=useLocation()
-  const {user} =useContext(AuthContext)
+  const location = useLocation();
+  const { user } = useContext(AuthContext);
 
   const {
     register,
@@ -49,12 +49,11 @@ const SignIn = () => {
 
       // Check if the user already exists
       const existingUserResponse = await axiosPublic.get(
-        `/users?email=${userData.email}`
+        `/users/email?email=${userData.email}`
       );
-
-      if (existingUserResponse.data.length > 0) {
-        // User exists, navigate to the dashboard
-        navigate("/dashboard");
+      console.log(existingUserResponse);
+      if (existingUserResponse.data !== null) {
+        navigate(location?.state ? location.state : "/dashboard");
       } else {
         // User does not exist, save to the database
         await axiosPublic.post("/users", userData);
@@ -71,11 +70,10 @@ const SignIn = () => {
   };
 
   if (user) {
-    return navigate('/')
+    return navigate("/");
   }
   return (
-
-    <div className='flex items-center justify-center h-screen'>
+    <div className="flex items-center justify-center h-screen">
       <Helmet>
         <title>Sign In | Class Net</title>
       </Helmet>
@@ -94,7 +92,7 @@ const SignIn = () => {
           </p>
 
           <a
-           onClick={handleGoogleSignIn}
+            onClick={handleGoogleSignIn}
             className="flex items-center justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg hover:bg-gray-50"
           >
             <div className="px-4 py-2">

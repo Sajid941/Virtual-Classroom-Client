@@ -44,10 +44,10 @@ const DashboardBody = () => {
   }
 
   // Handle case where no classes are found
-  if (classes.length === 0) {
+  if (classes?.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p>No classes found for this teacher.</p>
+        <p>No classes found for this {role}.</p>
       </div>
     );
   }

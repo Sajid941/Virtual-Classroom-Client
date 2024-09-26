@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaFacebook, FaGithub, FaLinkedin, FaUser } from "react-icons/fa";
+import SectionHeading from "../Shared/SectionHeading";
 
 const DevSection = () => {
 
@@ -15,21 +16,23 @@ const DevSection = () => {
 
     return (
         <div className="max-w-screen-xl mx-auto my-20">
-             <h1 className="text-3xl md:text-6xl text-center mb-10 md:mb-16 font-extrabold text-secondary">Developer Team</h1>
+             <SectionHeading heading={"Meet Our Developers"}/>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-8 md:mx-0">
                 {
                     dev.map((dev, index) => {
                         return (
-                            <div key={index} className="flex flex-col text-center items-center justify-center p-8 bg-[#FFC107] rounded-lg shadow-lg transition duration-700 hover:-translate-y-2">
-                                <FaUser className='text-5xl text-secondary' />
+                            <div key={index} className="flex flex-col text-center items-center justify-center p-8 rounded-lg shadow-lg transition duration-700 hover:-translate-y-2 border">
+                               <div>
+                                {dev.image ? <img className="w-24 h-24 object-cover rounded-full" src={dev.image} alt="" /> : <FaUser className="w-24 h-24 rounded-full text-secondary"></FaUser>}
+                               </div>
                                 <p className="text-3xl mt-4 font-bold text-black">{dev.name}</p>
                                 <p className="font-light">{dev?.email}</p>
-                                <p className="text-xl font-semibold mt-2 text-white rounded-xl">{dev.role}</p>
+                                <p className="text-xl font-semibold mt-2 text-secondary rounded-xl">{dev.role}</p>
                                 <hr className="w-full mt-2" />
                                 <div className="flex justify-center items-center mt-4 gap-3">
-                                    <a className="text-3xl" href={dev.linkedin} target="_blank" rel="noreferrer"><FaLinkedin></FaLinkedin></a>
-                                    <a className="text-3xl" href={dev.github} target="_blank" rel="noreferrer"><FaGithub></FaGithub></a>
-                                    <a className="text-3xl" href={dev.facebook} target="_blank" rel="noreferrer"><FaFacebook></FaFacebook></a>
+                                    <a className="text-3xl text-blue-700" href={dev.linkedin} target="_blank" rel="noreferrer"><FaLinkedin></FaLinkedin></a>
+                                    <a className="text-3xl text-gray-700" href={dev.github} target="_blank" rel="noreferrer"><FaGithub></FaGithub></a>
+                                    <a className="text-3xl text-blue-600" href={dev.facebook} target="_blank" rel="noreferrer"><FaFacebook></FaFacebook></a>
                                 </div>
 
                             </div>

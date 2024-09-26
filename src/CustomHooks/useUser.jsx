@@ -1,38 +1,33 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from './../Provider/AuthProvider';
+import { useContext } from "react";
+import { AuthContext } from "./../Provider/AuthProvider";
+import useAxiosPublic from "./useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
 
 const useUser = () => {
-  const apiLink = import.meta.env.API_URL;
-  const [userdb, setUser] = useState([]);
   const { user } = useContext(AuthContext);
-  console.log(userdb,user)
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/users/email?email=${user?.email}`, {
-          method: "GET",
-          credentials: "include", // Use 'credentials' instead of 'withCredentials'
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+  const axiosPublic = useAxiosPublic();
+  
 
-        if (!response.ok) {
-          throw new Error(
-            `Network response was not ok: ${response.statusText}`
-          );
-        }
-        console.log(response);
-        const data = await response.json();
-        setUser(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
+  const {
+    data: userdb,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["users", user?.email],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/users/email?email=${user?.email}`);
+      console.log(res);
+      return res.data;
+    },
+    keepPreviousData: true,
+  });
 
-    fetchUser();
-  }, [user?.email]);
-  return userdb;
+  return {
+    userdb,
+    isLoading,
+    isError,
+    refetch,
+  };
 };
-
 export default useUser;

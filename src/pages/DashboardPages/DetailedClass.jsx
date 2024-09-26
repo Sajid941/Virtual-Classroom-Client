@@ -276,7 +276,7 @@ const DetailedClass = () => {
                           <p className="text-xs text-gray-500">
                             {message.time}
                           </p>
-                          {message.replies.length > 0 && (
+                          {message.replies?.length > 0 && (
                             <div className="ml-5 mt-2">
                               <h3 className="font-semibold">Replies:</h3>
                               {message.replies.map((reply, replyIndex) => (
@@ -333,7 +333,7 @@ const DetailedClass = () => {
           <TabPanel>
             <div className="bg-white p-6 shadow rounded-lg mb-6">
               <h2 className="text-2xl font-semibold mb-4">Students</h2>
-              {classData?.students.length ? (
+              {classData?.students?.length ? (
                 <ul>
                   {classData?.students.map((student, index) => (
                     <li key={index} className="p-2 border-b">

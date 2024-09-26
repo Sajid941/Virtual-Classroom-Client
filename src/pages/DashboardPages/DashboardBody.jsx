@@ -4,12 +4,14 @@ import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../Components/Loading";
+import useRole from "../../CustomHooks/useRole";
 
 const DashboardBody = () => {
   const { user } = useContext(AuthContext); // Get the logged-in user's data
   const axiosPublic = useAxiosPublic();
-
+  const {role} =useRole()
   // Fetch classes based on the user's email
+ 
   const {
     data: classes = [], // Set default value to an empty array to avoid undefined issues
     isLoading,
@@ -18,7 +20,7 @@ const DashboardBody = () => {
     queryKey: ["classes", user?.email], // Unique key for caching
     queryFn: async () => {
       if (!user?.email) return []; // Prevent query if email is not available
-      const res = await axiosPublic.get(`/classes/teacher?email=${user.email}`);
+      const res = await axiosPublic.get(`/classes/${role}?email=${user.email}`);
       return res.data;
     },
     keepPreviousData: true,
@@ -42,10 +44,10 @@ const DashboardBody = () => {
   }
 
   // Handle case where no classes are found
-  if (classes.length === 0) {
+  if (classes?.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p>No classes found for this teacher.</p>
+        <p>No classes found for this {role}.</p>
       </div>
     );
   }

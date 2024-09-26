@@ -1,6 +1,10 @@
 import React from "react";
 import logo from "../../../assets/classNetLogoPrimary.png"
+import useUser from "../../../CustomHooks/useUser.jsx";
 const ForumNav = () => {
+
+  const { userdb } = useUser();
+
   return (
     <div>
       <div className="navbar container pt-12 mx-auto">
@@ -9,7 +13,7 @@ const ForumNav = () => {
         </div>
         <div className="flex-none gap-2">
           <div className="dropdown dropdown-end flex items-center gap-3">
-            <h1 className="font-bold text-xl text-secondary">John Doe</h1>
+            <h1 className="font-bold text-xl text-secondary">{userdb?.name}</h1>
             <div
               tabIndex={0}
               role="button"
@@ -18,7 +22,7 @@ const ForumNav = () => {
               <div className="w-10 rounded-full">
                 <img
                   alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  src={userdb?.profileImage}
                 />
               </div>
             </div>
@@ -27,7 +31,7 @@ const ForumNav = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow mt-44"
             >
               <li>
-                <a href="/">Homed</a>
+                <a href="/">Home</a>
               </li>
               <li>
                 <a className="justify-between">

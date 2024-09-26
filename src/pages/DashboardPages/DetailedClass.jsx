@@ -13,7 +13,6 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
 
-
 const DetailedClass = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
@@ -26,10 +25,10 @@ const DetailedClass = () => {
   // Initialize React Hook Form
   const { register, handleSubmit, reset } = useForm();
   const axiosPublic = useAxiosPublic();
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // Fetch classes based on the user's email
   const {
-    data: classData = [], 
+    data: classData = [],
     isLoading,
     isError,
   } = useQuery({
@@ -123,7 +122,7 @@ const DetailedClass = () => {
         style={{ backgroundImage: `url(${classData.classImage})` }}
       >
         <div className="absolute inset-0 bg-black/50"></div>
-        <div className="relative z-10 flex flex-col items-center justify-center h-full px-5">
+        <div className="relative z-10 flex flex-col items-center justify-center text-center  h-full px-5">
           <button
             className="absolute top-5 left-5 flex items-center bg-[#004085] text-white px-4 py-2 rounded-md"
             onClick={() => navigate(-1)}
@@ -138,7 +137,7 @@ const DetailedClass = () => {
             Section: {classData.section} | Subject: {classData.subject}
           </p>
           <p className="text-lg font-semibold">
-            Conducted by: {classData.teacher.name}
+            Conducted by: {classData.teacher?.name}
           </p>
         </div>
       </div>
@@ -167,7 +166,7 @@ const DetailedClass = () => {
             <div className="bg-white p-6 shadow rounded-lg mb-6">
               <h2 className="text-2xl font-semibold mb-4">Resources</h2>
               <div className="flex flex-wrap space-x-4">
-                {classData?.resources.length ? (
+                {classData?.resources?.length ? (
                   classData.resources.map((resource, index) => (
                     <button
                       key={index}
@@ -276,7 +275,7 @@ const DetailedClass = () => {
                           <p className="text-xs text-gray-500">
                             {message.time}
                           </p>
-                          {message.replies.length > 0 && (
+                          {message.replies?.length > 0 && (
                             <div className="ml-5 mt-2">
                               <h3 className="font-semibold">Replies:</h3>
                               {message.replies.map((reply, replyIndex) => (
@@ -333,9 +332,9 @@ const DetailedClass = () => {
           <TabPanel>
             <div className="bg-white p-6 shadow rounded-lg mb-6">
               <h2 className="text-2xl font-semibold mb-4">Students</h2>
-              {students.length ? (
+              {classData?.students?.length ? (
                 <ul>
-                  {students.map((student, index) => (
+                  {classData?.students.map((student, index) => (
                     <li key={index} className="p-2 border-b">
                       {student.name} - {student.email}
                     </li>

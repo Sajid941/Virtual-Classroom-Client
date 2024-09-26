@@ -13,10 +13,14 @@ import DashboardSidebar from "../DashboardSidebar/DashboardSidebar";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useRole from "../../CustomHooks/useRole";
+import useUser from "../../CustomHooks/useUser";
+import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+
 
 const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
+  const {userdb}=useUser();
   const { role } = useRole();
-
+  const axiosPublic = useAxiosPublic();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isJoinClassFormOpen, setIsJoinClassFormOpen] = useState(false); // New state for Join Class form
 
@@ -36,25 +40,41 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
     return code;
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
     const classData = {
       classId: generateUniqueClassCode(),
       className: data.className,
       section: data.section,
       subject: data.subject,
       teacher: {
-        teacherId: "t001",
-        name: "Willy Swik",
+        name: userdb.name,
+        email: userdb.email
       },
-      students: [{}],
-      classImage:
-        "https://i.ibb.co/ngh5dsy/ivan-aleksic-PDRFee-Dni-Ck-unsplash.jpg",
+      students: [],
+      classImage: "https://i.ibb.co/ngh5dsy/ivan-aleksic-PDRFee-Dni-Ck-unsplash.jpg", 
       resources: [],
       quizzes: [],
-      assignments: [],
+      assignments: []
     };
-    console.log(classData);
-    setIsFormOpen(false);
+    
+    //post the data to the server
+
+    try {
+      // Posting data to the server
+      const response = await axiosPublic.post('/classes', classData);
+
+      if (response.status === 201) {
+        console.log('Class added successfully')
+        setIsFormOpen(false);
+      }
+    } catch (error) {
+      console.error('Error posting data:', error);
+      alert('Failed to post data');
+    }
+   
+
+    // console.log(classData);
+    // setIsFormOpen(false);
   };
 
   const onJoinClassSubmit = (data) => {

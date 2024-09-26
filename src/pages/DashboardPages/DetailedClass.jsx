@@ -6,6 +6,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
 import useRole from "../../CustomHooks/useRole";
+import AddAssignmentModal from "../../Components/AddAssignmentModal/AddAssignmentModal";
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -17,6 +18,8 @@ const DetailedClass = () => {
   const {role} =useRole()
   // Initialize React Hook Form
   const { register, handleSubmit, reset } = useForm();
+
+  const [isModalOpen, setIsModalOpen] = useState();
 
   // Fetch class data from JSON file
   useEffect(() => {
@@ -163,9 +166,18 @@ const DetailedClass = () => {
               ) : role === "teacher" ? (
                 <div className="text-center">
                   <p>No assignments available.</p>
-                  <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
+                  >
                     Add Assignment
                   </button>
+
+                  {/* Modal for adding assignment */}
+                  <AddAssignmentModal
+                    isOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                  ></AddAssignmentModal>
                 </div>
               ) : (
                 <p>No assignments available.</p>

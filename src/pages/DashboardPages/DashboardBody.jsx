@@ -9,9 +9,9 @@ import useRole from "../../CustomHooks/useRole";
 const DashboardBody = () => {
   const { user } = useContext(AuthContext); // Get the logged-in user's data
   const axiosPublic = useAxiosPublic();
-  const {role} =useRole()
+  const { role } = useRole();
   // Fetch classes based on the user's email
- 
+
   const {
     data: classes = [], // Set default value to an empty array to avoid undefined issues
     isLoading,
@@ -29,9 +29,16 @@ const DashboardBody = () => {
 
   // Handle loading state
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
-
+  // Handle case where no classes are found
+  if (classes?.length === 0) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>No classes found for this {role}.</p>
+      </div>
+    );
+  }
   // Handle error state
   if (isError) {
     return (
@@ -42,16 +49,6 @@ const DashboardBody = () => {
       </div>
     );
   }
-
-  // Handle case where no classes are found
-  if (classes?.length === 0) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p>No classes found for this {role}.</p>
-      </div>
-    );
-  }
-
   // Render the class cards if data is available
   return (
     <div className="w-full">

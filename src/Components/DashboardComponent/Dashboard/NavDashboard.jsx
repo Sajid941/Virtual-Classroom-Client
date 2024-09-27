@@ -29,7 +29,7 @@ const NavDashboard = ({ handleToggleDrawer }) => {
             <div className="dropdown dropdown-end flex items-center gap-3">
               <div className="wrap">
                 <h1 className="font-bold text-xl text-secondary hidden md:block">
-                  {user.displayName}
+                  {userdb.displayName}
                 </h1>
                 <span className="text-sm text-gray-600">{userdb?.role}</span>{" "}
                 {/* Display user role */}
@@ -42,7 +42,11 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                 <div className="w-10 rounded-full">
                   <img
                     alt="User Avatar"
-                    src={user.photoURL ? user.photoURL : "https://i.postimg.cc/CLkQzVS1/user-1.png"} 
+                    src={
+                      user.photoURL
+                        ? user.photoURL
+                        : "https://i.postimg.cc/CLkQzVS1/user-1.png"
+                    }
                   />
                 </div>
               </div>
@@ -63,11 +67,13 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                   <Link to="/forum">Forum</Link>
                 </li>
                 <li>
-                  <a onClick={logOut} className="flex justify-between text-red-500 font-semibold">
+                  <a
+                    onClick={logOut}
+                    className="flex justify-between text-red-500 font-semibold"
+                  >
                     Logout
                     <IoIosLogOut size={15} />
                   </a>
-
                 </li>
               </ul>
             </div>

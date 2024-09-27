@@ -3,7 +3,7 @@ import logo from "../../../assets/classNetLogoPrimary.png"
 import useUser from "../../../CustomHooks/useUser.jsx";
 const ForumNav = () => {
 
-  const { userdb } = useUser();
+  const { userDb } = useUser();
 
   return (
     <div>
@@ -13,7 +13,7 @@ const ForumNav = () => {
         </div>
         <div className="flex-none gap-2">
           <div className="dropdown dropdown-end flex items-center gap-3">
-            <h1 className="font-bold text-xl text-secondary">{userdb?.name}</h1>
+            <h1 className="font-bold text-xl text-secondary">{userDb?.name}</h1>
             <div
               tabIndex={0}
               role="button"
@@ -22,7 +22,7 @@ const ForumNav = () => {
               <div className="w-10 rounded-full">
                 <img
                   alt="Tailwind CSS Navbar component"
-                  src={userdb?.profileImage}
+                  src={userDb?.profileImage}
                 />
               </div>
             </div>

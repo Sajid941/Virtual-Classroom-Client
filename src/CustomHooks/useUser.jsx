@@ -9,7 +9,7 @@ const useUser = () => {
   
 
   const {
-    data: userdb,
+    data: userDb,
     isLoading,
     isError,
     refetch,
@@ -24,7 +24,7 @@ const useUser = () => {
   });
 
   return {
-    userdb,
+    userDb,
     isLoading,
     isError,
     refetch,

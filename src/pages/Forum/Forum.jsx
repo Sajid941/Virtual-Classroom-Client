@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import Navbar from '../../Components/Shared/Navbar';
-
+import { Toaster } from 'react-hot-toast';
 const Forum = () => {
   return (
     <div className="min-h-screen bg-white">
@@ -13,6 +13,7 @@ const Forum = () => {
         <Outlet />
       </div>
       <ScrollRestoration />
+      <Toaster />
     </div>
   );
 };

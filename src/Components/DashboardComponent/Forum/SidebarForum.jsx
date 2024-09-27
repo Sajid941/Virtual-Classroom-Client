@@ -1,18 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FaPlusSquare } from "react-icons/fa";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
+import { AuthContext } from '../../../Provider/AuthProvider';
+import useAxiosPublic from "../../../CustomHooks/useAxiosPublic";
+import toast from "react-hot-toast";
 
 const SidebarForum = ({ categories, setFilteredDiscussions, discussions, setCategories }) => {
 
-  const [showForm, setShowForm] = useState(false); 
-  const [isAddingNewCategory, setIsAddingNewCategory] = useState(false); 
-  const [slug, setSlug] = useState(""); 
-  const { register, handleSubmit, reset, watch } = useForm(); 
+  const [showForm, setShowForm] = useState(false);
+  const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
+  const [slug, setSlug] = useState("");
+  const { register, handleSubmit, reset, watch } = useForm();
 
-  const titleWatch = watch("title"); 
+  const titleWatch = watch("title");
 
-  
+  const { user } = useContext(AuthContext)
+
+  const axiosPublic = useAxiosPublic()
   useEffect(() => {
     if (titleWatch) {
       setSlug(titleWatch.toLowerCase().replace(/\s+/g, "-"));
@@ -21,7 +26,7 @@ const SidebarForum = ({ categories, setFilteredDiscussions, discussions, setCate
 
   const handleCategoryClick = (categoryName) => {
     if (categoryName === "All") {
-      setFilteredDiscussions(discussions); 
+      setFilteredDiscussions(discussions);
     } else {
       const filtered = discussions.filter(
         (discussion) => discussion.category === categoryName
@@ -34,33 +39,38 @@ const SidebarForum = ({ categories, setFilteredDiscussions, discussions, setCate
   const onSubmit = (data) => {
     const selectedCategory = isAddingNewCategory
       ? data.newCategory
-      : data.category; 
+      : data.category;
 
-    
+
     if (isAddingNewCategory && !categories.includes(data.newCategory)) {
       setCategories((prevCategories) => [...prevCategories, data.newCategory]);
     }
 
     const newDiscussion = {
       title: data.title,
-      slug: slug, 
+      slug: slug,
       content: data.content,
       category: selectedCategory,
       author: {
-        name: data.authorName,
-        profilePic: data.authorProfilePic,
+        name: user.displayName,
+        authorImage: user.photoURL,
       },
-      createdAt: new Date().toISOString(), 
-      views: 0, 
-      replies: [], 
+      views: 0,
     };
+
+    axiosPublic.post("/discussions", newDiscussion)
+    .then(res=>{
+      if(res.data){
+        toast.success("Discussion Upload Successfully")
+      }
+    })
 
     console.log(newDiscussion);
 
-    
+
     reset();
-    setIsAddingNewCategory(false); 
-    setShowForm(false); 
+    setIsAddingNewCategory(false);
+    setShowForm(false);
   };
 
   return (
@@ -68,7 +78,7 @@ const SidebarForum = ({ categories, setFilteredDiscussions, discussions, setCate
       <div className="wrap">
         <button
           className="btn bg-transparent border rounded-lg text-xl w-full justify-start shadow-gray-600 gap-5"
-          onClick={() => setShowForm(true)} 
+          onClick={() => setShowForm(true)}
         >
           <FaPlusSquare className="text-gray-600" />
           <span className="text-gray-600 text-lg">Post a discussion</span>
@@ -97,12 +107,12 @@ const SidebarForum = ({ categories, setFilteredDiscussions, discussions, setCate
                   Category
                 </label>
                 <select
-                  {...register("category", {required: "This filed Required"})}
+                  {...register("category", { required: "This filed Required" })}
                   className="select select-bordered w-full"
                   onChange={(e) =>
                     setIsAddingNewCategory(e.target.value === "newCategory")
                   }
-                  disabled={isAddingNewCategory} 
+                  disabled={isAddingNewCategory}
                 >
                   <option value="">Select a category</option>
                   {categories?.slice(1).map((category, index) => (
@@ -188,7 +198,7 @@ SidebarForum.propTypes = {
       category: PropTypes.string.isRequired,
     })
   ).isRequired,
-  setCategories: PropTypes.func, 
+  setCategories: PropTypes.func,
 };
 
 

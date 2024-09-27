@@ -76,14 +76,16 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
   const onJoinClassSubmit = async (data) => {
     const classCode = data.classCode;
     console.log("Joining class with code:", classCode);
-  
+
     try {
       // Fetch class by class code
-      const response = await axiosPublic.get(`/classes/classid?id=${classCode}`);
-  
+      const response = await axiosPublic.get(
+        `/classes/classid?id=${classCode}`
+      );
+
       if (response?.data) {
         const classData = response.data;
-        
+
         // Check if the class exists
         if (classData) {
           // Prepare student data
@@ -91,13 +93,13 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
             name: userdb.name,
             email: userdb.email,
           };
-  
+
           // Patch the class with the new student data
           const patchResponse = await axiosPublic.patch(
             `/classes/${classData._id}/students`, // Assuming this is the correct endpoint
             { students: [...classData.students, studentData] } // Add the new student to the existing array
           );
-  
+
           if (patchResponse.status === 200) {
             console.log("Student successfully added to the class");
             alert("Successfully joined the class");
@@ -112,7 +114,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
       console.error("Error joining class:", error);
       alert("An error occurred while joining the class.");
     }
-  
+
     setIsJoinClassFormOpen(false);
   };
 
@@ -155,14 +157,14 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                   Assignments
                 </NavLink>
               </li>
+              <li>
+                <NavLink to="/dashboard/classes" className="dashboard-link">
+                  <SiGoogleclassroom size={25} />
+                  Classes
+                </NavLink>
+              </li>
               {role === "teacher" && (
                 <>
-                  <li>
-                    <NavLink to="/myClasses" className="dashboard-link">
-                      <SiGoogleclassroom size={25} />
-                      My Classes
-                    </NavLink>
-                  </li>
                   <li>
                     <NavLink to="/schedules" className="dashboard-link">
                       <AiOutlineSchedule size={25} />
@@ -182,12 +184,6 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
               )}
               {role === "student" && (
                 <>
-                  <li>
-                    <NavLink to="/dashboard/classes" className="dashboard-link">
-                      <SiGoogleclassroom size={25} />
-                      Classes
-                    </NavLink>
-                  </li>
                   <li>
                     <NavLink to="/performance" className="dashboard-link">
                       <GrDocumentPerformance size={25} />

@@ -199,9 +199,11 @@ const DetailedClass = () => {
               <h2 className="text-2xl font-semibold mb-4">Assignments</h2>
               {classData?.assignments?.length ? (
                 classData.assignments.map((assignment, index) => (
-                  <div key={index} className="mb-4">
-                    <h3 className="font-semibold">{assignment.title}</h3>
-                    <p>{assignment.description}</p>
+                  <div key={index} className="flex flex-col md:flex-row justify-between gap-4 mb-4">
+                    <h3 className="font-semibold text-lg">{assignment.title}</h3>
+                    <p><span className="font-semibold">Description: </span>{assignment.description}</p>
+                    <h3 ><span className="font-semibold">Due Date: </span>{assignment.dueDate.split('T')[0]}</h3>
+                    <h3>{assignment.fileUrl.split('-')[1]}</h3>
                   </div>
                 ))
               ) : role === "teacher" ? (

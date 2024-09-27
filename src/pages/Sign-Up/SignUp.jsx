@@ -3,11 +3,16 @@ import logo from "../../assets/classNet.png";
 import { Helmet } from "react-helmet-async";
 import useAuth from "../../CustomHooks/useAuth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useState } from "react";
 import { updateProfile } from "firebase/auth";
 import Loading from "../../Components/Loading";
+
+import { useContext } from "react";
+import { AuthContext } from "../../Provider/AuthProvider";
+
 
 const SignUp = () => {
   // data from context api
@@ -15,9 +20,11 @@ const SignUp = () => {
   const navigate = useNavigate()
   const axiosPublic = useAxiosPublic();
 
+
   const [photoURL, setPhotoURL] = useState(null)
   const [loading, setLoading] = useState(false)
 
+  const {user}=useContext(AuthContext)
   const {
     register,
     handleSubmit,
@@ -83,6 +90,9 @@ const SignUp = () => {
     }
   };
 
+  if(user){
+    navigate("/")
+  }
 
   return (
     <div>

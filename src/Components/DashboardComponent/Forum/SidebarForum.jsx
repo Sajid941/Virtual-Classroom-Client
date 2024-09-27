@@ -2,22 +2,31 @@ import { useState, useEffect, useContext } from "react";
 import { FaPlusSquare } from "react-icons/fa";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
-import { AuthContext } from '../../../Provider/AuthProvider';
+import { AuthContext } from "../../../Provider/AuthProvider";
 import useAxiosPublic from "../../../CustomHooks/useAxiosPublic";
+import { v4 as uuidv4 } from "uuid";
 import toast from "react-hot-toast";
-
-const SidebarForum = ({ categories, setFilteredDiscussions, discussions, setCategories }) => {
-
+const SidebarForum = ({
+  categories,
+  setFilteredDiscussions,
+  discussions,
+  setCategories,
+}) => {
   const [showForm, setShowForm] = useState(false);
   const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
   const [slug, setSlug] = useState("");
-  const { register, handleSubmit, reset, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm();
 
   const titleWatch = watch("title");
+  const { user } = useContext(AuthContext);
+  const axiosPublic = useAxiosPublic();
 
-  const { user } = useContext(AuthContext)
-
-  const axiosPublic = useAxiosPublic()
   useEffect(() => {
     if (titleWatch) {
       setSlug(titleWatch.toLowerCase().replace(/\s+/g, "-"));
@@ -25,56 +34,57 @@ const SidebarForum = ({ categories, setFilteredDiscussions, discussions, setCate
   }, [titleWatch]);
 
   const handleCategoryClick = (categoryName) => {
-    if (categoryName === "All") {
-      setFilteredDiscussions(discussions);
-    } else {
-      const filtered = discussions.filter(
-        (discussion) => discussion.category === categoryName
-      );
-      setFilteredDiscussions(filtered);
-    }
+    const filtered =
+      categoryName === "All"
+        ? discussions
+        : discussions.filter(
+            (discussion) => discussion.category === categoryName
+          );
+
+    setFilteredDiscussions(filtered);
   };
 
-  //Submit Forum
-  const onSubmit = (data) => {
+  // Submit Forum
+  const onSubmit = async (data) => {
     const selectedCategory = isAddingNewCategory
       ? data.newCategory
       : data.category;
 
-
+    // Add new category if applicable
     if (isAddingNewCategory && !categories.includes(data.newCategory)) {
       setCategories((prevCategories) => [...prevCategories, data.newCategory]);
     }
+    const discussionId = uuidv4(); // Generate a unique ID for the discussion
 
     const newDiscussion = {
+      discussionId,
       title: data.title,
       slug: slug,
       content: data.content,
       category: selectedCategory,
       author: {
         name: user.displayName,
-        authorImage: user.photoURL,
+        profilePic: user.photoURL,
       },
       views: 0,
     };
 
-    axiosPublic.post("/discussions", newDiscussion)
-    .then(res=>{
-      if(res.data){
-        toast.success("Discussion Upload Successfully")
+    try {
+      const res = await axiosPublic.post("/discussions", newDiscussion);
+      if (res.data) {
+        toast.success("Discussion uploaded successfully");
+        reset(); // Reset form fields
+        setIsAddingNewCategory(false); // Reset to not add new category
+        setShowForm(false); // Close the form
       }
-    })
-
-    console.log(newDiscussion);
-
-
-    reset();
-    setIsAddingNewCategory(false);
-    setShowForm(false);
+    } catch (error) {
+      console.error("Error uploading discussion:", error);
+      toast.error("Failed to upload discussion. Please try again.");
+    }
   };
 
   return (
-    <div className="">
+    <div>
       <div className="wrap">
         <button
           className="btn bg-transparent border rounded-lg text-xl w-full justify-start shadow-gray-600 gap-5"
@@ -96,10 +106,13 @@ const SidebarForum = ({ categories, setFilteredDiscussions, discussions, setCate
                   Discussion Title
                 </label>
                 <input
-                  {...register("title", { required: "This filed Required" })}
+                  {...register("title", { required: "This field is required" })}
                   className="input input-bordered w-full"
                   placeholder="Enter the title of your discussion"
                 />
+                {errors.title && (
+                  <span className="text-red-500">{errors.title.message}</span>
+                )}
               </div>
 
               <div className="mb-4">
@@ -107,7 +120,11 @@ const SidebarForum = ({ categories, setFilteredDiscussions, discussions, setCate
                   Category
                 </label>
                 <select
-                  {...register("category", { required: "This filed Required" })}
+                  {...register("category", {
+                    required: !isAddingNewCategory
+                      ? "This field is required"
+                      : false,
+                  })}
                   className="select select-bordered w-full"
                   onChange={(e) =>
                     setIsAddingNewCategory(e.target.value === "newCategory")
@@ -122,6 +139,11 @@ const SidebarForum = ({ categories, setFilteredDiscussions, discussions, setCate
                   ))}
                   <option value="newCategory">Add New Category</option>
                 </select>
+                {errors.category && (
+                  <span className="text-red-500">
+                    {errors.category.message}
+                  </span>
+                )}
 
                 {/* Conditionally render input for new category */}
                 {isAddingNewCategory && (
@@ -130,10 +152,17 @@ const SidebarForum = ({ categories, setFilteredDiscussions, discussions, setCate
                       New Category Name
                     </label>
                     <input
-                      {...register("newCategory", { required: "This filed Required" })}
+                      {...register("newCategory", {
+                        required: "This field is required",
+                      })}
                       className="input input-bordered w-full"
                       placeholder="Enter new category name"
                     />
+                    {errors.newCategory && (
+                      <span className="text-red-500">
+                        {errors.newCategory.message}
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
@@ -143,19 +172,25 @@ const SidebarForum = ({ categories, setFilteredDiscussions, discussions, setCate
                   Content
                 </label>
                 <textarea
-                  {...register("content", { required: "This filed Required" })}
+                  {...register("content", {
+                    required: "This field is required",
+                  })}
                   className="textarea textarea-bordered w-full"
                   placeholder="Enter the content of your discussion"
                 ></textarea>
+                {errors.content && (
+                  <span className="text-red-500">{errors.content.message}</span>
+                )}
               </div>
 
               <div className="modal-action">
-                <div>
-                  <button type="submit" className="btn w-full bg-[#ffc107] hover:bg-[#ffdf1b]">
+                <div className="w-full">
+                  <button
+                    type="submit"
+                    className="btn w-full bg-[#ffc107] hover:bg-[#ffdf1b]"
+                  >
                     Submit
                   </button>
-                </div>
-                <div >
                   <button
                     type="button"
                     className="btn w-full bg-[#004085] hover:bg-[#0053b3] text-white"
@@ -198,8 +233,7 @@ SidebarForum.propTypes = {
       category: PropTypes.string.isRequired,
     })
   ).isRequired,
-  setCategories: PropTypes.func,
+  setCategories: PropTypes.func.isRequired,
 };
-
 
 export default SidebarForum;

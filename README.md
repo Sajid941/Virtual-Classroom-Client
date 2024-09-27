@@ -23,6 +23,8 @@ The project utilizes modern web development technologies, including React, Tailw
 - **react-icons**: Icon library for easily adding scalable vector icons to the interface.
 - **moment-js**: Parse, validate, manipulate and display dates and times in JavaScript.
 - **react-helmet-async**: Thread-safe Helmet for React 16+ and friends.
+- **tanstack-Query**:
+- **Axios**:
 
 ### Installed Frameworks and Libraries
 - **Tailwind CSS**: A utility-first CSS framework for rapidly building custom designs.

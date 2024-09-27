@@ -2,55 +2,86 @@ import React, { useEffect, useState } from "react";
 import SidebarForum from "./SidebarForum";
 import ForumCards from "./ForumCards";
 import { ScrollRestoration } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../../../CustomHooks/useAxiosPublic";
 
 const ForumBody = () => {
-  const [discussions, setDiscussions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [filteredDiscussions, setFilteredDiscussions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("newest");
+  const axiosPublic = useAxiosPublic();
 
+  const {
+    data: discussions = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["discussions"], // Ensure a unique key
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/discussions`);
+      return res.data;
+    },
+    keepPreviousData: true,
+    enabled: true, // Set enabled to true for the query to run
+  });
+
+  // Sort and filter discussions based on selected options
+  // Sort and filter discussions based on selected options
   useEffect(() => {
-    fetch("discussion.json")
-      .then((response) => response.json())
-      .then((data) => {
-        setDiscussions(data);
+    const sortedDiscussions = [...discussions];
 
-        const uniqueCategories = [
-          "All",
-          ...new Set(data.map((discussion) => discussion.category)),
-        ];
-        setCategories(uniqueCategories);
-        setFilteredDiscussions(data);
-      })
-      .catch((error) => console.error("Error fetching discussions:", error));
-  }, []);
-
-  useEffect(() => {
-    let updatedDiscussions = discussions;
-
-    if (searchTerm) {
-      updatedDiscussions = updatedDiscussions.filter((discussion) =>
-        discussion.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+    // Sort based on the selected sort option
+    switch (sortOption) {
+      case "newest":
+        sortedDiscussions.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        break;
+      case "oldest":
+        sortedDiscussions.sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        );
+        break;
+      case "ascending":
+        sortedDiscussions.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "descending":
+        sortedDiscussions.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      default:
+        break;
     }
 
-    updatedDiscussions = updatedDiscussions.sort((a, b) => {
-      if (sortOption === "newest") {
-        return new Date(b.createdAt) - new Date(a.createdAt);
-      } else if (sortOption === "oldest") {
-        return new Date(a.createdAt) - new Date(b.createdAt);
-      } else if (sortOption === "ascending") {
-        return a.title.localeCompare(b.title);
-      } else if (sortOption === "descending") {
-        return b.title.localeCompare(a.title);
-      } else {
-        return 0;
-      }
-    });
+    // Apply search filtering
+    const filtered = sortedDiscussions.filter((discussion) =>
+      discussion.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-    setFilteredDiscussions(updatedDiscussions);
-  }, [searchTerm, sortOption, discussions]);
+    setFilteredDiscussions(filtered);
+  }, [discussions, sortOption, searchTerm]); // Ensure to include the proper dependencies
+
+  useEffect(() => {
+    const uniqueCategories = new Set(
+      discussions.map((discussion) => discussion.category)
+    );
+    setCategories([...uniqueCategories]);
+  }, [discussions]);
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <span className="loader"></span>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <span className="">Error loading discussions</span>
+      </div>
+    );
+  }
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -103,7 +134,7 @@ const ForumBody = () => {
 
           {filteredDiscussions.map((discussion) => (
             <ForumCards
-              key={discussion?.discussionId}
+              key={discussion.discussionId} // Use discussionId instead of _id
               discussion={discussion}
             />
           ))}

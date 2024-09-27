@@ -12,6 +12,7 @@ import SignUp from "../pages/Sign-Up/SignUp";
 import DashboardBody from "../pages/DashboardPages/DashboardBody";
 import DetailedClass from "../pages/DashboardPages/DetailedClass";
 import PrivateRoute from "./PrivateRoute";
+import DashboardHome from "../pages/DashboardPages/DashboardHome";
 
 const router = createBrowserRouter([
   // Root routes
@@ -23,11 +24,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
-      },
-
-      {
-        path: "/forum",
-        element: <Forum />,
       },
       {
         path: "/aboutUs",
@@ -80,13 +76,22 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
 
+        element: <DashboardHome />,
+      },
+      {
+        path: "/dashboard/classes",
+
         element: <DashboardBody />,
       },
     ],
   },
   {
     path: "/class/:id",
-    element: <DetailedClass />,
+    element: (
+      <PrivateRoute>
+        <DetailedClass />
+      </PrivateRoute>
+    ),
   },
 ]);
 

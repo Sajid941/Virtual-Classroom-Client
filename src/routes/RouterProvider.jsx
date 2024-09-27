@@ -12,6 +12,7 @@ import SignUp from "../pages/Sign-Up/SignUp";
 import DashboardBody from "../pages/DashboardPages/DashboardBody";
 import DetailedClass from "../pages/DashboardPages/DetailedClass";
 import PrivateRoute from "./PrivateRoute";
+import DashboardHome from "../pages/DashboardPages/DashboardHome";
 
 const router = createBrowserRouter([
   // Root routes
@@ -74,6 +75,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/dashboard",
+
+        element: <DashboardHome />,
+      },
+      {
+        path: "/dashboard/classes",
 
         element: <DashboardBody />,
       },

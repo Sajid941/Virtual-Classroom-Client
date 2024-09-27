@@ -18,7 +18,7 @@ import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 
 const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
   const [classCode, setClassCode] = useState(""); // state for storing class code
-  const { userdb } = useUser();
+  const { userDb } = useUser();
   const { role } = useRole();
   const axiosPublic = useAxiosPublic();
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -48,8 +48,8 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
       section: data.section,
       subject: data.subject,
       teacher: {
-        name: userdb.name,
-        email: userdb.email,
+        name: userDb.name,
+        email: userDb.email,
       },
       students: [],
       classImage:
@@ -88,8 +88,8 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
         if (classData) {
           // Prepare student data
           const studentData = {
-            name: userdb.name,
-            email: userdb.email,
+            name: userDb.name,
+            email: userDb.email,
           };
   
           // Patch the class with the new student data

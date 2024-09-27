@@ -4,12 +4,13 @@ import { Link, useLocation } from "react-router-dom";
 import useUser from "../../CustomHooks/useUser";
 import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
+import { IoIosLogOut } from "react-icons/io";
 
 const Navbar = () => {
   const { pathname } = useLocation();
   const { user, logOut } = useContext(AuthContext);
   const { userdb, isLoading, isError } = useUser();
-  
+
   return (
     <div>
       <div className="navbar pt-5 mx-auto md:px-10 lg:px-20 w-full h-full gap-6 lg:gap-0 z-[999]">
@@ -33,7 +34,7 @@ const Navbar = () => {
                 className="btn btn-ghost btn-circle avatar"
               >
                 <div className="w-10 rounded-full">
-                  <img alt="User Avatar" src={user?.photoURL} />
+                  <img alt="User" src={user.photoURL ? user.photoURL : "https://i.postimg.cc/CLkQzVS1/user-1.png"} />
                 </div>
               </div>
               <ul
@@ -47,10 +48,17 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/settings">Settings</Link>
+                  <Link to="/dashboard">Dashboard</Link>
                 </li>
                 <li>
-                  <a onClick={logOut}>Logout</a>
+                  <Link to="/forum">Forum</Link>
+                </li>
+                <li>
+                  <a onClick={logOut} className="flex justify-between text-red-500 font-semibold">
+                    Logout
+                    <IoIosLogOut size={15} />
+                  </a>
+
                 </li>
               </ul>
             </div>

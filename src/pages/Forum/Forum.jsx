@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
-import ForumNav from "../../Components/DashboardComponent/Forum/ForumNav";
 import { Outlet, ScrollRestoration } from "react-router-dom";
+import Navbar from '../../Components/Shared/Navbar';
 
 const Forum = () => {
   return (
@@ -8,9 +8,9 @@ const Forum = () => {
       <Helmet>
         <title>Discussions | Class Net</title>
       </Helmet>
-      <ForumNav />
+      <Navbar />
       <div className="wrap container mx-auto">
-        <Outlet/>
+        <Outlet />
       </div>
       <ScrollRestoration />
     </div>

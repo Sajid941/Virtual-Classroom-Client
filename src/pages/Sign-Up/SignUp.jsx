@@ -66,17 +66,18 @@ const SignUp = () => {
                   photoURL: res.data.data.display_url
                 })
 
-                const response = await axiosPublic.post("/users", userData);
-                if (response.status === 201) {
-                  navigate("/");
-                  setLoading(false)
-                } else {
-                  alert("Error creating user, please try again.");
-                }
-                console.log(
-                  "User data successfully saved to the database:",
-                  response.data
-                );
+                axiosPublic.post("/users", userData)
+                .then(res=>{
+                  console.log(res.data);
+                  if(res.data){
+                    navigate("/")
+                    setLoading(false)
+                  }
+                }).catch(err=>{
+                  console.log(err);
+                })
+                 
+                
               }
             }
           }).catch(err => {
@@ -163,13 +164,13 @@ const SignUp = () => {
                     )}
                   </div>
                   <div>
-                    <label htmlFor="photo" className="block mb-2 text-sm font-medium text-gray-900">Your Photo  </label>
+                    <label htmlFor="photo" className="block mb-2 text-sm font-medium text-gray-900">Your Photo <span className="text-red-500">*</span>  </label>
                     <input
                       type="file"
                       name="photo"
                       id="photo"
                       className={`file-input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full ${errors.photo ? "border-red-500" : ""}`}
-                      {...register("photo")}
+                      {...register("photo",{required:true})}
                     />
                     {errors.password && <span className="mt-2 ml-2 text-xs text-red-600">Password is required</span>}
 

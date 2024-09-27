@@ -29,7 +29,7 @@ const NavDashboard = ({ handleToggleDrawer }) => {
             <div className="dropdown dropdown-end flex items-center gap-3">
               <div className="wrap">
                 <h1 className="font-bold text-xl text-secondary hidden md:block">
-                  {userdb?.name}
+                  {user.displayName}
                 </h1>
                 <span className="text-sm text-gray-600">{userdb?.role}</span>{" "}
                 {/* Display user role */}

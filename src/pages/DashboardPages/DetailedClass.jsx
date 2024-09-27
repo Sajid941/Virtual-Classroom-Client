@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { GoFileCode, GoComment, GoFileZip } from "react-icons/go";
 import { AiOutlineLeft } from "react-icons/ai"; // Import the left arrow icon
 import { useParams, useNavigate } from "react-router-dom";
@@ -6,12 +6,12 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
 
-import AddAssignmentModal from "../../Components/AssignmentModal/AddAssignmentModal";
 
 import useRole from "../../CustomHooks/useRole";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
+import AddAssignmentModal from "../../Components/AddAssignmentModal/AddAssignmentModal";
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -24,6 +24,7 @@ const DetailedClass = () => {
 
   // Initialize React Hook Form
   const { register, handleSubmit, reset } = useForm();
+
   const axiosPublic = useAxiosPublic();
   const [isModalOpen, setIsModalOpen] = useState(false);
   // Fetch classes based on the user's email
@@ -46,7 +47,7 @@ const DetailedClass = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <span className="loading loading-dots loading-lg"></span>
+        <span className=""></span>
       </div>
     );
   }
@@ -198,9 +199,11 @@ const DetailedClass = () => {
               <h2 className="text-2xl font-semibold mb-4">Assignments</h2>
               {classData?.assignments?.length ? (
                 classData.assignments.map((assignment, index) => (
-                  <div key={index} className="mb-4">
-                    <h3 className="font-semibold">{assignment.title}</h3>
-                    <p>{assignment.description}</p>
+                  <div key={index} className="flex flex-col md:flex-row justify-between gap-4 mb-4">
+                    <h3 className="font-semibold text-lg">{assignment.title}</h3>
+                    <p><span className="font-semibold">Description: </span>{assignment.description}</p>
+                    <h3 ><span className="font-semibold">Due Date: </span>{assignment.dueDate.split('T')[0]}</h3>
+                    <h3>{assignment.fileUrl.split('-')[1]}</h3>
                   </div>
                 ))
               ) : role === "teacher" ? (
@@ -214,10 +217,7 @@ const DetailedClass = () => {
                   </button>
 
                   {/* Modal for adding assignment */}
-                  <AddAssignmentModal
-                    isOpen={isModalOpen}
-                    onRequestClose={() => setIsModalOpen(false)}
-                  ></AddAssignmentModal>
+                  <AddAssignmentModal isOpen={isModalOpen} onRequestClose={()=>setIsModalOpen(false)} classId={classData.classId}></AddAssignmentModal>
                 </div>
               ) : (
                 <p>No assignments available.</p>

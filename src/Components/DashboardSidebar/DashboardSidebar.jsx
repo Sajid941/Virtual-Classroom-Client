@@ -8,7 +8,7 @@ const DashboardSidebar = () => {
   const [time, setTime] = useState(moment().format("h : mm : ss  A"));
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime(moment().format("h : mm : ss A"));
+      setTime(moment().format("h:mm:ss A"));
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -19,7 +19,7 @@ const DashboardSidebar = () => {
         <h1 className="text-xl font-semibold">
           {moment().format("MMMM D, YYYY")}
         </h1>
-        <h1 className="text-xl font-semibold">{time}</h1>
+        <h1 className="text-md font-semibold">Time: {time}</h1>
       </div>
       <div className="mt-5">
         {role === "teacher" && (

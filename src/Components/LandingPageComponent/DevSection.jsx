@@ -23,7 +23,7 @@ const DevSection = () => {
             <SectionHeading heading={"Meet Our Developers"} />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-8 md:mx-0">
                 {
-                    developers.map((developer) => {
+                    developers?.map((developer) => {
                         return (
                             <div key={developer._id} className="flex flex-col text-center items-center justify-center p-8 rounded-lg shadow-lg transition duration-700 hover:-translate-y-2 border">
                                 <div>

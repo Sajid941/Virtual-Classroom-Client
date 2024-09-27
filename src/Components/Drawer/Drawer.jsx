@@ -183,7 +183,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
               {role === "student" && (
                 <>
                   <li>
-                    <NavLink to="/myClasses" className="dashboard-link">
+                    <NavLink to="/dashboard/classes" className="dashboard-link">
                       <SiGoogleclassroom size={25} />
                       Classes
                     </NavLink>

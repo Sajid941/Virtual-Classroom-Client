@@ -21,7 +21,7 @@ const Dashboard = () => {
           />
         </aside>
 
-        <main className="md:col-span-2 lg:col-span-2  md:ml-80 xl:ml-16 2xl:ml-2">
+        <main className="md:col-span-2 lg:col-span-2 xl:ml-0 md:ml-80  2xl:ml-2">
           <Outlet />
         </main>
 

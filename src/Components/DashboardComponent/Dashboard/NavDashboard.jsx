@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 const NavDashboard = ({ handleToggleDrawer }) => {
   const { user, logOut } = useContext(AuthContext);
   const { userdb } = useUser();
-
   return (
     <div className="flex justify-center mt-2">
       <div className="navbar w-[90%] mx-auto bg-base-100 shadow rounded-2xl py-4 fixed z-50 bg-white/10 backdrop-blur-md bg-opacity-15">
@@ -29,16 +28,11 @@ const NavDashboard = ({ handleToggleDrawer }) => {
           <div className="flex-none gap-2 items-center">
             <div className="dropdown dropdown-end flex items-center gap-3">
               <div className="wrap">
-                {userdb ? (
-                  <>
-                    <h1 className="font-bold text-xl text-secondary hidden md:block">
-                      {userdb.name}
-                    </h1>
-                    <span className="text-sm text-gray-600">{userdb.role}</span>
-                  </>
-                ) : (
-                  <span className="text-sm text-gray-600">Guest</span>
-                )}
+                <h1 className="font-bold text-xl text-secondary hidden md:block">
+                  {userdb?.name}
+                </h1>
+                <span className="text-sm text-gray-600">{userdb?.role}</span>{" "}
+                {/* Display user role */}
               </div>
               <div
                 tabIndex={0}

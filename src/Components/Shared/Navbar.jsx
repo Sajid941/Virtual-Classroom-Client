@@ -9,7 +9,7 @@ import { IoIosLogOut } from "react-icons/io";
 const Navbar = () => {
   const { pathname } = useLocation();
   const { user, logOut } = useContext(AuthContext);
-  const { userdb, isLoading, isError } = useUser();
+  const { userDb, isLoading, isError } = useUser();
 
   return (
     <div>
@@ -44,7 +44,7 @@ const Navbar = () => {
                 <li>
                   <Link to="/profile" className="justify-between">
                     Profile
-                    {userdb?.newNotifications && <span className="badge">New</span>}
+                    {userDb?.newNotifications && <span className="badge">New</span>}
                   </Link>
                 </li>
                 <li>

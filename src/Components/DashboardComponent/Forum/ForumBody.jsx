@@ -16,6 +16,7 @@ const ForumBody = () => {
     data: discussions = [],
     isLoading,
     isError,
+    refetch
   } = useQuery({
     queryKey: ["discussions"], // Ensure a unique key
     queryFn: async () => {
@@ -147,6 +148,7 @@ const ForumBody = () => {
             setFilteredDiscussions={setFilteredDiscussions}
             discussions={discussions}
             setCategories={setCategories}
+            refetch={refetch}
           />
         </div>
       </div>

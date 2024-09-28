@@ -6,7 +6,6 @@ import { AuthContext } from "../../../Provider/AuthProvider";
 import useUser from "../../../CustomHooks/useUser";
 import { IoIosLogOut } from "react-icons/io";
 import { Link } from "react-router-dom";
-
 const NavDashboard = ({ handleToggleDrawer }) => {
   const { user, logOut } = useContext(AuthContext);
   const { userdb } = useUser();

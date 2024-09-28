@@ -80,7 +80,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
-      {isLoading && <div className="loading loading-ball loading-lg"></div>}
+      {isLoading && <div className=""></div>}
       {isError && <div className="text-center text-red-600">Error fetching user data</div>}
     </div>
   );

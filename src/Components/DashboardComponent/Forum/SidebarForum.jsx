@@ -11,6 +11,7 @@ const SidebarForum = ({
   setFilteredDiscussions,
   discussions,
   setCategories,
+  refetch
 }) => {
   const [showForm, setShowForm] = useState(false);
   const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
@@ -57,21 +58,24 @@ const SidebarForum = ({
     const discussionId = uuidv4(); // Generate a unique ID for the discussion
 
     const newDiscussion = {
-      discussionId,
+      discussionId,  // assuming discussionId is already defined
       title: data.title,
-      slug: slug,
+      slug,  // shorthand syntax for slug if it's defined elsewhere
       content: data.content,
       category: selectedCategory,
       author: {
         name: user.displayName,
         profilePic: user.photoURL,
+        email: user.email
       },
-      views: 0,
+      views: 0,  // initialize views to 0
     };
+    
 
     try {
       const res = await axiosPublic.post("/discussions", newDiscussion);
       if (res.data) {
+        refetch()
         toast.success("Discussion uploaded successfully");
         reset(); // Reset form fields
         setIsAddingNewCategory(false); // Reset to not add new category

@@ -66,7 +66,7 @@ const DashboardHome = () => {
             <FaTasks className="text-3xl text-green-500 mr-3" />
             <div>
               <h2 className="text-lg font-semibold">Assignments</h2>
-              <p className="text-2xl font-bold">{0}</p>
+              <p className="text-2xl font-bold">0</p>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ const DashboardHome = () => {
             <FaClipboardList className="text-3xl text-orange-500 mr-3" />
             <div>
               <h2 className="text-lg font-semibold">Quizzes</h2>
-              <p className="text-2xl font-bold">{0}</p>
+              <p className="text-2xl font-bold">0</p>
             </div>
           </div>
         </div>

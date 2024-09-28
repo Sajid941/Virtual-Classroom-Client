@@ -10,12 +10,13 @@ import { Link } from "react-router-dom";
 const NavDashboard = ({ handleToggleDrawer }) => {
   const { user, logOut } = useContext(AuthContext);
   const { userdb } = useUser();
+
   return (
-    <div className="flex justify-center mt-2 ">
-      <div className="navbar w-[90%] mx-auto bg-base-100  shadow rounded-2xl py-4 fixed z-50 bg-white/10 backdrop-blur-md bg-opacity-15">
+    <div className="flex justify-center mt-2">
+      <div className="navbar w-[90%] mx-auto bg-base-100 shadow rounded-2xl py-4 fixed z-50 bg-white/10 backdrop-blur-md bg-opacity-15">
         {/* Logo Section */}
         <div className="container mx-auto">
-          <div className="flex-1 flex items-center ">
+          <div className="flex-1 flex items-center">
             <button onClick={handleToggleDrawer} className="md:hidden pr-3">
               <TiThMenu size={20} />
             </button>
@@ -28,11 +29,16 @@ const NavDashboard = ({ handleToggleDrawer }) => {
           <div className="flex-none gap-2 items-center">
             <div className="dropdown dropdown-end flex items-center gap-3">
               <div className="wrap">
-                <h1 className="font-bold text-xl text-secondary hidden md:block">
-                  {userdb?.name}
-                </h1>
-                <span className="text-sm text-gray-600">{userdb?.role}</span>{" "}
-                {/* Display user role */}
+                {userdb ? (
+                  <>
+                    <h1 className="font-bold text-xl text-secondary hidden md:block">
+                      {userdb.name}
+                    </h1>
+                    <span className="text-sm text-gray-600">{userdb.role}</span>
+                  </>
+                ) : (
+                  <span className="text-sm text-gray-600">Guest</span>
+                )}
               </div>
               <div
                 tabIndex={0}
@@ -43,8 +49,8 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                   <img
                     alt="User Avatar"
                     src={
-                      user.photoURL
-                        ? user?.photoURL
+                      user?.photoURL
+                        ? user.photoURL
                         : "https://i.postimg.cc/CLkQzVS1/user-1.png"
                     }
                   />
@@ -58,10 +64,10 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                   <a href="/">Home</a>
                 </li>
                 <li>
-                  <a className="justify-between">
+                  <Link to="/profile" className="justify-between">
                     Profile
                     <span className="badge">New</span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <Link to="/forum">Forum</Link>
@@ -84,7 +90,8 @@ const NavDashboard = ({ handleToggleDrawer }) => {
   );
 };
 
-export default NavDashboard;
 NavDashboard.propTypes = {
-  handleToggleDrawer: PropTypes.func,
+  handleToggleDrawer: PropTypes.func.isRequired,
 };
+
+export default NavDashboard;

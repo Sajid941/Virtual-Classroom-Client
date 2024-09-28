@@ -9,13 +9,13 @@ import { Link } from "react-router-dom";
 
 const NavDashboard = ({ handleToggleDrawer }) => {
   const { user, logOut } = useContext(AuthContext);
-  const { userDb } = useUser();
+  const { userdb } = useUser();
   return (
-    <div className="flex justify-center mt-2 ">
-      <div className="navbar w-[90%] mx-auto bg-base-100  shadow rounded-2xl py-4 fixed z-50 bg-white/10 backdrop-blur-md bg-opacity-15">
+    <div className="flex justify-center mt-2">
+      <div className="navbar w-[90%] mx-auto bg-base-100 shadow rounded-2xl py-4 fixed z-50 bg-white/10 backdrop-blur-md bg-opacity-15">
         {/* Logo Section */}
         <div className="container mx-auto">
-          <div className="flex-1 flex items-center ">
+          <div className="flex-1 flex items-center">
             <button onClick={handleToggleDrawer} className="md:hidden pr-3">
               <TiThMenu size={20} />
             </button>
@@ -31,7 +31,7 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                 <h1 className="font-bold text-xl text-secondary hidden md:block">
                   {userdb?.name}
                 </h1>
-                <span className="text-sm text-gray-600">{userDb?.role}</span>{" "}
+                <span className="text-sm text-gray-600">{userdb?.role}</span>{" "}
                 {/* Display user role */}
               </div>
               <div
@@ -42,7 +42,11 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                 <div className="w-10 rounded-full">
                   <img
                     alt="User Avatar"
-                    src={user.photoURL ? user.photoURL : "https://i.postimg.cc/CLkQzVS1/user-1.png"} 
+                    src={
+                      user?.photoURL
+                        ? user.photoURL
+                        : "https://i.postimg.cc/CLkQzVS1/user-1.png"
+                    }
                   />
                 </div>
               </div>
@@ -54,20 +58,22 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                   <a href="/">Home</a>
                 </li>
                 <li>
-                  <a className="justify-between">
+                  <Link to="/profile" className="justify-between">
                     Profile
                     <span className="badge">New</span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <Link to="/forum">Forum</Link>
                 </li>
                 <li>
-                  <a onClick={logOut} className="flex justify-between text-red-500 font-semibold">
+                  <a
+                    onClick={logOut}
+                    className="flex justify-between text-red-500 font-semibold"
+                  >
                     Logout
                     <IoIosLogOut size={15} />
                   </a>
-
                 </li>
               </ul>
             </div>
@@ -78,7 +84,8 @@ const NavDashboard = ({ handleToggleDrawer }) => {
   );
 };
 
-export default NavDashboard;
 NavDashboard.propTypes = {
-  handleToggleDrawer: PropTypes.func,
+  handleToggleDrawer: PropTypes.func.isRequired,
 };
+
+export default NavDashboard;

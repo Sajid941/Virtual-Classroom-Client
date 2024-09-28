@@ -52,7 +52,7 @@ const DashboardBody = () => {
   // Render the class cards if data is available
   return (
     <div className="w-full">
-      {classes.map((classData) => (
+      {classes?.map((classData) => (
         <ClassCard key={classData.classId} classData={classData} />
       ))}
     </div>

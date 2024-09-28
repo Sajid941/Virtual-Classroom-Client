@@ -42,7 +42,11 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                 <div className="w-10 rounded-full">
                   <img
                     alt="User Avatar"
-                    src={user.photoURL ? user.photoURL : "https://i.postimg.cc/CLkQzVS1/user-1.png"} 
+                    src={
+                      user.photoURL
+                        ? user?.photoURL
+                        : "https://i.postimg.cc/CLkQzVS1/user-1.png"
+                    }
                   />
                 </div>
               </div>
@@ -63,11 +67,13 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                   <Link to="/forum">Forum</Link>
                 </li>
                 <li>
-                  <a onClick={logOut} className="flex justify-between text-red-500 font-semibold">
+                  <a
+                    onClick={logOut}
+                    className="flex justify-between text-red-500 font-semibold"
+                  >
                     Logout
                     <IoIosLogOut size={15} />
                   </a>
-
                 </li>
               </ul>
             </div>

@@ -1,48 +1,97 @@
-import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams, useNavigate } from "react-router-dom";
+import useAxiosPublic from "../../../CustomHooks/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
+import { useForm } from "react-hook-form"; // Import useForm
+import useRole from './../../../CustomHooks/useRole';
+import useUser from "../../../CustomHooks/useUser";
+import { useEffect } from "react";
 
 const DetailedDiscussion = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const [discussion, setDiscussion] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const axiosPublic = useAxiosPublic();
+  const { role } = useRole(); // Get the user's role
+  const { userdb } = useUser();
 
-  useEffect(() => {
-    const fetchDiscussion = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch("/discussion.json");
-        if (!response.ok) {
-          throw new Error("Failed to fetch discussions");
-        }
-        const data = await response.json();
-        const foundDiscussion = data.find(
-          (discussion) => discussion.slug === slug
-        );
+  const {
+    data: discussion,
+    isLoading,
+    isError,
+    refetch
+  } = useQuery({
+    queryKey: ["discussion", slug],
+    queryFn: async () => {
+      const res = await axiosPublic(`/discussions/slug/${slug}`);
+      return res.data;
+    },
+    enabled: !!slug,
+    keepPreviousData: true,
+  });
 
-        if (foundDiscussion) {
-          setDiscussion(foundDiscussion);
-        } else {
-          setError("Discussion not found");
-        }
-      } catch (err) {
-        setError("Error fetching discussion");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDiscussion();
-  }, [slug]);
+  const { register, handleSubmit, reset } = useForm(); // Use useForm hook
 
   const handleGoBack = () => {
-    navigate(-1); // Navigates back to the previous page
+    navigate(-1);
+  };
+  
+   // Function to increment view count
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   const incrementViewCount = async () => {
+    if (discussion) {
+      try {
+        await axiosPublic.patch(`/discussions/${discussion.discussionId}/incrementViews`);
+      } catch (error) {
+        console.error("Error incrementing view count:", error);
+      }
+    }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  useEffect(() => {
+    incrementViewCount();
+  }, [incrementViewCount, slug]);
+
+
+  const handleReplySubmit = async (data) => {
+    // data will contain the registered fields
+    if (!data.replyMessage.trim()) return;
+
+    try {
+      const newReply = {
+        replyId: discussion.replies.length + 1, // Increment the reply ID
+        content: data.replyMessage,
+        author: userdb?.name, // Replace with the actual teacher's name
+        profileImage: userdb?.profileImage,
+        email: userdb?.email,
+        createdAt: new Date().toISOString(), // Set the current time
+      };
+
+      const res = await axiosPublic.patch(`discussions/${discussion.discussionId}`, newReply);
+      // Update local state directly or use a state update if needed
+      if (res.status === 200) {
+        refetch()
+      }
+      reset(); // Reset the form after submission
+    } catch (error) {
+      console.error("Error adding reply:", error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <span className="loader"></span>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <span className="">Error loading discussions</span>
+      </div>
+    );
+  }
 
   return (
     <div className="wrapper">
@@ -61,14 +110,14 @@ const DetailedDiscussion = () => {
             <div>
               <div className="flex items-center mb-4">
                 <img
-                  src={discussion.author.profilePic}
-                  alt={discussion.author.name}
+                  src={discussion.author?.profilePic}
+                  alt={discussion.author?.name}
                   className="w-12 h-12 rounded-full mr-4"
                 />
                 <div>
                   <h1 className="text-2xl font-bold">{discussion.title}</h1>
                   <p className="text-gray-600 text-sm">
-                    by {discussion.author.name}
+                    by {discussion.author?.name}
                   </p>
                   <p className="text-gray-500 text-xs">
                     {new Date(discussion.createdAt).toLocaleDateString()} |
@@ -104,6 +153,24 @@ const DetailedDiscussion = () => {
                 </ul>
               ) : (
                 <p className="text-gray-600">No replies yet.</p>
+              )}
+
+              {/* Reply Form */}
+              {role === "teacher" && (
+                <form onSubmit={handleSubmit(handleReplySubmit)} className="mt-6">
+                  <textarea
+                    {...register("replyMessage")} // Register the textarea
+                    className="w-full border rounded-lg p-2"
+                    rows="3"
+                    placeholder="Add your reply here..."
+                  />
+                  <button
+                    type="submit"
+                    className="mt-2 text-white bg-blue-500 hover:bg-blue-600 py-2 px-4 rounded"
+                  >
+                    Submit Reply
+                  </button>
+                </form>
               )}
             </div>
           ) : (

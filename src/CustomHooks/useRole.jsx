@@ -1,10 +1,10 @@
 import useUser from "./useUser";
 
 const useRole = () => {
-  const {userDb} =useUser()
-    const role= userDb?.role
+  const { userdb } = useUser();
+  const role = userdb?.role;
   return {
-    role
+    role,
   };
 };
 export default useRole;

@@ -20,7 +20,7 @@ const DashboardBody = () => {
     queryKey: ["classes", user?.email], // Unique key for caching
     queryFn: async () => {
       if (!user?.email) return []; // Prevent query if email is not available
-      const res = await axiosPublic.get(`/classes/${role}?email=${user.email}`);
+      const res = await axiosPublic.get(`/classes/${role}?email=${user?.email}`);
       return res.data;
     },
     keepPreviousData: true,

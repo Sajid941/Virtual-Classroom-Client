@@ -55,9 +55,11 @@ const ForumBody = () => {
         break;
     }
 
-    // Apply search filtering
+    // Apply search filtering with null/undefined check for title
     const filtered = sortedDiscussions.filter((discussion) =>
-      discussion.title.toLowerCase().includes(searchTerm.toLowerCase())
+      (discussion.title || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
     );
 
     setFilteredDiscussions(filtered);
@@ -162,10 +164,7 @@ const ForumBody = () => {
 
           {/* Display the current discussions */}
           {currentDiscussions.map((discussion) => (
-            <ForumCards
-              key={discussion.discussionId}
-              discussion={discussion}
-            />
+            <ForumCards key={discussion.discussionId} discussion={discussion} />
           ))}
 
           {/* Pagination Controls */}

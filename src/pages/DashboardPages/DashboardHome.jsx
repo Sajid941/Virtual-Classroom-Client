@@ -11,7 +11,7 @@ const DashboardHome = () => {
   const { userdb } = useUser();
   const { role } = useRole();
   const axiosPublic = useAxiosPublic();
-
+  console.log(role);
   // Fetch classes based on the user's email
   const {
     data: classes = [],

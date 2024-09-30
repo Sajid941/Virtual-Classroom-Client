@@ -11,6 +11,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
+import axios from "axios";
 
 export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
@@ -37,10 +38,24 @@ export const AuthProvider = ({ children }) => {
       photoURL: photo,
     });
   };
+
+   // Get token from server
+   const getToken = async email => {
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_API_URL}/jwt`,
+      { email },
+      { withCredentials: true }
+    )
+    return data
+  }
+
   // onAuthStateChange
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (currentUser) {
+        getToken(currentUser.email)
+      }
       setLoading(false);
       console.log(currentUser);                                                                         
     });
@@ -57,6 +72,9 @@ export const AuthProvider = ({ children }) => {
   //logout with
   const logOut = async () => {
     setLoading(true)
+    await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
+      withCredentials: true,
+    })
     return signOut(auth)
   }
   //pass the information through context api

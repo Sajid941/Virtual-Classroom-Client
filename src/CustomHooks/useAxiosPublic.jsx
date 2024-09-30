@@ -8,7 +8,6 @@ const useAxiosPublic = () => {
       "Content-type": "application/json",
       Accept: "application/json",
     },
-    withCredentials: true,
   });
   return instance;
 };

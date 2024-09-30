@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
    // Get token from server
    const getToken = async email => {
     const { data } = await axios.post(
-      `${import.meta.env.VITE_API_URL}/jwt`,
+      `https://class-net-server.vercel.app/jwt`,
       { email },
       { withCredentials: true }
     )
@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
   //logout with
   const logOut = async () => {
     setLoading(true)
-    await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
+    await axios.get(`https://class-net-server.vercel.app/logout`, {
       withCredentials: true,
     })
     return signOut(auth)

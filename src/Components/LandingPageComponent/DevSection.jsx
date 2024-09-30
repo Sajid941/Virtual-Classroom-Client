@@ -19,7 +19,7 @@ const DevSection = () => {
     },
     keepPreviousData: true,
   });
-
+  console.log(developers);
   // Show loading spinner
   if (isLoading) {
     return <Loading />;

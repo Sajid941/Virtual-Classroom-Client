@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
 import AddAssignmentModal from "../../Components/AddAssignmentModal/AddAssignmentModal";
+import JoinMeetButton from "../../Components/DashboardComponent/Dashboard/JoinMeetButton";
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -146,20 +147,13 @@ const DetailedClass = () => {
       {/* Main Content Section */}
       <div className="container mx-auto py-10 px-5 md:px-10">
         <Tabs>
-          <TabList>
+          <TabList className="flex">
             <Tab>Resources</Tab>
             <Tab>Assignments</Tab>
             <Tab>Quizzes</Tab>
             <Tab>Chat</Tab> {/* Changed Comments to Chat */}
             <Tab>Students</Tab>
-            <a
-              href="https://meet.google.com/jji-qbba-pdw"
-              title="Click to join"
-              target="_blank"
-              className="btn bg-none border-4 border-gray-300 bg-green-600 hover:bg-green-600 hover:text-white text-white m-4"
-            >
-              Join Meet
-            </a>
+            <JoinMeetButton></JoinMeetButton>
           </TabList>
 
           {/* Resources Tab */}

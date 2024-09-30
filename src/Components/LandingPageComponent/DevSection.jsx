@@ -14,6 +14,8 @@ const DevSection = () => {
         }
     })
 
+    console.log(developers);
+
     if (isPending) {
         return <Loading />
     }

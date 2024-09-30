@@ -1,9 +1,12 @@
 import { Helmet } from "react-helmet-async";
 import ForumSidebar from '../../Components/ForumComponents/ForumSidebar'
-import ForumBody from '../../Components/ForumComponents/ForumBody'
 import { Toaster } from 'react-hot-toast';
 import ForumNavbar from "../../Components/ForumComponents/ForumNavbar";
+import { useState } from "react";
+import ForumCards from "../../Components/ForumComponents/ForumCards";
 const Forum = () => {
+  const [discussionCategory,setDiscussionCategory] = useState("All")
+  console.log(discussionCategory);
   return (
     <div className="min-h-screen bg-white">
       <Helmet>
@@ -12,10 +15,10 @@ const Forum = () => {
       <ForumNavbar />
       <div className="flex flex-col lg:flex-row gap-5 mx-5 md:mx-10 lg:mx-20 pt-28">
         <aside className="flex-1">
-          <ForumSidebar />
+          <ForumSidebar setDiscussionCategory={setDiscussionCategory}/>
         </aside>
         <div className="w-full lg:ml-96">
-          <ForumBody />
+          <ForumCards discussionCategory={discussionCategory}/>
         </div>
       </div>
       <Toaster />

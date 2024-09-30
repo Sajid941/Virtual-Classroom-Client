@@ -1,9 +1,11 @@
 import { GoDotFill } from "react-icons/go";
 import { FaPlusSquare } from "react-icons/fa";
 import DiscussionForm from "./DiscussionForm";
+import PropTypes from 'prop-types'
 
-const Sidebar = () => {
+const Sidebar = ({setDiscussionCategory}) => {
     const categories = [
+        "All",
         "Mongoose",
         "React",
         "SEO",
@@ -17,7 +19,9 @@ const Sidebar = () => {
     const handleShowModal = () => {
         document.getElementById('my_modal_3').showModal()
     }
-
+const handleSelectCategory = (category) => {
+    setDiscussionCategory(category)
+}
     return (
         <div>
             <DiscussionForm />
@@ -46,7 +50,7 @@ const Sidebar = () => {
 
                         <ul className="mt-5">
                             {categories.map((category, index) => (
-                                <li key={index} className=" hover:text-black text-xl font-semibold">
+                                <li onClick={() => handleSelectCategory(category)} key={index} className=" hover:text-black text-xl font-semibold">
                                     <span className="flex gap-4"><GoDotFill size={30} color="#00d7c0" /> {category}</span>
                                 </li>
                             ))}
@@ -59,3 +63,6 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+Sidebar.propTypes ={
+    setDiscussionCategory: PropTypes.func.isRequired
+}

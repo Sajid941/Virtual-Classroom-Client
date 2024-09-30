@@ -6,14 +6,19 @@ import Loading from "../Loading";
 
 const DevSection = () => {
   const axiosPublic = useAxiosPublic();
-  
+
   // Use isLoading instead of isPending
-  const { data: developers, isLoading, isError } = useQuery({
+  const {
+    data: developers,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["developers"],
     queryFn: async () => {
       const res = await axiosPublic("/developers", { withCredentials: true });
       return res.data;
     },
+    keepPreviousData: true,
   });
 
   // Show loading spinner
@@ -23,11 +28,12 @@ const DevSection = () => {
 
   // Handle errors
   if (isError) {
-    return <p className="text-center text-red-500">Error loading developers...</p>;
+    return (
+      <p className="text-center text-red-500">Error loading developers...</p>
+    );
   }
 
   return (
-    
     <div className="max-w-screen-xl mx-auto my-20">
       <SectionHeading heading={"Meet Our Developers"} />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-8 md:mx-0">

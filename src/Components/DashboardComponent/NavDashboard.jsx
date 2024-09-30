@@ -1,11 +1,12 @@
-import logos from "../../../assets/classNetLogoPrimary.png";
+import logos from "../../assets/classNetLogoPrimary.png";
 import { TiThMenu } from "react-icons/ti";
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { AuthContext } from "../../../Provider/AuthProvider";
-import useUser from "../../../CustomHooks/useUser";
+import { AuthContext } from "../../Provider/AuthProvider";
+import useUser from "../../CustomHooks/useUser";
 import { IoIosLogOut } from "react-icons/io";
 import { Link } from "react-router-dom";
+
 const NavDashboard = ({ handleToggleDrawer }) => {
   const { user, logOut } = useContext(AuthContext);
   const { userdb } = useUser();

@@ -19,16 +19,16 @@ const googleProvider = new GoogleAuthProvider();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  //create a new user with firebase authentication
+
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
-  //Log in an existing user
+
   const logInUser = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  //signIn with google
+
   const signInWithGoogle = () => {
     return signInWithPopup(auth, googleProvider);
   };
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-   // Get token from server
+ 
    const getToken = async email => {
     const { data } = await axios.post(
       `${import.meta.env.VITE_API_URL}/jwt`,
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
     return data
   }
 
-  // onAuthStateChange
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -64,12 +64,12 @@ export const AuthProvider = ({ children }) => {
     };
   }, []);
 
-  //reset password
+
   const resetPassword = (email) => {
     setLoading(true);
     return sendPasswordResetEmail(auth, email);
   };
-  //logout with
+
   const logOut = async () => {
     setLoading(true)
     await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
     })
     return signOut(auth)
   }
-  //pass the information through context api
+
   const AuthInfo = {
     user,
     loading,

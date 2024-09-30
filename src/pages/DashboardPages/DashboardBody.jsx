@@ -10,7 +10,7 @@ const DashboardBody = () => {
   const { user } = useContext(AuthContext); // Get the logged-in user's data
   const axiosPublic = useAxiosPublic();
   const { role } = useRole();
-  // Fetch classes based on the user's email
+  console.log(role);
 
   const {
     data: classes = [], // Set default value to an empty array to avoid undefined issues
@@ -20,7 +20,12 @@ const DashboardBody = () => {
     queryKey: ["classes", user?.email], // Unique key for caching
     queryFn: async () => {
       if (!user?.email) return []; // Prevent query if email is not available
-      const res = await axiosPublic.get(`/classes/${role}?email=${user?.email}`);
+      const res = await axiosPublic.get(
+        `/classes/${role}?email=${user?.email}`,
+        {
+          withCredentials: true,
+        }
+      );
       return res.data;
     },
     keepPreviousData: true,

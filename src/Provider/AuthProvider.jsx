@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState, useCallback } from "react";
+import { createContext, useEffect, useState } from "react";
 import auth from "../firebase/firebase.config";
 import {
   createUserWithEmailAndPassword,
@@ -11,7 +11,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import useAxiosPublic from "../CustomHooks/useAxiosPublic";
+import axios from "axios";
 
 export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
@@ -19,27 +19,19 @@ const googleProvider = new GoogleAuthProvider();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const axiosPublic = useAxiosPublic();
-
-  // Create a new user with Firebase authentication
+  //create a new user with firebase authentication
   const createUser = (email, password) => {
-    setLoading(true); // Set loading state before creating the user
     return createUserWithEmailAndPassword(auth, email, password);
   };
-
-  // Log in an existing user
+  //Log in an existing user
   const logInUser = (email, password) => {
-    setLoading(true); // Set loading state before login
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  // Sign in with Google
+  //signIn with google
   const signInWithGoogle = () => {
-    setLoading(true); // Set loading state before Google sign-in
     return signInWithPopup(auth, googleProvider);
   };
-
-  // Update user profile with display name and photo URL
   const updateUserProfile = (name, photo) => {
     return updateProfile(auth.currentUser, {
       displayName: name,
@@ -47,56 +39,45 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  // Memoized function to get token from the server
-  const getToken = useCallback(async (email) => {
-    try {
-      const { data } = await axiosPublic.post(
-        `/jwt`,
-        { email },
-        { withCredentials: true }
-      );
-      return data;
-    } catch (error) {
-      console.error("Error fetching token:", error);
-    }
-  }, [axiosPublic]);
+   // Get token from server
+   const getToken = async email => {
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_API_URL}/jwt`,
+      { email },
+      { withCredentials: true }
+    )
+    return data
+  }
 
-  // onAuthStateChanged listener to detect user changes
+  // onAuthStateChange
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-
       if (currentUser) {
-        // If a user is logged in, get their token
-        getToken(currentUser.email).then(() => setLoading(false));
-      } else {
-        setLoading(false); // Set loading to false if no user is logged in
+        getToken(currentUser.email)
       }
-
-      console.log("Current User:", currentUser);
+      setLoading(false);
+      console.log(currentUser);                                                                         
     });
-
     return () => {
-      unsubscribe(); // Cleanup subscription on unmount
+      return unsubscribe();
     };
-  }, [getToken]);
+  }, []);
 
-  // Reset password
+  //reset password
   const resetPassword = (email) => {
     setLoading(true);
     return sendPasswordResetEmail(auth, email);
   };
-
-  // Log out user
+  //logout with
   const logOut = async () => {
-    setLoading(true);
-    await axiosPublic.get(`/logout`, {
+    setLoading(true)
+    await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
       withCredentials: true,
-    });
-    return signOut(auth);
-  };
-
-  // Auth information to be passed via context
+    })
+    return signOut(auth)
+  }
+  //pass the information through context api
   const AuthInfo = {
     user,
     loading,
@@ -106,13 +87,12 @@ export const AuthProvider = ({ children }) => {
     createUser,
     logInUser,
     signInWithGoogle,
+    updateProfile,
     resetPassword,
-    logOut,
+    logOut
   };
-
   return (
     <AuthContext.Provider value={AuthInfo}>{children}</AuthContext.Provider>
   );
 };
-
 export default AuthProvider;

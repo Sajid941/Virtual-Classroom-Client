@@ -141,8 +141,10 @@ const DetailedClass = () => {
           <p className="text-lg font-semibold">
             Conducted by: {classData.teacher?.name}
           </p>
+          <div className="mt-6">
+          <JoinMeetButton></JoinMeetButton>
+          </div>
         </div>
-        <JoinMeetButton className=""></JoinMeetButton>
       </div>
 
       {/* Main Content Section */}
@@ -211,7 +213,7 @@ const DetailedClass = () => {
                   </button>
 
                   {/* Modal for adding assignment */}
-                  <AddAssignmentModal isOpen={isModalOpen} onRequestClose={()=>setIsModalOpen(false)} classId={classData.classId}></AddAssignmentModal>
+                  <AddAssignmentModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} classId={classData.classId}></AddAssignmentModal>
                 </div>
               ) : (
                 <p>No assignments available.</p>

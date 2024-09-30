@@ -47,13 +47,13 @@ const JoinMeetButton = () => {
         <div className='flex flex-row items-center gap-4' >
 
             <div>
-                <a className='btn' target="_blank">Join Meet</a>
+                <a className='btn bg-green-600 border-green-700 text-white' target="_blank">Join Meet</a>
             </div>
 
             {
                 userdb?.role == "teacher" ?
                     <>
-                        <button className='btn' onClick={handleSubmit}>Meet Setting</button>
+                        <button className='btn bg-secondary text-white border-secondary' onClick={handleSubmit}>Meet Setting</button>
                     </>
                     : null
             }

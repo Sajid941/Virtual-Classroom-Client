@@ -14,7 +14,7 @@ const DevSection = () => {
   } = useQuery({
     queryKey: ["developers"],
     queryFn: async () => {
-      const res = await axiosPublic("/developers", { withCredentials: true });
+      const res = await axiosPublic("/developers");
       return res.data;
     },
     keepPreviousData: true,

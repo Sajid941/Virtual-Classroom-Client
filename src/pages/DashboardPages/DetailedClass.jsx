@@ -141,19 +141,21 @@ const DetailedClass = () => {
           <p className="text-lg font-semibold">
             Conducted by: {classData.teacher?.name}
           </p>
+          <div className="mt-6">
+          <JoinMeetButton></JoinMeetButton>
+          </div>
         </div>
       </div>
 
       {/* Main Content Section */}
       <div className="container mx-auto py-10 px-5 md:px-10">
         <Tabs>
-          <TabList>
+          <TabList className="flex">
             <Tab>Resources</Tab>
             <Tab>Assignments</Tab>
             <Tab>Quizzes</Tab>
             <Tab>Chat</Tab> {/* Changed Comments to Chat */}
             <Tab>Students</Tab>
-            <JoinMeetButton></JoinMeetButton>
           </TabList>
 
           {/* Resources Tab */}
@@ -211,7 +213,7 @@ const DetailedClass = () => {
                   </button>
 
                   {/* Modal for adding assignment */}
-                  <AddAssignmentModal isOpen={isModalOpen} onRequestClose={()=>setIsModalOpen(false)} classId={classData.classId}></AddAssignmentModal>
+                  <AddAssignmentModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} classId={classData.classId}></AddAssignmentModal>
                 </div>
               ) : (
                 <p>No assignments available.</p>

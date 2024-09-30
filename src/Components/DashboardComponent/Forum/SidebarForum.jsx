@@ -89,7 +89,7 @@ const SidebarForum = ({
 
   return (
     <div>
-      <div className="wrap">
+      <div className="wrap ">
         <button
           className="btn bg-transparent border rounded-lg text-xl w-full justify-start shadow-gray-600 gap-5"
           onClick={() => setShowForm(true)}

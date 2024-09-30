@@ -14,6 +14,7 @@ import DetailedClass from "../pages/DashboardPages/DetailedClass";
 import PrivateRoute from "./PrivateRoute";
 import DashboardHome from "../pages/DashboardPages/DashboardHome";
 
+
 const router = createBrowserRouter([
   // Root routes
   {

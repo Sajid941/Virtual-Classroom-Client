@@ -27,6 +27,7 @@ const DevSection = () => {
   }
 
   return (
+    
     <div className="max-w-screen-xl mx-auto my-20">
       <SectionHeading heading={"Meet Our Developers"} />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-8 md:mx-0">

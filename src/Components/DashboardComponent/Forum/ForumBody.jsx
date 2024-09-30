@@ -10,8 +10,6 @@ const ForumBody = () => {
   const [filteredDiscussions, setFilteredDiscussions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("newest");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
   const axiosPublic = useAxiosPublic();
 
   const {
@@ -55,11 +53,11 @@ const ForumBody = () => {
         break;
     }
 
-    // Apply search filtering with null/undefined check for title
-    const filtered = sortedDiscussions.filter((discussion) =>
-      (discussion.title || "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
+    // Apply search filtering with a check for undefined/null title
+    const filtered = sortedDiscussions.filter(
+      (discussion) =>
+        discussion.title &&
+        discussion.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     setFilteredDiscussions(filtered);
@@ -73,15 +71,6 @@ const ForumBody = () => {
     setCategories([...uniqueCategories]);
   }, [discussions]);
 
-  // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentDiscussions = filteredDiscussions.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
-  const totalPages = Math.ceil(filteredDiscussions.length / itemsPerPage);
-
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -92,22 +81,6 @@ const ForumBody = () => {
 
   const handleMarkAllRead = () => {
     console.log("Mark all discussions as read");
-  };
-
-  const goToNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const goToPreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const goToPage = (page) => {
-    setCurrentPage(page);
   };
 
   if (isLoading) {
@@ -162,43 +135,10 @@ const ForumBody = () => {
             </form>
           </div>
 
-          {/* Display the current discussions */}
-          {currentDiscussions.map((discussion) => (
+          {/* Display the filtered discussions */}
+          {filteredDiscussions.map((discussion) => (
             <ForumCards key={discussion.discussionId} discussion={discussion} />
           ))}
-
-          {/* Pagination Controls */}
-          <div className="flex justify-between items-center mt-6">
-            <button
-              disabled={currentPage === 1}
-              onClick={goToPreviousPage}
-              className="bg-gray-300 px-4 py-2 rounded-lg disabled:opacity-50"
-            >
-              Previous
-            </button>
-            <div className="flex gap-2">
-              {Array.from({ length: totalPages }, (_, index) => (
-                <button
-                  key={index + 1}
-                  onClick={() => goToPage(index + 1)}
-                  className={`px-4 py-2 rounded-lg ${
-                    currentPage === index + 1
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  {index + 1}
-                </button>
-              ))}
-            </div>
-            <button
-              disabled={currentPage === totalPages}
-              onClick={goToNextPage}
-              className="bg-gray-300 px-4 py-2 rounded-lg disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
         </div>
 
         {/* Sidebar */}

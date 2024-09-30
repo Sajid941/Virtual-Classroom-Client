@@ -142,18 +142,18 @@ const DetailedClass = () => {
             Conducted by: {classData.teacher?.name}
           </p>
         </div>
+        <JoinMeetButton className=""></JoinMeetButton>
       </div>
 
       {/* Main Content Section */}
       <div className="container mx-auto py-10 px-5 md:px-10">
         <Tabs>
-          <TabList>
+          <TabList className="flex">
             <Tab>Resources</Tab>
             <Tab>Assignments</Tab>
             <Tab>Quizzes</Tab>
             <Tab>Chat</Tab> {/* Changed Comments to Chat */}
             <Tab>Students</Tab>
-            <JoinMeetButton></JoinMeetButton>
           </TabList>
 
           {/* Resources Tab */}

@@ -44,7 +44,7 @@ const JoinMeetButton = () => {
     // });
 
     return (
-        <div className='flex flex-row items-center justify-center gap-4' >
+        <div className='flex flex-row items-center gap-4' >
 
             <div>
                 <a className='btn' target="_blank">Join Meet</a>

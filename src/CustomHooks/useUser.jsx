@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 const useUser = () => {
   const { user } = useContext(AuthContext);
   const axiosPublic = useAxiosPublic();
-  
 
   const {
     data: userdb,
@@ -16,8 +15,9 @@ const useUser = () => {
   } = useQuery({
     queryKey: ["users", user?.email],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/users/email?email=${user?.email}`);
-      console.log(res);
+      const res = await axiosPublic.get(`/users/email?email=${user?.email}`, {
+        withCredentials: true,
+      });
       return res.data;
     },
     keepPreviousData: true,

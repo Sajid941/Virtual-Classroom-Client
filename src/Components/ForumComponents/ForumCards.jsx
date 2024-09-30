@@ -6,15 +6,17 @@ import { Link } from "react-router-dom";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import Loading from '../Loading';
 
-const ForumCards = () => {
+const ForumCards = ({discussionCategory}) => {
   const axiosPublic = useAxiosPublic()
 
+
   const { data: discussions, isPending } = useQuery({
-    queryKey: ["discussions"],
+    queryKey: ["discussions",discussionCategory],
     queryFn: async () => {
-      const res = await axiosPublic("/discussions")
+      const res = await axiosPublic(`/discussions?category=${discussionCategory }`)
       return res.data
-    }
+    },
+    enabled: !!discussionCategory
   })
 
   if (isPending) {
@@ -24,7 +26,7 @@ const ForumCards = () => {
   return (
     <div>
       {
-        discussions.map(discussion => (
+        discussions?.map(discussion => (
           <Link
           key={discussion._id}
             to={`/forum/discussion/${discussion?.slug}`}
@@ -80,7 +82,7 @@ const ForumCards = () => {
 };
 
 ForumCards.propTypes = {
-  discussion: PropTypes.object,
+  discussionCategory: PropTypes.string
 };
 
 export default ForumCards;

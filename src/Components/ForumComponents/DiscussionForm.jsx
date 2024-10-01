@@ -3,11 +3,14 @@ import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../Provider/AuthProvider';
 import toast from 'react-hot-toast';
 import useAxiosPublic from '../../CustomHooks/useAxiosPublic';
+import useCategories from '../../CustomHooks/useCategories';
+import Loading from '../Loading';
 
 const DiscussionForm = () => {
     const { user } = useContext(AuthContext)
     const { register, handleSubmit, formState: { errors }, watch, reset } = useForm();
     const [slug, setSlug] = useState("");
+    const { categories, isPending, refetch } = useCategories();
 
     const axiosPublic = useAxiosPublic()
 
@@ -41,6 +44,7 @@ const DiscussionForm = () => {
                 document.getElementById('my_modal_3').close()
                 toast.success("Discussion uploaded successfully");
                 reset();
+                refetch();
             }
         } catch (error) {
             document.getElementById('my_modal_3').close()
@@ -50,7 +54,9 @@ const DiscussionForm = () => {
 
 
     }
-
+    if (isPending) {
+        return <Loading />
+    }
     return (
         <div>
             <dialog id="my_modal_3" className="modal">
@@ -82,15 +88,11 @@ const DiscussionForm = () => {
                                     {...register('category', { required: 'Category is required' })}
                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-700 focus:outline-none focus:ring-[#ffc107] focus:border-[#ffc107]"
                                 >
-                                    <option value="">Select a category</option>
-                                    <option value="Mongoose">Mongoose</option>
-                                    <option value="React">React</option>
-                                    <option value="SEO">SEO</option>
-                                    <option value="Node.js">Node.js</option>
-                                    <option value="API Development">API Development</option>
-                                    <option value="Frontend Development">Frontend Development</option>
-                                    <option value="poetry">Poetry</option>
-                                    <option value="test">Test</option>
+                                    {
+                                        categories.map((category) => (
+                                            <option key={category} value={category}>{category}</option>
+                                        ))
+                                    }
                                     <option value="new-category">Add New Category</option>
                                 </select>
                                 {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>}

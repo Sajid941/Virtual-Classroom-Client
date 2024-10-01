@@ -39,19 +39,6 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-<<<<<<< HEAD
- 
-  //  const getToken = async email => {
-  //   const { data } = await axios.post(
-  //     `${import.meta.env.VITE_API_URL}/jwt`,
-  //     { email },
-  //     { withCredentials: true }
-  //   )
-  //   return data
-  // }
-
-=======
-  // Get token from server
   const getToken = async (email) => {
     try {
       const { data } = await axios.post(
@@ -66,21 +53,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
   
->>>>>>> 1f969f11f3b69fe7aa47c39aca215008e1356a0f
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-<<<<<<< HEAD
-      // if (currentUser) {
-      //   getToken(currentUser.email)
-      // }
-=======
       if (currentUser) {
         console.log("Current User:", currentUser); // Debugging: log the user
         getToken(currentUser?.email);
       }
->>>>>>> 1f969f11f3b69fe7aa47c39aca215008e1356a0f
+
       setLoading(false);
     });
     return () => unsubscribe();
@@ -97,17 +78,11 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     await axios.get(`https://class-net-server.vercel.app/logout`, {
       withCredentials: true,
-<<<<<<< HEAD
-    })
-    return signOut(auth)
-  }
 
-=======
     });
     return signOut(auth);
   };
   //pass the information through context api
->>>>>>> 1f969f11f3b69fe7aa47c39aca215008e1356a0f
   const AuthInfo = {
     user,
     loading,

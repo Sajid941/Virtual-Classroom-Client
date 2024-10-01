@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
 import AddAssignmentModal from "../../Components/AddAssignmentModal/AddAssignmentModal";
-import JoinMeetButton from "../../Components/DashboardComponent/Dashboard/JoinMeetButton";
+import JoinMeetButton from '../../Components/DashboardComponent/JoinMeetButton';
 
 const DetailedClass = () => {
   const { id } = useParams();

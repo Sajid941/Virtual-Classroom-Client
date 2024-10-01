@@ -24,12 +24,12 @@ const Sidebar = ({ setDiscussionCategory }) => {
             <DiscussionForm />
             <div className="drawer lg:drawer-open fixed">
                 <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content flex flex-col items-center justify-center">
-                    {/* Page content here */}
+                {/* <div className="drawer-content flex flex-col items-center justify-center">
+                    Page content here
                     <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden">
                         Open drawer
                     </label>
-                </div>
+                </div> */}
 
                 <div className="drawer-side z-20 scrollbar-hide">
                     <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>

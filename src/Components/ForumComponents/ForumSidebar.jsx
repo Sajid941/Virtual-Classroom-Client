@@ -2,26 +2,23 @@ import { GoDotFill } from "react-icons/go";
 import { FaPlusSquare } from "react-icons/fa";
 import DiscussionForm from "./DiscussionForm";
 import PropTypes from 'prop-types'
+import Loading from '../Loading';
+import useCategories from "../../CustomHooks/useCategories";
+import './ForumComponents.css'
 
-const Sidebar = ({setDiscussionCategory}) => {
-    const categories = [
-        "All",
-        "Mongoose",
-        "React",
-        "SEO",
-        "Node.js",
-        "API Development",
-        "Frontend Development",
-        "poetry",
-        "test"
-    ];
+const Sidebar = ({ setDiscussionCategory }) => {
+    const { categories, isPending } = useCategories();
+
 
     const handleShowModal = () => {
         document.getElementById('my_modal_3').showModal()
     }
-const handleSelectCategory = (category) => {
-    setDiscussionCategory(category)
-}
+    const handleSelectCategory = (category) => {
+        setDiscussionCategory(category)
+    }
+    if (isPending) {
+        return <Loading />
+    }
     return (
         <div>
             <DiscussionForm />
@@ -34,9 +31,10 @@ const handleSelectCategory = (category) => {
                     </label>
                 </div>
 
-                <div className="drawer-side z-20">
+                <div className="drawer-side z-20 scrollbar-hide">
                     <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-                    <div className="menu bg-base-200 lg:bg-white lg:rounded-xl lg:border-2  text-[#4b5563] min-h-full p-4 " >
+                    <div
+                        className="menu bg-base-200 lg:bg-white lg:rounded-xl lg:border-2  text-[#4b5563] min-h-full p-4 scrollbar-hide " >
 
                         <div className="wrap">
                             <button
@@ -49,6 +47,10 @@ const handleSelectCategory = (category) => {
                         </div>
 
                         <ul className="mt-5">
+                            <li onClick={() => handleSelectCategory("All")} className=" hover:text-black text-xl font-semibold">
+                                <span className="flex gap-4"><GoDotFill size={30} color="#00d7c0" />All</span>
+                            </li>
+
                             {categories.map((category, index) => (
                                 <li onClick={() => handleSelectCategory(category)} key={index} className=" hover:text-black text-xl font-semibold">
                                     <span className="flex gap-4"><GoDotFill size={30} color="#00d7c0" /> {category}</span>
@@ -63,6 +65,6 @@ const handleSelectCategory = (category) => {
 };
 
 export default Sidebar;
-Sidebar.propTypes ={
+Sidebar.propTypes = {
     setDiscussionCategory: PropTypes.func.isRequired
 }

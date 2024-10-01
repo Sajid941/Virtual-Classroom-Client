@@ -159,7 +159,7 @@ const DetailedClass = () => {
             Conducted by: {classData.teacher?.name}
           </p>
           <div className="mt-6">
-          <JoinMeetButton></JoinMeetButton>
+          <JoinMeetButton id={id} />
           </div>
         </div>
       </div>

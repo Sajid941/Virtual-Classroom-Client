@@ -28,7 +28,7 @@ const DetailedDiscussion = () => {
     enabled: !!slug,
     keepPreviousData: true,
   });
-
+console.log(discussion);
   const { register, handleSubmit, reset } = useForm(); // Use useForm hook
 
   const handleGoBack = () => {
@@ -36,7 +36,7 @@ const DetailedDiscussion = () => {
   };
   
    // Function to increment view count
-   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //  eslint-disable-next-line react-hooks/exhaustive-deps
    const incrementViewCount = async () => {
     if (discussion) {
       try {
@@ -66,7 +66,7 @@ const DetailedDiscussion = () => {
         createdAt: new Date().toISOString(), // Set the current time
       };
 
-      const res = await axiosPublic.patch(`discussions/${discussion.discussionId}`, newReply);
+      const res = await axiosPublic.patch(`discussions/${discussion._id}`, newReply);
       // Update local state directly or use a state update if needed
       if (res.status === 200) {
         refetch()

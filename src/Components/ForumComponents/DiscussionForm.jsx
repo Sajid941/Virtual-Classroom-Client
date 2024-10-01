@@ -35,20 +35,18 @@ const DiscussionForm = () => {
             },
             views: 0,
         };
-
         try {
             const res = await axiosPublic.post("/discussions", newDiscussion);
             if (res.data) {
                 toast.success("Discussion uploaded successfully");
-                reset(); // Reset form fields
+                reset(); 
             }
         } catch (error) {
             console.error("Error uploading discussion:", error);
             toast.error("Failed to upload discussion. Please try again.");
         }
 
-        console.log(data)
-        console.log(selectedCategory);
+
     }
 
     return (

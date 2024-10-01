@@ -136,9 +136,9 @@ console.log(discussion);
 
               {discussion.replies && discussion.replies.length > 0 ? (
                 <ul>
-                  {discussion.replies.map((reply) => (
+                  {discussion.replies.map((reply,idx) => (
                     <li
-                      key={reply.replyId}
+                      key={idx}
                       className="mb-6 bg-gray-100 p-4 rounded-lg transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-lg cursor-pointer"
                     >
                       <p className="text-gray-700">{reply.content}</p>

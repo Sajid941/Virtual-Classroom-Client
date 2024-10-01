@@ -38,10 +38,12 @@ const DiscussionForm = () => {
         try {
             const res = await axiosPublic.post("/discussions", newDiscussion);
             if (res.data) {
+                document.getElementById('my_modal_3').close()
                 toast.success("Discussion uploaded successfully");
-                reset(); 
+                reset();
             }
         } catch (error) {
+            document.getElementById('my_modal_3').close()
             console.error("Error uploading discussion:", error);
             toast.error("Failed to upload discussion. Please try again.");
         }

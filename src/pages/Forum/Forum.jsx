@@ -4,6 +4,8 @@ import { Toaster } from 'react-hot-toast';
 import ForumNavbar from "../../Components/ForumComponents/ForumNavbar";
 import { useState } from "react";
 import ForumCards from "../../Components/ForumComponents/ForumCards";
+
+
 const Forum = () => {
   const [discussionCategory,setDiscussionCategory] = useState("All")
   console.log(discussionCategory);
@@ -20,6 +22,7 @@ const Forum = () => {
         <div className="w-full lg:ml-96">
           <ForumCards discussionCategory={discussionCategory}/>
         </div>
+
       </div>
       <Toaster />
     </div>

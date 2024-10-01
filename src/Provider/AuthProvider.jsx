@@ -39,30 +39,34 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
- 
-   const getToken = async email => {
-    const { data } = await axios.post(
-      `${import.meta.env.VITE_API_URL}/jwt`,
-      { email },
-      { withCredentials: true }
-    )
-    return data
-  }
-
+  const getToken = async (email) => {
+    try {
+      const { data } = await axios.post(
+        `https://class-net-server.vercel.app/jwt`,
+        { email },
+        { withCredentials: true }
+      );
+      console.log("JWT Token:", data); // Debugging: log the token
+      return data;
+    } catch (error) {
+      console.error("Error fetching token:", error);
+    }
+  };
+  
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        getToken(currentUser.email)
+        console.log("Current User:", currentUser); // Debugging: log the user
+        getToken(currentUser?.email);
       }
+
       setLoading(false);
-      console.log(currentUser);                                                                         
     });
-    return () => {
-      return unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
+  
 
 
   const resetPassword = (email) => {
@@ -71,13 +75,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logOut = async () => {
-    setLoading(true)
-    await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
+    setLoading(true);
+    await axios.get(`https://class-net-server.vercel.app/logout`, {
       withCredentials: true,
-    })
-    return signOut(auth)
-  }
 
+    });
+    return signOut(auth);
+  };
+  //pass the information through context api
   const AuthInfo = {
     user,
     loading,
@@ -89,7 +94,7 @@ export const AuthProvider = ({ children }) => {
     signInWithGoogle,
     updateProfile,
     resetPassword,
-    logOut
+    logOut,
   };
   return (
     <AuthContext.Provider value={AuthInfo}>{children}</AuthContext.Provider>

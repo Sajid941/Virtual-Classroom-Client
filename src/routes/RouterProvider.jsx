@@ -13,6 +13,7 @@ import PrivateRoute from "./PrivateRoute";
 import DashboardHome from "../pages/DashboardPages/DashboardHome";
 import DetailedDiscussion from "../Components/ForumComponents/DetailedDiscussion";
 
+
 const router = createBrowserRouter([
     // Root routes
     {

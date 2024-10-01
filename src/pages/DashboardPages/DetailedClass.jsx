@@ -5,7 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
-
+import fileDownload from 'js-file-download';
 
 import useRole from "../../CustomHooks/useRole";
 import { useQuery } from "@tanstack/react-query";
@@ -116,6 +116,23 @@ const DetailedClass = () => {
     }
   };
 
+  const handleDownloadAssignment = async(filename)=>{
+    
+    const cleanedFileName = filename.replace('/assignmentUploads/', '');
+
+    axiosPublic({
+      url: `classes/download/${encodeURIComponent(cleanedFileName)}`,
+      method: 'GET',
+      responseType: 'blob', // Important for handling binary files
+    })
+    .then((response) => {
+      fileDownload(response.data, cleanedFileName);
+    })
+    .catch((error) => {
+      console.error('Error downloading file:', error);
+    });
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Section */}
@@ -200,6 +217,11 @@ const DetailedClass = () => {
                     <p><span className="font-semibold">Description: </span>{assignment.description}</p>
                     <h3 ><span className="font-semibold">Due Date: </span>{assignment.dueDate.split('T')[0]}</h3>
                     <h3>{assignment.fileUrl.split('-')[1]}</h3>
+
+                    {
+                      assignment.fileUrl && <button onClick={()=>handleDownloadAssignment(assignment.fileUrl)}>Download</button>
+                    }
+
                   </div>
                 ))
               ) : role === "teacher" ? (

@@ -23,6 +23,7 @@
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.26.2",
     "react-tabs": "^6.0.2",
+    "sweetalert2": "^11.14.1",
     "swiper": "^11.1.14",
     "uuid": "^10.0.0"
   },

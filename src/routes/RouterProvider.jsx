@@ -3,8 +3,6 @@ import Root from "../layout/Root";
 import Home from "../pages/Home/Home";
 import ErrorPage from "../Components/Shared/ErrorPage";
 import Forum from "../pages/Forum/Forum";
-import DetailedDescussion from "../Components/DashboardComponent/Forum/DetailedDescussion";
-import ForumBody from "../Components/DashboardComponent/Forum/ForumBody";
 import AboutPage from "../pages/AboutPage/AboutPage";
 import SignIn from "../pages/Sign-In/SignIn";
 import Dashboard from "../pages/Dashboard/Dashboard";
@@ -13,87 +11,85 @@ import DashboardBody from "../pages/DashboardPages/DashboardBody";
 import DetailedClass from "../pages/DashboardPages/DetailedClass";
 import PrivateRoute from "./PrivateRoute";
 import DashboardHome from "../pages/DashboardPages/DashboardHome";
+import DetailedDiscussion from "../Components/ForumComponents/DetailedDiscussion";
 
 
 const router = createBrowserRouter([
-  // Root routes
-  {
-    path: "/",
-    element: <Root />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
+    // Root routes
+    {
         path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/aboutUs",
-        element: <AboutPage />,
-      },
-    ],
-  },
+        element: <Root />,
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                path: "/",
+                element: <Home />,
+            },
+            {
+                path: "/aboutUs",
+                element: <AboutPage />,
+            },
+        ],
+    },
 
-  //authentication
-  {
-    path: "/signIn",
-    element: <SignIn />,
-  },
-  {
-    path: "/signUp",
-    element: <SignUp />,
-  },
+    //authentication
+    {
+        path: "/signIn",
+        element: <SignIn />,
+    },
+    {
+        path: "/signUp",
+        element: <SignUp />,
+    },
 
-  // Forum Page routes
-  {
-    path: "/forum",
-    element: (
-      <PrivateRoute>
-        <Forum />
-      </PrivateRoute>
-    ),
-    errorElement: <ErrorPage />,
-    children: [
-      {
+    // Forum Page routes
+    {
         path: "/forum",
-        element: <ForumBody />,
-      },
-      {
+        element: (
+            <PrivateRoute>
+                <Forum />
+            </PrivateRoute>
+        ),
+        errorElement: <ErrorPage />,
+    },
+
+
+    {
         path: "/forum/discussion/:slug",
-        element: <DetailedDescussion />,
-      },
-    ],
-  },
+        element: <DetailedDiscussion />,
+    },
 
-  // Dashboard Routes
-  {
-    path: "/dashboard",
-    element: (
-      <PrivateRoute>
-        <Dashboard />
-      </PrivateRoute>
-    ),
-    errorElement: <ErrorPage />,
-    children: [
-      {
+
+    // Dashboard Routes
+    {
         path: "/dashboard",
+        element: (
+            <PrivateRoute>
+                <Dashboard />
+            </PrivateRoute>
+        ),
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                path: "/dashboard",
 
-        element: <DashboardHome />,
-      },
-      {
-        path: "/dashboard/classes",
+                element: <DashboardHome />,
+            },
+            {
+                path: "/dashboard/classes",
 
-        element: <DashboardBody />,
-      },
-    ],
-  },
-  {
-    path: "/class/:id",
-    element: (
-      <PrivateRoute>
-        <DetailedClass />
-      </PrivateRoute>
-    ),
-  },
+                element: <DashboardBody />,
+            },
+        ],
+    },
+    {
+        path: "/class/:id",
+        element: (
+            <PrivateRoute>
+                <DetailedClass />
+            </PrivateRoute>
+        ),
+    },
 ]);
 
 export default router;

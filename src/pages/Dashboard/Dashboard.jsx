@@ -2,7 +2,7 @@ import { useState } from "react";
 import Drawer from "../../Components/Drawer/Drawer";
 import { Outlet } from "react-router-dom";
 import DashboardSidebar from "../../Components/DashboardSidebar/DashboardSidebar";
-import NavDashboard from "../../Components/DashboardComponent/Dashboard/NavDashboard";
+import NavDashboard from "../../Components/DashboardComponent/NavDashboard";
 
 const Dashboard = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);

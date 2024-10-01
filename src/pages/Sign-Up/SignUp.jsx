@@ -6,12 +6,13 @@ import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateProfile } from "firebase/auth";
 import Loading from "../../Components/Loading";
 
 import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
+import toast, { Toaster } from "react-hot-toast";
 
 
 const SignUp = () => {
@@ -24,12 +25,19 @@ const SignUp = () => {
   const [photoURL, setPhotoURL] = useState(null)
   const [loading, setLoading] = useState(false)
 
-  const {user}=useContext(AuthContext)
+  const { user } = useContext(AuthContext)
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    if (errors) {
+      setLoading(false)
+    }
+  }, [errors])
+
 
   const onSubmit = async (data) => {
     try {
@@ -66,32 +74,32 @@ const SignUp = () => {
                   photoURL: res.data.data.display_url
                 })
 
-                axiosPublic.post("/users", userData)
-                .then(res=>{
-                  console.log(res.data);
-                  if(res.data){
-                    navigate("/")
-                    setLoading(false)
-                  }
-                }).catch(err=>{
-                  console.log(err);
-                })
-                 
-                
+                await axiosPublic.post("/users", userData)
+                navigate("/")
+                setLoading(false)
+
+
+
               }
             }
           }).catch(err => {
             console.error(err)
+            toast.error(err.message)
+            setLoading(false)
           })
       }
 
 
     } catch (error) {
       console.error("Error during signup:", error);
+      toast.error(error.message)
+
+      setLoading(false)
+
     }
   };
 
-  if(user){
+  if (user) {
     navigate("/")
   }
 
@@ -170,7 +178,7 @@ const SignUp = () => {
                       name="photo"
                       id="photo"
                       className={`file-input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full ${errors.photo ? "border-red-500" : ""}`}
-                      {...register("photo",{required:true})}
+                      {...register("photo", { required: true })}
                     />
                     {errors.password && <span className="mt-2 ml-2 text-xs text-red-600">Password is required</span>}
 
@@ -266,7 +274,7 @@ const SignUp = () => {
           </div>
         </div>
       </section>
-
+      <Toaster />
     </div>
   );
 };

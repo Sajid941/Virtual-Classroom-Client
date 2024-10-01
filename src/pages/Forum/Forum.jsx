@@ -1,18 +1,29 @@
 import { Helmet } from "react-helmet-async";
-import { Outlet, ScrollRestoration } from "react-router-dom";
+import ForumSidebar from '../../Components/ForumComponents/ForumSidebar'
 import { Toaster } from 'react-hot-toast';
-import ForumNav from "../../Components/DashboardComponent/Forum/ForumNav";
+import ForumNavbar from "../../Components/ForumComponents/ForumNavbar";
+import { useState } from "react";
+import ForumCards from "../../Components/ForumComponents/ForumCards";
+
+
 const Forum = () => {
+  const [discussionCategory,setDiscussionCategory] = useState("All")
+  console.log(discussionCategory);
   return (
     <div className="min-h-screen bg-white">
       <Helmet>
         <title>Discussions | Class Net</title>
       </Helmet>
-      <ForumNav/>
-      <div className="wrap container mx-auto">
-        <Outlet />
+      <ForumNavbar />
+      <div className="flex flex-col lg:flex-row gap-5 mx-5 md:mx-10 lg:mx-20 pt-28">
+        <aside className="flex-1">
+          <ForumSidebar setDiscussionCategory={setDiscussionCategory}/>
+        </aside>
+        <div className="w-full lg:ml-96">
+          <ForumCards discussionCategory={discussionCategory}/>
+        </div>
+
       </div>
-      <ScrollRestoration />
       <Toaster />
     </div>
   );

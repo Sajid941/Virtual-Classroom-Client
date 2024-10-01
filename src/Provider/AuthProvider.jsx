@@ -19,16 +19,16 @@ const googleProvider = new GoogleAuthProvider();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  //create a new user with firebase authentication
+
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
-  //Log in an existing user
+
   const logInUser = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  //signIn with google
+
   const signInWithGoogle = () => {
     return signInWithPopup(auth, googleProvider);
   };
@@ -39,11 +39,10 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  // Get token from server
   const getToken = async (email) => {
     try {
       const { data } = await axios.post(
-        `https://class-net-server.vercel.app/jwt`,
+        `${import.meta.env.VITE_API_URL}/jwt`,
         { email },
         { withCredentials: true }
       );
@@ -55,7 +54,6 @@ export const AuthProvider = ({ children }) => {
   };
   
 
-  // onAuthStateChange
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -63,22 +61,24 @@ export const AuthProvider = ({ children }) => {
         console.log("Current User:", currentUser); // Debugging: log the user
         getToken(currentUser?.email);
       }
+
       setLoading(false);
     });
     return () => unsubscribe();
   }, []);
   
 
-  //reset password
+
   const resetPassword = (email) => {
     setLoading(true);
     return sendPasswordResetEmail(auth, email);
   };
-  //logout with
+
   const logOut = async () => {
     setLoading(true);
     await axios.get(`https://class-net-server.vercel.app/logout`, {
       withCredentials: true,
+
     });
     return signOut(auth);
   };

@@ -17,11 +17,12 @@ const DashboardHome = () => {
     data: classes = [],
     isLoading,
     isError,
+    error,
   } = useQuery({
     queryKey: ["classes", userdb?.email],
     queryFn: async () => {
       if (!userdb?.email) return []; // Prevent query if email is not available
-      const res = await axiosPublic(`/classes/${role}?email=${userdb.email}`);
+      const res = await axiosPublic.get(`/classes/${role}?email=${userdb.email}`);
       return res.data;
     },
     keepPreviousData: true,
@@ -38,7 +39,7 @@ const DashboardHome = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <h1 className="text-error">
-          An error occurred while fetching class data. Please try again later.
+          An error occurred while fetching class data. Please try again later.{error}
         </h1>
       </div>
     );

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import useUser from '../../../CustomHooks/useUser';
+import useUser from '../../CustomHooks/useUser';
 import Swal from 'sweetalert2';
-import useAxiosPublic from '../../../CustomHooks/useAxiosPublic';
+import useAxiosPublic from '../../CustomHooks/useAxiosPublic';
 
 const JoinMeetButton = () => {
 

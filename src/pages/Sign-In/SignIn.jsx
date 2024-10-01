@@ -35,29 +35,51 @@ const SignIn = () => {
       });
   };
 
+  // Function to handle Google Sign-In
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithGoogle();
-      console.log(result.user);
-
-      // Prepare user data for the API
       const userData = {
         email: result.user.email,
         name: result.user.displayName,
-        // Include any other data you need to store
       };
 
-      // Check if the user already exists
+      // Check if the user exists in the database
       const existingUserResponse = await axiosPublic.get(
         `/users/email?email=${userData.email}`
       );
       console.log(existingUserResponse);
-      if (existingUserResponse.data !== null) {
-        navigate(location?.state ? location.state : "/dashboard");
+
+      if (existingUserResponse.data === null) {
+        // User doesn't exist, register the new user
+        const newUserResponse = await axiosPublic.post("/users/register", userData);
+        console.log(newUserResponse.data);
+
+        // Log them in immediately after registration
+        const loginResponse = await axiosPublic.post("/users/login", {
+          email: userData.email,
+        });
+
+        const { token } = loginResponse.data;
+        if (token) {
+          // Store JWT token in a secure cookie
+          document.cookie = `token=${token}; SameSite=Strict; path=/;`;
+          // Redirect the user to the desired page
+          navigate(location?.state ? location.state : "/dashboard");
+        }
       } else {
-        // User does not exist, save to the database
-        await axiosPublic.post("/users", userData);
-        navigate(location?.state ? location.state : "/dashboard");
+        // User exists, log them in and obtain the JWT token
+        const loginResponse = await axiosPublic.post("/users/login", {
+          email: userData.email,
+        });
+
+        const { token } = loginResponse.data;
+        if (token) {
+          // Store JWT token in a secure cookie
+          document.cookie = `token=${token}; SameSite=Strict; path=/;`;
+          // Redirect the user to the desired page
+          navigate(location?.state ? location.state : "/dashboard");
+        }
       }
     } catch (error) {
       console.log("Error during Google sign-in:", error);
@@ -72,6 +94,7 @@ const SignIn = () => {
   if (user) {
     return navigate("/");
   }
+
   return (
     <div className="flex items-center justify-center h-screen">
       <Helmet>
@@ -140,86 +163,65 @@ const SignIn = () => {
               href="#"
               className="text-xs text-center text-gray-500 uppercase hover:underline"
             >
-              or login with email
+              or sign in with email
             </a>
 
             <span className="w-1/5 border-b lg:w-1/4"></span>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mt-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
+            <div className="mb-4">
               <label
-                className="block mb-2 text-sm font-medium text-gray-600"
-                htmlFor="LoggingEmailAddress"
+                className="block mb-2 text-sm font-bold text-gray-700"
+                htmlFor="email"
               >
-                Email Address
+                Email
               </label>
               <input
-                id="LoggingEmailAddress"
-                className={`block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300 ${
-                  errors.email ? "border-red-500" : ""
-                }`}
+                {...register("email", { required: true })}
+                className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
                 type="email"
-                name="email"
-                {...register("email", { required: "Email is required" })}
+                placeholder="Enter your email"
+                required
               />
               {errors.email && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.email.message}
-                </p>
+                <span className="text-red-500">Email is required</span>
               )}
             </div>
 
-            <div className="mt-4">
-              <div className="flex justify-between">
-                <label
-                  className="block mb-2 text-sm font-medium text-gray-600"
-                  htmlFor="loggingPassword"
-                >
-                  Password
-                </label>
-                <a href="#" className="text-xs text-gray-500 hover:underline">
-                  Forget Password?
-                </a>
-              </div>
-
+            <div className="mb-4">
+              <label
+                className="block mb-2 text-sm font-bold text-gray-700"
+                htmlFor="password"
+              >
+                Password
+              </label>
               <input
-                id="loggingPassword"
-                className={`block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300 ${
-                  errors.password ? "border-red-500" : ""
-                }`}
+                {...register("password", { required: true })}
+                className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
                 type="password"
-                name="password"
-                {...register("password", { required: "Password is required" })}
+                placeholder="Enter your password"
+                required
               />
               {errors.password && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.password.message}
-                </p>
+                <span className="text-red-500">Password is required</span>
               )}
             </div>
 
-            <div className="mt-6">
-              <button
-                type="submit"
-                className="w-full px-6 py-3 text-sm font-medium tracking-wide capitalize transition-colors duration-300 transform bg-[#ffc107] rounded-lg hover:bg-[#ffdf1b] focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
-              >
-                Sign In
-              </button>
-            </div>
+            <button
+              type="submit"
+              className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:bg-blue-400"
+            >
+              Sign In
+            </button>
           </form>
 
-          <div className="text-center mt-4">
-            <p className="text-sm font-light text-gray-500">
-              {"Don't have an account? "}
-              <Link
-                to="/signUp"
-                className="font-medium text-primary-600 hover:underline"
-              >
-                Sign Up
-              </Link>
-            </p>
-          </div>
+          <p className="mt-4 text-xs text-center text-gray-500">
+            Don’t have an account?{" "}
+            <Link to="/register" className="font-bold text-blue-500 hover:underline">
+              Sign Up
+            </Link>
+          </p>
         </div>
       </div>
     </div>

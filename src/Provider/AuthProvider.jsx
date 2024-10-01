@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
   const getToken = async (email) => {
     try {
       const { data } = await axios.post(
-        `https://class-net-server.vercel.app/jwt`,
+        `${import.meta.env.VITE_API_URL}/jwt`,
         { email },
         { withCredentials: true }
       );

@@ -33,6 +33,7 @@ const DetailedClass = () => {
     data: classData = [],
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     queryKey: ["class", id], // Unique key for caching
     queryFn: async () => {
@@ -212,14 +213,14 @@ const DetailedClass = () => {
               <h2 className="text-2xl font-semibold mb-4">Assignments</h2>
               {classData?.assignments?.length ? (
                 classData.assignments.map((assignment, index) => (
-                  <div key={index} className="flex flex-col md:flex-row justify-between gap-4 mb-4">
+                  <div key={index} className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
                     <h3 className="font-semibold text-lg">{assignment.title}</h3>
                     <p><span className="font-semibold">Description: </span>{assignment.description}</p>
                     <h3 ><span className="font-semibold">Due Date: </span>{assignment.dueDate.split('T')[0]}</h3>
                     <h3>{assignment.fileUrl.split('-')[1]}</h3>
 
                     {
-                      assignment.fileUrl && <button onClick={()=>handleDownloadAssignment(assignment.fileUrl)}>Download</button>
+                      assignment.fileUrl && <button onClick={()=>handleDownloadAssignment(assignment.fileUrl)} className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">Download</button>
                     }
 
                   </div>
@@ -235,7 +236,7 @@ const DetailedClass = () => {
                   </button>
 
                   {/* Modal for adding assignment */}
-                  <AddAssignmentModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} classId={classData.classId}></AddAssignmentModal>
+                  <AddAssignmentModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} classId={classData.classId} refetch={refetch}></AddAssignmentModal>
                 </div>
               ) : (
                 <p>No assignments available.</p>

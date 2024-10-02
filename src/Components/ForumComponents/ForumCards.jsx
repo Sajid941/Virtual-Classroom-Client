@@ -29,7 +29,7 @@ const ForumCards = ({ discussionCategory }) => {
         {/* Dropdown */}
         <div>
           <select className="select select-warning w-full">
-            <option disabled>Newest</option>
+            <option disabled selected>Newest</option>
             <option>Cheese</option>
             <option>Veggie</option>
             <option>Pepperoni</option>

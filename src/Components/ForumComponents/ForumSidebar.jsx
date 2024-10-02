@@ -22,7 +22,7 @@ const Sidebar = ({ setDiscussionCategory }) => {
     return (
         <div>
             <DiscussionForm />
-            <div className="drawer lg:drawer-open fixed">
+            <div className="drawer lg:drawer-open fixed w-80">
                 <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
                 {/* <div className="drawer-content flex flex-col items-center justify-center">
                     Page content here

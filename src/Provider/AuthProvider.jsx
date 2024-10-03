@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from "react";
 import auth from "../firebase/firebase.config";
 import {
@@ -28,10 +27,10 @@ export const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-
   const signInWithGoogle = () => {
     return signInWithPopup(auth, googleProvider);
   };
+
   const updateUserProfile = (name, photo) => {
     return updateProfile(auth.currentUser, {
       displayName: name,
@@ -47,27 +46,27 @@ export const AuthProvider = ({ children }) => {
         { withCredentials: true }
       );
       console.log("JWT Token:", data); // Debugging: log the token
+      localStorage.setItem("token", data.token); // Store the token in localStorage
       return data;
     } catch (error) {
       console.error("Error fetching token:", error);
     }
   };
-  
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
         console.log("Current User:", currentUser); // Debugging: log the user
-        getToken(currentUser?.email);
+        getToken(currentUser?.email); // Fetch and store the token
+      } else {
+        localStorage.removeItem("token"); // Remove token if user logs out
       }
 
       setLoading(false);
     });
     return () => unsubscribe();
   }, []);
-  
-
 
   const resetPassword = (email) => {
     setLoading(true);
@@ -78,11 +77,12 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     await axios.get(`https://class-net-server.vercel.app/logout`, {
       withCredentials: true,
-
     });
+    localStorage.removeItem("token"); // Clear token on logout
     return signOut(auth);
   };
-  //pass the information through context api
+
+  // Pass the information through context API
   const AuthInfo = {
     user,
     loading,
@@ -92,12 +92,13 @@ export const AuthProvider = ({ children }) => {
     createUser,
     logInUser,
     signInWithGoogle,
-    updateProfile,
     resetPassword,
     logOut,
   };
+  
   return (
     <AuthContext.Provider value={AuthInfo}>{children}</AuthContext.Provider>
   );
 };
+
 export default AuthProvider;

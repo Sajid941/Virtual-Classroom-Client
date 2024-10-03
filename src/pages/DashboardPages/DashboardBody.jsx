@@ -5,10 +5,12 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../Components/Loading";
 import useRole from "../../CustomHooks/useRole";
+import useAxiosPrivate from "../../CustomHooks/useAxiosPrivate";
 
 const DashboardBody = () => {
   const { user } = useContext(AuthContext); // Get the logged-in user's data
   const axiosPublic = useAxiosPublic();
+  const axiosPrivate=useAxiosPrivate();
   const { role } = useRole();
   console.log(role);
 
@@ -20,7 +22,7 @@ const DashboardBody = () => {
     queryKey: ["classes", user?.email], // Unique key for caching
     queryFn: async () => {
       if (!user?.email) return []; // Prevent query if email is not available
-      const res = await axiosPublic.get(
+      const res = await axiosPrivate.get(
         `/classes/${role}?email=${user?.email}`
       );
       return res.data;

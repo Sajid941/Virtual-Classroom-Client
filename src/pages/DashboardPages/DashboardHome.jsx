@@ -6,11 +6,13 @@ import useRole from "../../CustomHooks/useRole";
 import { FaChalkboardTeacher, FaTasks, FaClipboardList } from "react-icons/fa";
 import Loading from "../../Components/Loading";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+import useAxiosPrivate from './../../CustomHooks/useAxiosPrivate';
 
 const DashboardHome = () => {
   const { userdb } = useUser();
   const { role } = useRole();
   const axiosPublic = useAxiosPublic();
+  const axiosPrivate =useAxiosPrivate()
   console.log(role);
   // Fetch classes based on the user's email
   const {
@@ -22,7 +24,7 @@ const DashboardHome = () => {
     queryKey: ["classes", userdb?.email],
     queryFn: async () => {
       if (!userdb?.email) return []; // Prevent query if email is not available
-      const res = await axiosPublic.get(`/classes/${role}?email=${userdb.email}`);
+      const res = await axiosPrivate.get(`/classes/${role}?email=${userdb.email}`);
       return res.data;
     },
     keepPreviousData: true,

@@ -16,7 +16,7 @@ const Forum = () => {
       </Helmet>
       <ForumNavbar />
       <div className="flex flex-col lg:flex-row gap-5 mx-5 md:mx-10 lg:mx-20 pt-28">
-        <aside className="flex-1">
+        <aside className="flex-1 ">
           <ForumSidebar setDiscussionCategory={setDiscussionCategory}/>
         </aside>
         <div className="w-full lg:ml-96">

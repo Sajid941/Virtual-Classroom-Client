@@ -5,7 +5,7 @@ import { MdAssignmentAdd } from "react-icons/md";
 import Modal from "react-modal";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 
-const AddAssignmentModal = ({ isOpen, onRequestClose, classId }) => {
+const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
   const { register, handleSubmit, reset } = useForm();
 
   const [file, setFile] = useState();
@@ -32,6 +32,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId }) => {
 
       reset();
       onRequestClose();
+      refetch();
     } catch (error) {
       console.error("assignment not submitted", error);
     }
@@ -107,7 +108,8 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId }) => {
 AddAssignmentModal.propTypes = {
   isOpen: PropTypes.bool,
   onRequestClose: PropTypes.func,
-  classId: PropTypes.string
+  classId: PropTypes.string,
+  refetch: PropTypes.func
 };
 
 export default AddAssignmentModal;

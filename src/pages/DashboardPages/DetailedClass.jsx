@@ -5,7 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
-
+import fileDownload from 'js-file-download';
 
 import useRole from "../../CustomHooks/useRole";
 import { useQuery } from "@tanstack/react-query";
@@ -33,6 +33,7 @@ const DetailedClass = () => {
     data: classData = [],
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     queryKey: ["class", id], // Unique key for caching
     queryFn: async () => {
@@ -116,6 +117,23 @@ const DetailedClass = () => {
     }
   };
 
+  const handleDownloadAssignment = async(filename)=>{
+    
+    const cleanedFileName = filename.replace('/assignmentUploads/', '');
+
+    axiosPublic({
+      url: `classes/download/${encodeURIComponent(cleanedFileName)}`,
+      method: 'GET',
+      responseType: 'blob', // Important for handling binary files
+    })
+    .then((response) => {
+      fileDownload(response.data, cleanedFileName);
+    })
+    .catch((error) => {
+      console.error('Error downloading file:', error);
+    });
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Section */}
@@ -142,7 +160,7 @@ const DetailedClass = () => {
             Conducted by: {classData.teacher?.name}
           </p>
           <div className="mt-6">
-          <JoinMeetButton></JoinMeetButton>
+          <JoinMeetButton id={id} />
           </div>
         </div>
       </div>
@@ -195,11 +213,16 @@ const DetailedClass = () => {
               <h2 className="text-2xl font-semibold mb-4">Assignments</h2>
               {classData?.assignments?.length ? (
                 classData.assignments.map((assignment, index) => (
-                  <div key={index} className="flex flex-col md:flex-row justify-between gap-4 mb-4">
+                  <div key={index} className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
                     <h3 className="font-semibold text-lg">{assignment.title}</h3>
                     <p><span className="font-semibold">Description: </span>{assignment.description}</p>
                     <h3 ><span className="font-semibold">Due Date: </span>{assignment.dueDate.split('T')[0]}</h3>
                     <h3>{assignment.fileUrl.split('-')[1]}</h3>
+
+                    {
+                      assignment.fileUrl && <button onClick={()=>handleDownloadAssignment(assignment.fileUrl)} className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">Download</button>
+                    }
+
                   </div>
                 ))
               ) : role === "teacher" ? (
@@ -213,7 +236,7 @@ const DetailedClass = () => {
                   </button>
 
                   {/* Modal for adding assignment */}
-                  <AddAssignmentModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} classId={classData.classId}></AddAssignmentModal>
+                  <AddAssignmentModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} classId={classData.classId} refetch={refetch}></AddAssignmentModal>
                 </div>
               ) : (
                 <p>No assignments available.</p>

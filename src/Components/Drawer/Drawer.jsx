@@ -18,7 +18,7 @@ import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 
 const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
   const [classCode, setClassCode] = useState(""); // state for storing class code
-  const { userDb } = useUser();
+  const { userdb } = useUser();
   const { role } = useRole();
   const axiosPublic = useAxiosPublic();
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -48,8 +48,8 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
       section: data.section,
       subject: data.subject,
       teacher: {
-        name: userDb.name,
-        email: userDb.email,
+        name: userdb.name,
+        email: userdb.email,
       },
       students: [],
       classImage:
@@ -90,19 +90,19 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
         if (classData) {
           // Prepare student data
           const studentData = {
-            name: userDb.name,
-            email: userDb.email,
+            name: userdb.name,
+            email: userdb.email,
           };
 
           // Patch the class with the new student data
           const patchResponse = await axiosPublic.patch(
-            `/classes/${classData._id}/students`, // Assuming this is the correct endpoint
+            `/classes/${classData.classId}/students`, // Assuming this is the correct endpoint
             { students: [...classData.students, studentData] } // Add the new student to the existing array
           );
 
           if (patchResponse.status === 200) {
             console.log("Student successfully added to the class");
-            alert("Successfully joined the class");
+            window.location.reload();
           } else {
             console.error("Failed to add the student to the class");
           }

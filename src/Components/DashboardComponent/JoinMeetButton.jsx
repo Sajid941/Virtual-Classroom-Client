@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useUser from '../../CustomHooks/useUser';
 import Swal from 'sweetalert2';
 import useAxiosPublic from '../../CustomHooks/useAxiosPublic';
 
-const JoinMeetButton = () => {
+const JoinMeetButton = ({ id }) => {
 
     const { userdb } = useUser(); // Custom hook to get user details
+    const axios = useAxiosPublic(); // Assuming this is properly set up
 
-    const axios = useAxiosPublic();
+    const [meetLink, setMeetLink] = useState(''); 
 
     // Function to handle link submission
     const handleSubmit = (e) => {
+        e.preventDefault();  // Prevent form submission if it's in a form
+
         Swal.fire({
             title: "Add Google Meet Link",
             input: "url",
@@ -20,34 +22,43 @@ const JoinMeetButton = () => {
             cancelButtonText: "Cancel",
             showLoaderOnConfirm: true,
             preConfirm: async (link) => {
-                return axios.patch(`/meet`, { meetLink: link })
-                    .then((response) => {
-                        if (response.status === 200) {
-                            Swal.fire("Link Added", "", "success");
-                        }
-                    })
-                    .catch((error) => {
-                        Swal.fire("Error", error.response.data.message, "error");
-                    });
+                if (!link) {
+                    Swal.showValidationMessage('You need to provide a link');
+                    return false;
+                }
+                try {
+                    const response = await axios.patch(`/classes/${id}/meetlink`, { meetLink: link });
+                    if (response) {
+                        Swal.fire("Link Added", "", "success");
+                    }
+                } catch (error) {
+                    Swal.fire("Error", error?.response?.data?.message || "Something went wrong", "error");
+                }
             }
         });
-    }
+    };
 
-    // useEffect(() => {
-    //     axios.get(`/meet`)
-    //         .then((response) => {
-    //             console.log(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         });
-    // });
+
+    useEffect(() => {
+        axios.get(`/classes/meetlink?classId=${id}`).then((response) => {
+            setMeetLink(response.data.meetLink);
+        }).catch((error) => {
+            console.error(error);
+        });
+    });
 
     return (
         <div className='flex flex-row items-center gap-4' >
 
             <div>
-                <a className='btn bg-green-600 border-green-700 text-white' target="_blank">Join Meet</a>
+                {
+                    meetLink ? <>
+                        <a href={meetLink} className='btn bg-green-600 border-green-700 text-white' target="_blank">Join Meet</a>
+                    </> :
+                    <>
+                        <p>Meet link not available</p>
+                    </>
+                }
             </div>
 
             {

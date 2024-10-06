@@ -16,17 +16,22 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
 
     formData.append("title", data.title);
     formData.append("description", data.description);
+    formData.append("marks", data.marks);
     formData.append("dueDate", data.dueDate);
     if (file) {
       formData.append("file", file);
     }
 
     try {
-      const response = await axiosPublic.patch(`/classes/${classId}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      const response = await axiosPublic.patch(
+        `/classes/${classId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-      })
+      );
 
       console.log("submitted:", response.data);
 
@@ -61,15 +66,26 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
               {...register("description", { required: true })}
               type="text"
               placeholder="Description"
-              className="textarea textarea-bordered textarea-md"
+              className="textarea textarea-bordered textarea-md mb-2"
             />
           </div>
 
           <div className="form-control">
             <input
+              {...register("marks", { required: true })}
+              type="text"
+              placeholder="Marks"
+              className="input input-bordered"
+            />
+          </div>
+
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text text-gray-400">Due Date</span>
+            </label>
+            <input
               {...register("dueDate", { required: true })}
               type="date"
-              placeholder="Due Date"
               className="input input-bordered mb-2"
             />
           </div>
@@ -80,7 +96,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
               type="file"
               accept=".pdf,.doc,.docx,.zip,.txt"
               onChange={(e) => setFile(e.target.files[0])}
-              className="input input-bordered mb-2 pt-2"
+              className="input input-bordered w-full lg:w-1/3 mb-2 pt-2"
             />
           </div>
 
@@ -109,7 +125,7 @@ AddAssignmentModal.propTypes = {
   isOpen: PropTypes.bool,
   onRequestClose: PropTypes.func,
   classId: PropTypes.string,
-  refetch: PropTypes.func
+  refetch: PropTypes.func,
 };
 
 export default AddAssignmentModal;

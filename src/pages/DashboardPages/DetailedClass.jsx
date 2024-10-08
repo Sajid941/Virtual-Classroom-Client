@@ -232,7 +232,7 @@ const DetailedClass = () => {
                     </button>}
 
                     {/* Submit assignment modal */}
-                    <SubmitAssignmentModal isOpen={isSubmitAssignmentModalOpen} onRequestClose={()=>setIsSubmitAssignmentModalOpen(false)}></SubmitAssignmentModal>
+                    <SubmitAssignmentModal isOpen={isSubmitAssignmentModalOpen} onRequestClose={()=>setIsSubmitAssignmentModalOpen(false)} assignment={assignment}></SubmitAssignmentModal>
                   </div>
                 ))
               ) : role === "teacher" ? (

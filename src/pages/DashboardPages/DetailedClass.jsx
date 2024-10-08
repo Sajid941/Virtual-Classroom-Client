@@ -13,6 +13,8 @@ import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
 import AddAssignmentModal from "../../Components/AddAssignmentModal/AddAssignmentModal";
 import JoinMeetButton from '../../Components/DashboardComponent/JoinMeetButton';
+import { IoDocumentAttachOutline } from "react-icons/io5";
+import SubmitAssignmentModal from "../../Components/SubmitAssignmentModal/SubmitAssignmentModal";
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -28,6 +30,7 @@ const DetailedClass = () => {
 
   const axiosPublic = useAxiosPublic();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitAssignmentModalOpen, setIsSubmitAssignmentModalOpen] = useState(false);
   // Fetch classes based on the user's email
   const {
     data: classData = [],
@@ -221,9 +224,15 @@ const DetailedClass = () => {
                     <h3>{assignment.fileUrl.split('-')[1]}</h3>
 
                     {
-                      assignment.fileUrl && <button onClick={()=>handleDownloadAssignment(assignment.fileUrl)} className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">Download</button>
+                      assignment.fileUrl && <button onClick={()=>handleDownloadAssignment(assignment.fileUrl)} className="bg-[#004085] text-white px-4 py-2 rounded-lg">Download</button>
                     }
 
+                  {role === 'student' && <button onClick={()=>setIsSubmitAssignmentModalOpen(true)} className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1">
+                    <IoDocumentAttachOutline size={18} />Submit
+                    </button>}
+
+                    {/* Submit assignment modal */}
+                    <SubmitAssignmentModal isOpen={isSubmitAssignmentModalOpen} onRequestClose={()=>setIsSubmitAssignmentModalOpen(false)}></SubmitAssignmentModal>
                   </div>
                 ))
               ) : role === "teacher" ? (

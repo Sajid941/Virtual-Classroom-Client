@@ -30,7 +30,8 @@ const SignIn = () => {
       const res = await axiosPublic.post("/users/login", {
         email: data.email,
       });
-      const token=res.token
+      const token= res.token
+
       if (token) {
         localStorage.setItem("token", token); // Store JWT in localStorage
         navigate("/dashboard"); // Navigate to dashboard

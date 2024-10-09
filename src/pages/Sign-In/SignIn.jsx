@@ -25,9 +25,11 @@ const SignIn = () => {
   // User login submission handler with email and password
   const onSubmit = async (data) => {
     try {
-      // Log in the user with Firebase auth or your auth system
-      await logInUser(data.email, data.password);
-
+      const res = await logInUser(data.email, data.password);
+      console.log(res.user?.email);
+      if (res.user?.email) {
+        navigate("/dashboard");
+      }
     } catch (err) {
       console.error("Login error:", err);
       alert("An error occurred during login. Please try again.");
@@ -42,18 +44,23 @@ const SignIn = () => {
         email: result.user.email,
         name: result.user.displayName,
       };
-
-      // Register the user with your backend
-      await axiosPublic.post("/users/register", userData, {
+  
+      // Send user data to backend for registration
+      const response = await axiosPublic.post("/users/register", userData, {
         withCredentials: true,
       });
-
-      navigate("/dashboard");
+  
+      // Handle response: navigate to dashboard if user exists or is newly created
+      if (response.status === 201 || response.status === 200) {
+        navigate("/dashboard");
+      } else {
+        console.error("Unexpected response:", response);
+      }
     } catch (error) {
-      console.error("Google sign-in error:", error);
-      alert(error.message);
+      console.error("Error during Google sign-in:", error);
     }
   };
+  
 
   // Placeholder for GitHub sign-in (optional)
   const handleGitHubSignIn = () => {

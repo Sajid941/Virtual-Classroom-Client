@@ -5,7 +5,7 @@ import Modal from "react-modal";
 import useUser from "../../CustomHooks/useUser";
 import useAxiosPrivate from "../../CustomHooks/useAxiosPrivate";
 
-const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment, setAssignmentSubmitStatus }) => {
+const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment}) => {
   const { register, handleSubmit, reset } = useForm();
   const [file, setFile] = useState(null);
 
@@ -29,7 +29,6 @@ const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment, se
       const response = await axiosPrivate.patch(`/classes/${classId}/assignments/${_id}/submissions`, formData, {headers: {"Content-Type": "multipart/form-data"}})
       if(response.data){
         console.log("Submitted successfully", response.data);
-        setAssignmentSubmitStatus('Submitted')
         reset();
         onRequestClose();
         refetch();
@@ -97,7 +96,6 @@ SubmitAssignmentModal.propTypes = {
   onRequestClose: PropTypes.func,
   assignment: PropTypes.object,
   classId: PropTypes.string,
-  setAssignmentSubmitStatus: PropTypes.func
 };
 
 export default SubmitAssignmentModal;

@@ -48,14 +48,14 @@ const DashboardHome = () => {
   }
 
   return (
-    <div className="w-full basis-3/5 p-4 rounded-xl min-h-[80vh] bg-secondary">
+    <div className="w-full basis-3/5 p-4 rounded-xl min-h-[80vh] bg-secondary z-40">
       <div className="topText mb-4">
         <h1 className="text-2xl font-bold text-white">
           Welcome Back, {userdb?.name}
         </h1>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+        <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
           <div className="flex items-center">
             <FaChalkboardTeacher className="text-3xl text-blue-500 mr-3" />
             <div>
@@ -64,7 +64,7 @@ const DashboardHome = () => {
             </div>
           </div>
         </div>
-        <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+        <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
           <div className="flex items-center">
             <FaTasks className="text-3xl text-green-500 mr-3" />
             <div>
@@ -73,7 +73,7 @@ const DashboardHome = () => {
             </div>
           </div>
         </div>
-        <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+        <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
           <div className="flex items-center">
             <FaClipboardList className="text-3xl text-orange-500 mr-3" />
             <div>

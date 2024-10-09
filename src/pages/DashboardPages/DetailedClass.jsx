@@ -5,14 +5,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
-import fileDownload from 'js-file-download';
+import fileDownload from "js-file-download";
 
 import useRole from "../../CustomHooks/useRole";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
 import AddAssignmentModal from "../../Components/AddAssignmentModal/AddAssignmentModal";
-import JoinMeetButton from '../../Components/DashboardComponent/JoinMeetButton';
+import JoinMeetButton from "../../Components/DashboardComponent/JoinMeetButton";
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import SubmitAssignmentModal from "../../Components/SubmitAssignmentModal/SubmitAssignmentModal";
 
@@ -30,7 +30,9 @@ const DetailedClass = () => {
 
   const axiosPublic = useAxiosPublic();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSubmitAssignmentModalOpen, setIsSubmitAssignmentModalOpen] = useState(false);
+  const [isSubmitAssignmentModalOpen, setIsSubmitAssignmentModalOpen] =
+    useState(false);
+  const [assignmentSubmitStatus, setAssignmentSubmitStatus] = useState(null);
   // Fetch classes based on the user's email
   const {
     data: classData = [],
@@ -120,22 +122,21 @@ const DetailedClass = () => {
     }
   };
 
-  const handleDownloadAssignment = async(filename)=>{
-    
-    const cleanedFileName = filename.replace('/assignmentUploads/', '');
+  const handleDownloadAssignment = async (filename) => {
+    const cleanedFileName = filename.replace("/assignmentUploads/", "");
 
     axiosPublic({
       url: `classes/download/${encodeURIComponent(cleanedFileName)}`,
-      method: 'GET',
-      responseType: 'blob', // Important for handling binary files
+      method: "GET",
+      responseType: "blob", // Important for handling binary files
     })
-    .then((response) => {
-      fileDownload(response.data, cleanedFileName);
-    })
-    .catch((error) => {
-      console.error('Error downloading file:', error);
-    });
-  }
+      .then((response) => {
+        fileDownload(response.data, cleanedFileName);
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+      });
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -163,7 +164,7 @@ const DetailedClass = () => {
             Conducted by: {classData.teacher?.name}
           </p>
           <div className="mt-6">
-          <JoinMeetButton id={id} />
+            <JoinMeetButton id={id} />
           </div>
         </div>
       </div>
@@ -216,23 +217,63 @@ const DetailedClass = () => {
               <h2 className="text-2xl font-semibold mb-4">Assignments</h2>
               {classData?.assignments?.length ? (
                 classData.assignments.map((assignment, index) => (
-                  <div key={index} className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
-                    <h3 className="font-semibold text-lg">{assignment.title}</h3>
-                    <p><span className="font-semibold">Description: </span>{assignment.description}</p>
-                    <p><span className="font-semibold">Total Marks: </span>{assignment.marks}</p>
-                    <h3 ><span className="font-semibold">Due Date: </span>{assignment.dueDate.split('T')[0]}</h3>
-                    <h3>{assignment.fileUrl.split('-')[1]}</h3>
+                  <div
+                    key={index}
+                    className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4"
+                  >
+                    <h3 className="font-semibold text-lg">
+                      {assignment.title}
+                    </h3>
+                    <p>
+                      <span className="font-semibold">Description: </span>
+                      {assignment.description}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Total Marks: </span>
+                      {assignment.marks}
+                    </p>
+                    <h3>
+                      <span className="font-semibold">Due Date: </span>
+                      {assignment.dueDate.split("T")[0]}
+                    </h3>
+                    <h3>{assignment.fileUrl.split("-")[1]}</h3>
 
-                    {
-                      assignment.fileUrl && <button onClick={()=>handleDownloadAssignment(assignment.fileUrl)} className="bg-[#004085] text-white px-4 py-2 rounded-lg">Download</button>
-                    }
+                    {assignment.fileUrl && (
+                      <button
+                        onClick={() =>
+                          handleDownloadAssignment(assignment.fileUrl)
+                        }
+                        className="bg-[#004085] text-white px-4 py-2 rounded-lg"
+                      >
+                        Download
+                      </button>
+                    )}
 
-                  {role === 'student' && <button onClick={()=>setIsSubmitAssignmentModalOpen(true)} className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1">
-                    <IoDocumentAttachOutline size={18} />Submit
-                    </button>}
-
-                    {/* Submit assignment modal */}
-                    <SubmitAssignmentModal isOpen={isSubmitAssignmentModalOpen} onRequestClose={()=>setIsSubmitAssignmentModalOpen(false)} assignment={assignment} classId={classData.classId}></SubmitAssignmentModal>
+                    {role === "student" && (
+                      <div>
+                        {assignmentSubmitStatus ? (
+                          <h3 className="border p-1 text-green-600 font-semibold">{assignmentSubmitStatus}</h3>
+                        ) : (
+                          <button
+                            onClick={() => setIsSubmitAssignmentModalOpen(true)}
+                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1"
+                          >
+                            <IoDocumentAttachOutline size={18} />
+                            Submit
+                          </button>
+                        )}
+                        {/* Submit assignment modal */}
+                        <SubmitAssignmentModal
+                          isOpen={isSubmitAssignmentModalOpen}
+                          onRequestClose={() =>
+                            setIsSubmitAssignmentModalOpen(false)
+                          }
+                          assignment={assignment}
+                          classId={classData.classId}
+                          setAssignmentSubmitStatus={setAssignmentSubmitStatus}
+                        ></SubmitAssignmentModal>
+                      </div>
+                    )}
                   </div>
                 ))
               ) : role === "teacher" ? (
@@ -246,7 +287,12 @@ const DetailedClass = () => {
                   </button>
 
                   {/* Modal for adding assignment */}
-                  <AddAssignmentModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} classId={classData.classId} refetch={refetch}></AddAssignmentModal>
+                  <AddAssignmentModal
+                    isOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                    classId={classData.classId}
+                    refetch={refetch}
+                  ></AddAssignmentModal>
                 </div>
               ) : (
                 <p>No assignments available.</p>

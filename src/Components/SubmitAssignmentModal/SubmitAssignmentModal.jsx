@@ -5,13 +5,13 @@ import Modal from "react-modal";
 import useUser from "../../CustomHooks/useUser";
 import useAxiosPrivate from "../../CustomHooks/useAxiosPrivate";
 
-const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment }) => {
-  const { register, handleSubmit } = useForm();
+const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment, setAssignmentSubmitStatus }) => {
+  const { register, handleSubmit, reset } = useForm();
   const [file, setFile] = useState(null);
 
   const axiosPrivate = useAxiosPrivate();
 
-  const { userdb } = useUser();
+  const { userdb, refetch } = useUser();
   const { title, _id } = assignment;
 
   const onSubmit = async () => {
@@ -25,14 +25,14 @@ const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment }) 
       formData.append("submit_file", file);
     }
 
-    formData.forEach((value, key) => {
-      console.log(`${key}:`, value);
-    });
-
     try {
       const response = await axiosPrivate.patch(`/classes/${classId}/assignments/${_id}/submissions`, formData, {headers: {"Content-Type": "multipart/form-data"}})
       if(response.data){
         console.log("Submitted successfully", response.data);
+        setAssignmentSubmitStatus('Submitted')
+        reset();
+        onRequestClose();
+        refetch();
       }
     } catch (error) {
       console.error("Assignment not submitted", error)
@@ -97,6 +97,7 @@ SubmitAssignmentModal.propTypes = {
   onRequestClose: PropTypes.func,
   assignment: PropTypes.object,
   classId: PropTypes.string,
+  setAssignmentSubmitStatus: PropTypes.func
 };
 
 export default SubmitAssignmentModal;

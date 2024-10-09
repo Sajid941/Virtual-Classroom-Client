@@ -48,19 +48,7 @@ const SignIn = () => {
         withCredentials: true,
       });
 
-      // Send login request and store token
-      const res = await axiosPublic.post(
-        "/users/login",
-        {
-          email: userData.email,
-        },
-        { withCredentials: true } // Add withCredentials here
-      );
-      const token = res.data.token; // FIX: Access token from `res.data.token`
-      if (token) {
-        localStorage.setItem("token", token);
-        navigate("/dashboard");
-      }
+      navigate("/dashboard");
     } catch (error) {
       console.error("Google sign-in error:", error);
       alert(error.message);

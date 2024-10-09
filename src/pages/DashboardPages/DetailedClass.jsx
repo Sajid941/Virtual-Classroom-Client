@@ -216,6 +216,7 @@ const DetailedClass = () => {
                   <div key={index} className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
                     <h3 className="font-semibold text-lg">{assignment.title}</h3>
                     <p><span className="font-semibold">Description: </span>{assignment.description}</p>
+                    <p><span className="font-semibold">Total Marks: </span>{assignment.marks}</p>
                     <h3 ><span className="font-semibold">Due Date: </span>{assignment.dueDate.split('T')[0]}</h3>
                     <h3>{assignment.fileUrl.split('-')[1]}</h3>
 

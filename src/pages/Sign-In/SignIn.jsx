@@ -187,4 +187,3 @@ const SignIn = () => {
 };
 
 export default SignIn;
-jwt

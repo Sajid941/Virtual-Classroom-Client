@@ -14,7 +14,7 @@ const DashboardSidebar = () => {
   }, []);
   const { role } = useRole();
   return (
-    <div className="">
+    <div className="basis-1/5 w-full">
       <div className="border-b-2 pb-5">
         <h1 className="text-xl font-semibold">
           {moment().format("MMMM D, YYYY")}

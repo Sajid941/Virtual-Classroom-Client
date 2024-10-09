@@ -40,7 +40,6 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getToken = async (email) => {
     try {
       const { data } = await axiosPublic.post(`/jwt`,
@@ -68,7 +67,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     });
     return () => unsubscribe();
-  }, [getToken]);
+  }, []);
 
   const resetPassword = (email) => {
     setLoading(true);

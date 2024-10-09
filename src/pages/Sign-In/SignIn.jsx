@@ -28,26 +28,6 @@ const SignIn = () => {
       // Log in the user with Firebase auth or your auth system
       await logInUser(data.email, data.password);
 
-      // Send the login request to your backend
-      const res = await axiosPublic.post(
-        "/users/login",
-        {
-          email: data.email,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        } // Add withCredentials here
-      );
-
-      // Store the token in localStorage
-      const token = res.data.token; // FIX: Access token from `res.data.token`
-      if (token) {
-        localStorage.setItem("token", token); // Store JWT
-        navigate("/dashboard"); // Navigate to dashboard
-      }
     } catch (err) {
       console.error("Login error:", err);
       alert("An error occurred during login. Please try again.");

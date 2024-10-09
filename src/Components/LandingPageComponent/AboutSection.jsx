@@ -1,35 +1,76 @@
 import SectionHeading from "../Shared/SectionHeading";
+import { motion } from "framer-motion"; // Importing Framer Motion for animations
+import { FaChalkboardTeacher, FaUsers, FaClipboardList } from 'react-icons/fa'; // Importing different icons from react-icons
+import { Link } from "react-router-dom";
 
 const AboutSection = () => {
   return (
-    <div>
-      <SectionHeading heading="About Class Net"></SectionHeading>
-      <div className="md:flex md:mt-6 md:mx-10 gap-6 items-center ">
-        {/* Image div */}
-        <div className="flex flex-grow justify-center items-center">
-          <img
-            className="w-[112px] md:h-[240px] md:w-[500px] object-cover"
-            src="https://i.ibb.co.com/hgXFcw0/classNet.png"
-            alt=""
-          />
-        </div>
+    <div className="py-16 bg-white"> {/* White Background */}
+      {/* Section Heading */}
+      <SectionHeading heading="About Class Net" />
 
-        {/* Text content */}
-        <div className="mt-4 md:mt-0 mx-2">
-          <h1 className="text-2xl md:text-3xl font-bold">
-            Expanding Learning Horizons
-          </h1>
-          <p className="text-[16px] md:text-[20px] leading-relaxed">
-            At EduSphere, we believe that education should be accessible to
-            everyone, no matter where they are. Our platform enables educators
-            to create dynamic virtual classrooms that allow students to learn,
-            collaborate, and grow—whether they are at home, in school, or on the
-            go.
+      <div className="flex flex-col md:flex-row items-center justify-center mx-4 md:mx-16 mt-12">
+        {/* Text Content with Animation */}
+        <motion.div 
+          className="md:w-1/2 text-gray-800 mb-8 md:mb-0 md:mr-8" // Dark text color
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex items-center mb-4">
+            {/* Small Logo */}
+            <img
+              className="h-20 w-20 mr-2" // Small logo size
+              src="https://i.ibb.co/hgXFcw0/classNet.png" // Use your logo URL here
+              alt="Class Net Logo"
+            />
+            <h1 className="text-3xl font-bold">Revolutionizing Online Learning</h1>
+          </div>
+          <p className="text-lg leading-relaxed mb-6">
+            At <span className="font-semibold">Class Net</span>, we empower educators and learners to connect and collaborate. Our platform makes education accessible to everyone, anytime, anywhere.
           </p>
-         <div className="flex md:justify-end justify-center">
-         <button className="btn border-none capitalize rounded-none bg-accent font-semibold my-6 ">Read More</button>
-         </div>
-        </div>
+
+          {/* Key Highlights Section with Different Icons */}
+          <ul className="list-disc list-inside mb-6">
+            <li className="flex items-center mb-2">
+              <FaChalkboardTeacher className="h-5 w-5 text-cyan-500 mr-2" /> {/* Teaching Icon */}
+              Engaging Virtual Classrooms
+            </li>
+            <li className="flex items-center mb-2">
+              <FaUsers className="h-5 w-5 text-cyan-500 mr-2" /> {/* Users Icon */}
+              Seamless Student Interaction
+            </li>
+            <li className="flex items-center">
+              <FaClipboardList className="h-5 w-5 text-cyan-500 mr-2" /> {/* Clipboard Icon */}
+              Advanced Assignment & Quiz Tools
+            </li>
+          </ul>
+
+          {/* Interactive Button */}
+          <Link to={'/aboutUs'}>
+            <motion.button
+              className="px-6 py-2 bg-cyan-500 text-white rounded shadow hover:bg-cyan-600 transition duration-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Discover More
+            </motion.button>
+          </Link>
+        </motion.div>
+
+        {/* Image Section with Animation */}
+        <motion.div 
+          className="md:w-1/2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <img
+            className="w-72 mx-auto h-auto rounded-lg shadow-lg transition-transform duration-300 transform hover:scale-105"
+            src="https://i.ibb.co/hgXFcw0/classNet.png" // Class Net image
+            alt="Class Net"
+          />
+        </motion.div>
       </div>
     </div>
   );

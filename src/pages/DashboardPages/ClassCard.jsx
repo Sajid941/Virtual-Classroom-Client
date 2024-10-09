@@ -5,13 +5,13 @@ const ClassCard = ({ classData }) => {
   return (
     <Link
       to={`/class/${classData?.classId}`}
-      className="shadow w-full my-4 rounded-xl"
+      className="shadow w-full md:z-50 my-4 rounded-xl"
     >
       <div className="rounded-xl overflow-hidden">
         {" "}
         {/* Added overflow-hidden */}
         <div
-          className="bg-cover h-[200px] md:h-[250px] lg:h-[300px] text-white relative"
+          className="bg-cover h-[200px] md:h-[250px] lg:h-[300px] text-white relative z-[-9999] "
           style={{ backgroundImage: `url(${classData?.classImage})` }}
         >
           <div className="bg-black/30 w-full h-full absolute"></div>
@@ -29,7 +29,7 @@ const ClassCard = ({ classData }) => {
           <p>
             Conducting By:{" "}
             <span className="font-semibold">{classData?.teacher.name}</span>
-          </p> 
+          </p>
           <div className="flex space-x-2 ">
             {classData?.resources.map((resource, index) => (
               <button key={index} className="p-2 rounded">

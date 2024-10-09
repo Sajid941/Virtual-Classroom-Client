@@ -24,7 +24,7 @@ const DashboardHome = () => {
     queryKey: ["classes", userdb?.email],
     queryFn: async () => {
       if (!userdb?.email) return []; // Prevent query if email is not available
-      const res = await axiosPrivate.get(`/classes/${role}?email=${userdb.email}`);
+      const res = await axiosPublic.get(`/classes/${role}?email=${userdb.email}`);
       return res.data;
     },
     keepPreviousData: true,
@@ -48,7 +48,7 @@ const DashboardHome = () => {
   }
 
   return (
-    <div className="w-full p-4 rounded-xl min-h-[80vh] bg-secondary">
+    <div className="w-full basis-3/5 p-4 rounded-xl min-h-[80vh] bg-secondary">
       <div className="topText mb-4">
         <h1 className="text-2xl font-bold text-white">
           Welcome Back, {userdb?.name}

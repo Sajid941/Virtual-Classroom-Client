@@ -12,7 +12,7 @@ const NavDashboard = ({ handleToggleDrawer }) => {
   const { userdb } = useUser();
   console.log(userdb);
   return (
-    <div className="flex justify-center mt-2">
+    <div className="flex absolute w-full justify-center mt-2">
       <div className="navbar container mx-auto bg-base-100 shadow rounded-2xl py-4  z-50 bg-white/10 backdrop-blur-md bg-opacity-15">
         {/* Logo Section */}
         <div className="container mx-auto">
@@ -41,13 +41,7 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                 className="btn btn-ghost btn-circle avatar"
               >
                 <div className="w-10 rounded-full">
-                  <img
-                    alt="User Avatar"
-                    src={
-                      user.photoURL
-                        
-                    }
-                  />
+                  <img alt="User Avatar" src={user.photoURL} />
                 </div>
               </div>
               <ul

@@ -34,7 +34,12 @@ const SignIn = () => {
         {
           email: data.email,
         },
-        { withCredentials: true } // Add withCredentials here
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        } // Add withCredentials here
       );
 
       // Store the token in localStorage
@@ -59,7 +64,9 @@ const SignIn = () => {
       };
 
       // Register the user with your backend
-      await axiosPublic.post("/users/register", userData, { withCredentials: true });
+      await axiosPublic.post("/users/register", userData, {
+        withCredentials: true,
+      });
 
       // Send login request and store token
       const res = await axiosPublic.post(
@@ -104,10 +111,16 @@ const SignIn = () => {
 
         <div className="w-full px-6 py-8 md:px-8 lg:w-1/2">
           <div className="flex justify-center mx-auto">
-            <img className="w-auto h-10 sm:h-8" src={logo} alt="ClassNet Logo" />
+            <img
+              className="w-auto h-10 sm:h-8"
+              src={logo}
+              alt="ClassNet Logo"
+            />
           </div>
 
-          <p className="mt-3 text-xl text-center text-gray-600">Welcome back!</p>
+          <p className="mt-3 text-xl text-center text-gray-600">
+            Welcome back!
+          </p>
 
           <button
             onClick={handleGoogleSignIn}
@@ -146,7 +159,11 @@ const SignIn = () => {
                   }`}
                   {...register("email", { required: "Email is required" })}
                 />
-                {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
+                {errors.email && (
+                  <span className="text-red-500 text-sm">
+                    {errors.email.message}
+                  </span>
+                )}
               </div>
 
               <div className="mt-4">
@@ -156,9 +173,15 @@ const SignIn = () => {
                   className={`block w-full px-4 py-2 mt-2 border rounded-md focus:ring focus:outline-none ${
                     errors.password ? "border-red-500" : "border-gray-300"
                   }`}
-                  {...register("password", { required: "Password is required" })}
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
                 />
-                {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
+                {errors.password && (
+                  <span className="text-red-500 text-sm">
+                    {errors.password.message}
+                  </span>
+                )}
               </div>
 
               <div className="mt-6">
@@ -174,7 +197,10 @@ const SignIn = () => {
 
           <p className="mt-6 text-sm text-center text-gray-400">
             Don’t have an account yet?{" "}
-            <Link to="/signup" className="text-blue-500 focus:outline-none focus:underline hover:underline">
+            <Link
+              to="/signup"
+              className="text-blue-500 focus:outline-none focus:underline hover:underline"
+            >
               Sign up
             </Link>
             .

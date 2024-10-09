@@ -10,25 +10,33 @@ const Dashboard = () => {
   const handleToggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
+
   return (
     <>
+      {/* Navbar */}
       <NavDashboard handleToggleDrawer={handleToggleDrawer} />
-      <div className="flex w-full justify-center gap-1">
-        <aside className="">
-          <Drawer
-            isDrawerOpen={isDrawerOpen}
-            handleToggleDrawer={handleToggleDrawer}
-          />
+
+      {/* Responsive Layout */}
+      <div className="flex flex-col md:flex-row p-4 w-full justify-between container mx-auto gap-5 mt-8">
+        
+        {/* Drawer for mobile and tablet view */}
+        <aside className="md:hidden">
+          <Drawer isDrawerOpen={isDrawerOpen} handleToggleDrawer={handleToggleDrawer} />
         </aside>
 
-        <main className="">
+        {/* Sidebar (visible on larger screens) */}
+        <aside className="hidden md:block md:basis-2/12">
+          <Drawer isDrawerOpen={isDrawerOpen} handleToggleDrawer={handleToggleDrawer} />
+        </aside>
+
+        {/* Main content area */}
+        <main className="flex-grow md:flex-initial md:basis-6/12 z-40">
           <Outlet />
         </main>
 
-        <aside className="hidden xl:block">
-          <div className="">
-            <DashboardSidebar />
-          </div>
+        {/* Sidebar for extra content on larger screens */}
+        <aside className="hidden xl:block xl:basis-3/12">
+          <DashboardSidebar />
         </aside>
       </div>
     </>

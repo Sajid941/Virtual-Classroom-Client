@@ -5,19 +5,32 @@ import { MdComment } from "react-icons/md";
 import { Link } from "react-router-dom";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import Loading from '../Loading';
+import { useState } from "react";
 
 const ForumCards = ({ discussionCategory }) => {
   const axiosPublic = useAxiosPublic()
+  const [searchText, setSearchText] = useState("")
+  const [filter, setFilter] = useState("")
 
-
-  const { data: discussions, isPending } = useQuery({
+  console.log(searchText, filter);
+  const { data: discussions, isPending, refetch } = useQuery({
     queryKey: ["discussions", discussionCategory],
     queryFn: async () => {
-      const res = await axiosPublic(`/discussions?category=${discussionCategory}`)
+      const res = await axiosPublic(`/discussions?category=${discussionCategory}&search=${searchText}`)
       return res.data
     },
     enabled: !!discussionCategory
   })
+
+  const handleFilter = (e) => {
+    const filterValue = e.target.value;
+    setFilter(filterValue)
+  }
+  const handleSearch = (e) => {
+    const searchValue = e.target.value;
+    setSearchText(searchValue)
+    refetch()
+  }
 
   if (isPending) {
     return <Loading />
@@ -25,23 +38,18 @@ const ForumCards = ({ discussionCategory }) => {
 
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-5 z-50 mb-5">
-        {/* Dropdown */}
-        <div>
-          <select className="select select-warning w-full">
-            <option disabled selected>Newest</option>
-            <option>Cheese</option>
-            <option>Veggie</option>
-            <option>Pepperoni</option>
-            <option>Margherita</option>
-            <option>Hawaiian</option>
-          </select>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-5 z-50 mb-5">
+        <select defaultValue="newest" onChange={handleFilter} className="select select-warning w-full">
+          <option selected value="newest">Newest</option>
+          <option value="oldest" >Oldest</option>
+          <option value="ascending" >Ascending</option>
+          <option value="descending" >Descending</option>
 
-        {/* Search Input */}
-        <form className="w-full md:col-span-2">
-          <label className="input input-bordered flex items-center gap-2">
-            <input type="text" className="grow" placeholder="Search" />
+        </select>
+
+        <div className="w-full md:col-span-2">
+          <label className="input input-bordered border w-full flex items-center gap-2 ">
+            <input onChange={handleSearch} type="text" name="search" className="grow" placeholder="Search" />
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -53,11 +61,12 @@ const ForumCards = ({ discussionCategory }) => {
                 clipRule="evenodd" />
             </svg>
           </label>
-        </form>
+        </div>
+
 
         {/* Button */}
-        <div className="">
-          <button className="bg-blue-500 w-full text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <div className="h-full">
+          <button className="bg-blue-500 w-full h-full text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
             Mark Read
           </button>
         </div>

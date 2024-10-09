@@ -32,7 +32,6 @@ const DetailedClass = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitAssignmentModalOpen, setIsSubmitAssignmentModalOpen] =
     useState(false);
-  const [assignmentSubmitStatus, setAssignmentSubmitStatus] = useState(null);
   // Fetch classes based on the user's email
   const {
     data: classData = [],
@@ -251,8 +250,8 @@ const DetailedClass = () => {
 
                     {role === "student" && (
                       <div>
-                        {assignmentSubmitStatus ? (
-                          <h3 className="border p-1 text-green-600 font-semibold">{assignmentSubmitStatus}</h3>
+                        {assignment.assignmentSubmissions && assignment.assignmentSubmissions.find(submitted_student=> submitted_student.student_email === user?.email) ? (
+                          <h3 className="border p-1 text-green-600 font-semibold">Submitted</h3>
                         ) : (
                           <button
                             onClick={() => setIsSubmitAssignmentModalOpen(true)}
@@ -270,7 +269,6 @@ const DetailedClass = () => {
                           }
                           assignment={assignment}
                           classId={classData.classId}
-                          setAssignmentSubmitStatus={setAssignmentSubmitStatus}
                         ></SubmitAssignmentModal>
                       </div>
                     )}

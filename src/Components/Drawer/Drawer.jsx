@@ -119,7 +119,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
   };
 
   return (
-    <div className="fixed z-20">
+    <div className="basis-1/5">
       <div className="drawer md:drawer-open">
         <input
           id="my-drawer-2"
@@ -136,7 +136,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
             Open drawer
           </label>
         </div>
-        <div className="drawer-side shadow-md">
+        <div className="drawer-side ">
           <label
             htmlFor="my-drawer-2"
             aria-label="close sidebar"

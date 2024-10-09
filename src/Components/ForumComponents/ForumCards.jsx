@@ -5,31 +5,33 @@ import { MdComment } from "react-icons/md";
 import { Link } from "react-router-dom";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import Loading from '../Loading';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ForumCards = ({ discussionCategory }) => {
   const axiosPublic = useAxiosPublic()
   const [searchText, setSearchText] = useState("")
-  const [filter, setFilter] = useState("")
-
-  console.log(searchText, filter);
+  const [sort, setSort] = useState("newest")
+console.log(sort);
   const { data: discussions, isPending, refetch } = useQuery({
     queryKey: ["discussions", discussionCategory],
     queryFn: async () => {
-      const res = await axiosPublic(`/discussions?category=${discussionCategory}&search=${searchText}`)
+      const res = await axiosPublic(`/discussions?category=${discussionCategory}&search=${searchText}&sort=${sort}`)
       return res.data
     },
     enabled: !!discussionCategory
   })
 
-  const handleFilter = (e) => {
-    const filterValue = e.target.value;
-    setFilter(filterValue)
+  useEffect(() => {
+    refetch();
+  }, [searchText, sort, refetch]);
+
+  const handleSort = (e) => {
+    const sortValue = e.target.value;
+    setSort(sortValue)
   }
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchText(searchValue)
-    refetch()
   }
 
   if (isPending) {
@@ -39,11 +41,11 @@ const ForumCards = ({ discussionCategory }) => {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-5 z-50 mb-5">
-        <select defaultValue="newest" onChange={handleFilter} className="select select-warning w-full">
-          <option selected value="newest">Newest</option>
+        <select value={sort} onChange={handleSort} className="select select-warning w-full">
+          <option value="newest">Newest</option>
           <option value="oldest" >Oldest</option>
-          <option value="ascending" >Ascending</option>
-          <option value="descending" >Descending</option>
+          <option value="asc" >Ascending</option>
+          <option value="desc" >Descending</option>
 
         </select>
 

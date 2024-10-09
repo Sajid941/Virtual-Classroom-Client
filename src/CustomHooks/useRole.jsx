@@ -4,7 +4,7 @@ const useRole = () => {
   const { userdb } = useUser();
   const role = userdb?.role;
   return {
-    role,
+    role
   };
 };
 export default useRole;

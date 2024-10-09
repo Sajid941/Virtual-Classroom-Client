@@ -9,7 +9,7 @@ import { IoIosLogOut } from "react-icons/io";
 const Navbar = () => {
   const { pathname } = useLocation();
   const { user, logOut } = useContext(AuthContext);
-  const { userdb, isLoading, isError } = useUser();
+  const { userdb } = useUser();
   
   return (
     <div>
@@ -80,8 +80,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
-      {isLoading && <div className=""></div>}
-      {isError && <div className="text-center text-red-600">Error fetching user data</div>}
+      
     </div>
   );
 };

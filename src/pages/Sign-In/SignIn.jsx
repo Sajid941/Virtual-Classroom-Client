@@ -25,16 +25,9 @@ const SignIn = () => {
   // User login submission handler with email and password
   const onSubmit = async (data) => {
     try {
+      // Log in the user with Firebase auth or your auth system
       await logInUser(data.email, data.password);
 
-      const res = await axiosPublic.post("/users/login", {
-        email: data.email,
-      });
-      const token=res.token
-      if (token) {
-        localStorage.setItem("token", token); // Store JWT in localStorage
-        navigate("/dashboard"); // Navigate to dashboard
-      }
     } catch (err) {
       console.error("Login error:", err);
       alert("An error occurred during login. Please try again.");
@@ -44,36 +37,30 @@ const SignIn = () => {
   // Google Sign-In handler
   const handleGoogleSignIn = async () => {
     try {
-      // Step 1: Sign in with Google
       const result = await signInWithGoogle();
-      console.log(result);
-
       const userData = {
         email: result.user.email,
-        name: result.user.displayName
+        name: result.user.displayName,
       };
 
-      axiosPublic.post("/users/register", userData);
-
-      const res = await axiosPublic.post("/users/login", {
-        email: userData.email,
+      // Register the user with your backend
+      await axiosPublic.post("/users/register", userData, {
+        withCredentials: true,
       });
-      const token=res.token
-      if (token) {
-        localStorage.setItem("token", token); // Store JWT in localStorage
-        navigate("/dashboard"); // Navigate to dashboard
-      }
+
+      navigate("/dashboard");
     } catch (error) {
       console.error("Google sign-in error:", error);
-      alert(`${error.message}`);
+      alert(error.message);
     }
   };
 
-  // GitHub Sign-In placeholder (if needed later)
+  // Placeholder for GitHub sign-in (optional)
   const handleGitHubSignIn = () => {
     alert("GitHub Sign In");
   };
 
+  // If user is logged in, redirect to home
   if (user) {
     navigate("/");
     return null;
@@ -138,10 +125,12 @@ const SignIn = () => {
                   className={`block w-full px-4 py-2 mt-2 border rounded-md focus:ring focus:outline-none ${
                     errors.email ? "border-red-500" : "border-gray-300"
                   }`}
-                  {...register("email", { required: "Email is required." })}
+                  {...register("email", { required: "Email is required" })}
                 />
                 {errors.email && (
-                  <span className="text-red-500">{errors.email.message}</span>
+                  <span className="text-red-500 text-sm">
+                    {errors.email.message}
+                  </span>
                 )}
               </div>
 
@@ -153,33 +142,37 @@ const SignIn = () => {
                     errors.password ? "border-red-500" : "border-gray-300"
                   }`}
                   {...register("password", {
-                    required: "Password is required.",
+                    required: "Password is required",
                   })}
                 />
                 {errors.password && (
-                  <span className="text-red-500">
+                  <span className="text-red-500 text-sm">
                     {errors.password.message}
                   </span>
                 )}
               </div>
 
-              <div className="mt-4">
+              <div className="mt-6">
                 <button
                   type="submit"
-                  className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
                 >
                   Sign In
                 </button>
               </div>
             </form>
-
-            <p className="mt-4 text-sm text-center">
-              Don't have an account?{" "}
-              <Link to="/signUp" className="text-blue-600 hover:underline">
-                Sign up
-              </Link>
-            </p>
           </div>
+
+          <p className="mt-6 text-sm text-center text-gray-400">
+            Don’t have an account yet?{" "}
+            <Link
+              to="/signup"
+              className="text-blue-500 focus:outline-none focus:underline hover:underline"
+            >
+              Sign up
+            </Link>
+            .
+          </p>
         </div>
       </div>
     </div>

@@ -76,7 +76,7 @@ const SignUp = () => {
                 });
 
                 await axiosPublic.post("/users", userData);
-                navigate("/");
+                navigate("/dashboard");
                 setLoading(false);
               }
             }

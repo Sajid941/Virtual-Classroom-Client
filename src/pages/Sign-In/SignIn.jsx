@@ -175,7 +175,7 @@ const SignIn = () => {
 
             <p className="mt-4 text-sm text-center">
               Don't have an account?{" "}
-              <Link to="/sign-up" className="text-blue-600 hover:underline">
+              <Link to="/signUp" className="text-blue-600 hover:underline">
                 Sign up
               </Link>
             </p>

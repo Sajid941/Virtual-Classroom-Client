@@ -33,13 +33,13 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
         }
       );
 
-      console.log("submitted:", response.data);
+      console.log("added:", response.data);
 
       reset();
       onRequestClose();
       refetch();
     } catch (error) {
-      console.error("assignment not submitted", error);
+      console.error("assignment not added", error);
     }
   };
 

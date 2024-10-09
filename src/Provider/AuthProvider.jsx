@@ -11,11 +11,13 @@ import {
   updateProfile,
 } from "firebase/auth";
 import axios from "axios";
+import useAxiosPublic from "../CustomHooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
 
 export const AuthProvider = ({ children }) => {
+  const axiosPublic =useAxiosPublic()
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -40,8 +42,7 @@ export const AuthProvider = ({ children }) => {
 
   const getToken = async (email) => {
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/jwt`,
+      const { data } = await axiosPublic.post(`/jwt`,
         { email },
         { withCredentials: true }
       );

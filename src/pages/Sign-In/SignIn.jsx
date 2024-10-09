@@ -29,9 +29,13 @@ const SignIn = () => {
       await logInUser(data.email, data.password);
 
       // Send the login request to your backend
-      const res = await axiosPublic.post("/users/login", {
-        email: data.email,
-      });
+      const res = await axiosPublic.post(
+        "/users/login",
+        {
+          email: data.email,
+        },
+        { withCredentials: true } // Add withCredentials here
+      );
 
       // Store the token in localStorage
       const token = res.data.token; // FIX: Access token from `res.data.token`
@@ -55,12 +59,16 @@ const SignIn = () => {
       };
 
       // Register the user with your backend
-      await axiosPublic.post("/users/register", userData);
+      await axiosPublic.post("/users/register", userData, { withCredentials: true });
 
       // Send login request and store token
-      const res = await axiosPublic.post("/users/login", {
-        email: userData.email,
-      });
+      const res = await axiosPublic.post(
+        "/users/login",
+        {
+          email: userData.email,
+        },
+        { withCredentials: true } // Add withCredentials here
+      );
       const token = res.data.token; // FIX: Access token from `res.data.token`
       if (token) {
         localStorage.setItem("token", token);
@@ -154,32 +162,23 @@ const SignIn = () => {
               </div>
 
               <div className="mt-6">
-                <button className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none">
+                <button
+                  type="submit"
+                  className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                >
                   Sign In
                 </button>
               </div>
             </form>
           </div>
 
-          <div className="mt-6">
-            <p className="text-sm text-center text-gray-600">
-              Don’t have an account yet?{" "}
-              <Link to="/signup" className="text-blue-500 hover:underline">
-                Sign Up
-              </Link>
-              .
-            </p>
-          </div>
-
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={handleGitHubSignIn}
-              className="flex items-center justify-center text-gray-600 transition-colors duration-300 transform border rounded-lg hover:bg-gray-50 w-full py-2"
-            >
-              <FaGithub className="w-6 h-6" />
-              <span className="mx-2">Sign in with GitHub</span>
-            </button>
-          </div>
+          <p className="mt-6 text-sm text-center text-gray-400">
+            Don’t have an account yet?{" "}
+            <Link to="/signup" className="text-blue-500 focus:outline-none focus:underline hover:underline">
+              Sign up
+            </Link>
+            .
+          </p>
         </div>
       </div>
     </div>

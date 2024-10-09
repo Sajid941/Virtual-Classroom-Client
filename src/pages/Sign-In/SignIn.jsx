@@ -25,15 +25,18 @@ const SignIn = () => {
   // User login submission handler with email and password
   const onSubmit = async (data) => {
     try {
+      // Log in the user with Firebase auth or your auth system
       await logInUser(data.email, data.password);
 
+      // Send the login request to your backend
       const res = await axiosPublic.post("/users/login", {
         email: data.email,
       });
-      const token= res.token
 
+      // Store the token in localStorage
+      const token = res.data.token; // FIX: Access token from `res.data.token`
       if (token) {
-        localStorage.setItem("token", token); // Store JWT in localStorage
+        localStorage.setItem("token", token); // Store JWT
         navigate("/dashboard"); // Navigate to dashboard
       }
     } catch (err) {
@@ -45,36 +48,36 @@ const SignIn = () => {
   // Google Sign-In handler
   const handleGoogleSignIn = async () => {
     try {
-      // Step 1: Sign in with Google
       const result = await signInWithGoogle();
-      console.log(result);
-
       const userData = {
         email: result.user.email,
-        name: result.user.displayName
+        name: result.user.displayName,
       };
 
-      axiosPublic.post("/users/register", userData);
+      // Register the user with your backend
+      await axiosPublic.post("/users/register", userData);
 
+      // Send login request and store token
       const res = await axiosPublic.post("/users/login", {
         email: userData.email,
       });
-      const token=res.token
+      const token = res.data.token; // FIX: Access token from `res.data.token`
       if (token) {
-        localStorage.setItem("token", token); // Store JWT in localStorage
-        navigate("/dashboard"); // Navigate to dashboard
+        localStorage.setItem("token", token);
+        navigate("/dashboard");
       }
     } catch (error) {
       console.error("Google sign-in error:", error);
-      alert(`${error.message}`);
+      alert(error.message);
     }
   };
 
-  // GitHub Sign-In placeholder (if needed later)
+  // Placeholder for GitHub sign-in (optional)
   const handleGitHubSignIn = () => {
     alert("GitHub Sign In");
   };
 
+  // If user is logged in, redirect to home
   if (user) {
     navigate("/");
     return null;
@@ -93,16 +96,10 @@ const SignIn = () => {
 
         <div className="w-full px-6 py-8 md:px-8 lg:w-1/2">
           <div className="flex justify-center mx-auto">
-            <img
-              className="w-auto h-10 sm:h-8"
-              src={logo}
-              alt="ClassNet Logo"
-            />
+            <img className="w-auto h-10 sm:h-8" src={logo} alt="ClassNet Logo" />
           </div>
 
-          <p className="mt-3 text-xl text-center text-gray-600">
-            Welcome back!
-          </p>
+          <p className="mt-3 text-xl text-center text-gray-600">Welcome back!</p>
 
           <button
             onClick={handleGoogleSignIn}
@@ -139,11 +136,9 @@ const SignIn = () => {
                   className={`block w-full px-4 py-2 mt-2 border rounded-md focus:ring focus:outline-none ${
                     errors.email ? "border-red-500" : "border-gray-300"
                   }`}
-                  {...register("email", { required: "Email is required." })}
+                  {...register("email", { required: "Email is required" })}
                 />
-                {errors.email && (
-                  <span className="text-red-500">{errors.email.message}</span>
-                )}
+                {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
               </div>
 
               <div className="mt-4">
@@ -153,33 +148,37 @@ const SignIn = () => {
                   className={`block w-full px-4 py-2 mt-2 border rounded-md focus:ring focus:outline-none ${
                     errors.password ? "border-red-500" : "border-gray-300"
                   }`}
-                  {...register("password", {
-                    required: "Password is required.",
-                  })}
+                  {...register("password", { required: "Password is required" })}
                 />
-                {errors.password && (
-                  <span className="text-red-500">
-                    {errors.password.message}
-                  </span>
-                )}
+                {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
               </div>
 
-              <div className="mt-4">
-                <button
-                  type="submit"
-                  className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
-                >
+              <div className="mt-6">
+                <button className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none">
                   Sign In
                 </button>
               </div>
             </form>
+          </div>
 
-            <p className="mt-4 text-sm text-center">
-              Don't have an account?{" "}
-              <Link to="/signUp" className="text-blue-600 hover:underline">
-                Sign up
+          <div className="mt-6">
+            <p className="text-sm text-center text-gray-600">
+              Don’t have an account yet?{" "}
+              <Link to="/signup" className="text-blue-500 hover:underline">
+                Sign Up
               </Link>
+              .
             </p>
+          </div>
+
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={handleGitHubSignIn}
+              className="flex items-center justify-center text-gray-600 transition-colors duration-300 transform border rounded-lg hover:bg-gray-50 w-full py-2"
+            >
+              <FaGithub className="w-6 h-6" />
+              <span className="mx-2">Sign in with GitHub</span>
+            </button>
           </div>
         </div>
       </div>

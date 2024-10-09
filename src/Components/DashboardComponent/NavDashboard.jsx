@@ -44,9 +44,8 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                   <img
                     alt="User Avatar"
                     src={
-                      user?.photoURL
-                        ? user.photoURL
-                        : "https://i.postimg.cc/CLkQzVS1/user-1.png"
+                      user.photoURL
+                        
                     }
                   />
                 </div>

@@ -40,28 +40,28 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  const getToken = async (email) => {
-    try {
-      const { data } = await axiosPublic.post(`/jwt`,
-        { email },
-        { withCredentials: true }
-      );
-      console.log("JWT Token:", data); // Debugging: log the token
-      localStorage.setItem("token", data.token); // Store the token in localStorage
-      return data;
-    } catch (error) {
-      console.error("Error fetching token:", error);
-    }
-  };
+  // const getToken = async (email) => {
+  //   try {
+  //     const { data } = await axiosPublic.post(`/jwt`,
+  //       { email },
+  //       { withCredentials: true }
+  //     );
+  //     console.log("JWT Token:", data); // Debugging: log the token
+  //     localStorage.setItem("token", data.token); // Store the token in localStorage
+  //     return data;
+  //   } catch (error) {
+  //     console.error("Error fetching token:", error);
+  //   }
+  // };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
         console.log("Current User:", currentUser); // Debugging: log the user
-        getToken(currentUser?.email); // Fetch and store the token
+        // getToken(currentUser?.email); // Fetch and store the token
       } else {
-        localStorage.removeItem("token"); // Remove token if user logs out
+        // localStorage.removeItem("token"); // Remove token if user logs out
       }
 
       setLoading(false);
@@ -76,10 +76,10 @@ export const AuthProvider = ({ children }) => {
 
   const logOut = async () => {
     setLoading(true);
-    await axios.get(`https://class-net-server.vercel.app/logout`, {
-      withCredentials: true,
-    });
-    localStorage.removeItem("token"); // Clear token on logout
+    // await axios.get(`https://class-net-server.vercel.app/logout`, {
+    //   withCredentials: true,
+    // });
+    // localStorage.removeItem("token"); // Clear token on logout
     return signOut(auth);
   };
 

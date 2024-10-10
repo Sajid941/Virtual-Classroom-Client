@@ -18,6 +18,7 @@ import JoinMeetButton from "../../Components/DashboardComponent/JoinMeetButton";
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import SubmitAssignmentModal from "../../Components/SubmitAssignmentModal/SubmitAssignmentModal";
 import ChatTab from "../../Components/ClassComponents/ChatTab";
+import SubmitQuizModal from "../../Components/SubmitQuizModal/SubmitQuizModal";
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -33,6 +34,7 @@ const DetailedClass = () => {
   const [isQuizModalOpen, setIsQuizModalOpen] = useState(false); // State for AddQuizModal
   const [isSubmitQuizModalOpen, setIsSubmitQuizModalOpen] = useState(false);
   const [selectedQuiz, setSelectedQuiz] = useState(null); // State to store selected quiz
+  const [students, setStudents] = useState(null); // State to store selected quiz
 
   // Fetch classes based on the user's email
   const {
@@ -166,9 +168,8 @@ const DetailedClass = () => {
                 classData.assignments.map((assignment, index) => (
                   <div
                     key={index}
-                    className="flex flex-col md:flex-row justify-between items-start gap-4 mb-4"
+                    className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4"
                   >
-                    <div>
                       <h3 className="font-semibold text-lg">
                         {assignment.title}
                       </h3>
@@ -187,10 +188,9 @@ const DetailedClass = () => {
                       {assignment.fileUrl && (
                         <p className="text-sm">
                           <span className="font-semibold">File: </span>
-                          {decodeURIComponent(assignment.fileUrl)}
+                          {assignment.fileUrl.split('-')[1]}
                         </p>
                       )}
-                    </div>
 
                     {assignment.fileUrl && (
                       <button
@@ -202,31 +202,6 @@ const DetailedClass = () => {
                         Download
                       </button>
                     )}
-
-                    {role === "student" && (
-                      <div>
-                        {assignment.assignmentSubmissions && assignment.assignmentSubmissions.find(submitted_student => submitted_student.student_email === user?.email) ? (
-                          <h3 className="border p-1 text-green-600 font-semibold">Submitted</h3>
-                        ) : (
-                          <button
-                            onClick={() => setIsSubmitAssignmentModalOpen(true)}
-                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1"
-                          >
-                            <IoDocumentAttachOutline size={18} />
-                            Submit
-                          </button>
-                        )}
-                        {/* Submit assignment modal */}
-                        <SubmitAssignmentModal
-                          isOpen={isSubmitAssignmentModalOpen}
-                          onRequestClose={() =>
-                            setIsSubmitAssignmentModalOpen(false)
-                          }
-                          className="bg-[#004085] text-white px-4 py-2 rounded-lg"
-                        >
-                          Download
-                        </button>
-                      )}
 
                       {role === "student" && (
                         <div>
@@ -257,11 +232,10 @@ const DetailedClass = () => {
                             }
                             assignment={assignment}
                             classId={classData.classId}
-                            refetch={refetch}
                           />
                         </div>
                       )}
-                    </div>
+                    {/* </div> */}
                   </div>
                 ))
               ) : role === "teacher" ? (
@@ -351,7 +325,7 @@ const DetailedClass = () => {
           <TabPanel>
             <div className="bg-white p-6 shadow rounded-lg mb-6">
               <h2 className="text-2xl font-semibold mb-4">Students</h2>
-              {students.length ? (
+              {students?.length ? (
                 <ul className="space-y-3">
                   {students.map((student, index) => (
                     <li

@@ -12,6 +12,7 @@ import DetailedClass from "../pages/DashboardPages/DetailedClass";
 import PrivateRoute from "./PrivateRoute";
 import DashboardHome from "../pages/DashboardPages/DashboardHome";
 import DetailedDiscussion from "../Components/ForumComponents/DetailedDiscussion";
+import AllAssignments from "../pages/DashboardPages/AllAssignments";
 
 
 const router = createBrowserRouter([
@@ -79,6 +80,11 @@ const router = createBrowserRouter([
                 path: "/dashboard/classes",
 
                 element: <DashboardBody />,
+            },
+            {
+                path: "/dashboard/assignments",
+
+                element: <AllAssignments />,
             },
         ],
     },

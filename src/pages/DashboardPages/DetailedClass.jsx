@@ -1,4 +1,6 @@
-import { useContext, useState } from "react";
+// src/Pages/DetailedClass/DetailedClass.jsx
+
+import { useContext, useState, useEffect } from "react";
 import { GoFileCode, GoComment, GoFileZip } from "react-icons/go";
 import { AiOutlineLeft } from "react-icons/ai"; // Import the left arrow icon
 import { useParams, useNavigate } from "react-router-dom";
@@ -12,9 +14,11 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
 import AddAssignmentModal from "../../Components/AddAssignmentModal/AddAssignmentModal";
+import AddQuizModal from "../../Components/AddQuizModal/AddQuizModal"; // Import the AddQuizModal
 import JoinMeetButton from "../../Components/DashboardComponent/JoinMeetButton";
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import SubmitAssignmentModal from "../../Components/SubmitAssignmentModal/SubmitAssignmentModal";
+import SubmitQuizModal from "../../Components/SubmitQuizModal/SubmitQuizModal";
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -29,19 +33,24 @@ const DetailedClass = () => {
   const { register, handleSubmit, reset } = useForm();
 
   const axiosPublic = useAxiosPublic();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
   const [isSubmitAssignmentModalOpen, setIsSubmitAssignmentModalOpen] =
     useState(false);
+
+  const [isQuizModalOpen, setIsQuizModalOpen] = useState(false); // State for AddQuizModal
+  const [isSubmitQuizModalOpen, setIsSubmitQuizModalOpen] = useState(false);
+  const [selectedQuiz, setSelectedQuiz] = useState(null); // State to store selected quiz
+
   // Fetch classes based on the user's email
   const {
-    data: classData = [],
+    data: classData = {},
     isLoading,
     isError,
     refetch,
   } = useQuery({
     queryKey: ["class", id], // Unique key for caching
     queryFn: async () => {
-      if (!user?.email) return []; // Prevent query if email is not available
+      if (!user?.email) return {}; // Prevent query if email is not available
       const res = await axiosPublic.get(`classes/classid?id=${id}`);
       return res.data;
     },
@@ -49,55 +58,15 @@ const DetailedClass = () => {
     enabled: !!user?.email, // Only run the query if the user has an email
   });
 
-  // Handle loading state
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <span className=""></span>
-      </div>
-    );
-  }
-
-  // Handle error state
-  if (isError) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <h1 className="text-error">
-          An error occurred while fetching class data. Please try again later.
-        </h1>
-      </div>
-    );
-  }
-  // Fetch class data from JSON file
-  // useEffect(() => {
-  //   const fetchClassData = async () => {
-  //     try {
-  //       const response = await fetch("/class.json");
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok");
-  //       }
-  //       const data = await response.json();
-  //       const classDetail = data.find((item) => item.classId === id);
-
-  //       if (!classDetail) {
-  //         setError("Class not found");
-  //       } else {
-  //         setClassData(classDetail);
-  //         setStudents(classDetail.students || []);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching class data:", error);
-  //       setError("Failed to load class data");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchClassData();
-  // }, [id]);
+  // Initialize students from classData
+  useEffect(() => {
+    if (classData.students) {
+      setStudents(classData.students);
+    }
+  }, [classData.students]);
 
   // Handle sending a message
-  const onSubmit = (data) => {
+  const onMessageSubmit = (data) => {
     if (data.message.trim()) {
       const newMessage = {
         user: "You", // The user sending the message
@@ -107,14 +76,17 @@ const DetailedClass = () => {
         profileImage: "https://via.placeholder.com/40", // Placeholder for profile image
       };
 
-      // Find the currently logged-in student (this is a placeholder)
+      // Find the currently logged-in student
       const currentStudent = students.find(
-        (student) => student.email === "alice.smith@example.com"
-      ); // Replace with actual logged-in student's email
+        (student) => student.email === user?.email
+      );
 
       if (currentStudent) {
         currentStudent.messages.push(newMessage);
         setStudents([...students]); // Trigger re-render
+      } else {
+        // Optionally, handle the case where the student is not found
+        console.warn("Current student not found in class data.");
       }
 
       reset(); // Clear the form
@@ -134,7 +106,13 @@ const DetailedClass = () => {
       })
       .catch((error) => {
         console.error("Error downloading file:", error);
+        alert("Failed to download the assignment. Please try again.");
       });
+  };
+  const handleTakeQuiz = (quiz) => {
+    console.log(quiz);
+    setSelectedQuiz(quiz); // Set the selected quiz
+    setIsSubmitQuizModalOpen(true);
   };
 
   return (
@@ -145,7 +123,7 @@ const DetailedClass = () => {
         style={{ backgroundImage: `url(${classData.classImage})` }}
       >
         <div className="absolute inset-0 bg-black/50"></div>
-        <div className="relative z-0 flex flex-col items-center justify-center text-center  h-full px-5">
+        <div className="relative z-0 flex flex-col items-center justify-center text-center h-full px-5">
           <button
             className="absolute top-5 left-5 flex items-center bg-[#004085] text-white px-4 py-2 rounded-md"
             onClick={() => navigate(-1)}
@@ -171,12 +149,12 @@ const DetailedClass = () => {
       {/* Main Content Section */}
       <div className="container mx-auto py-10 px-5 md:px-10">
         <Tabs>
-          <TabList className="flex">
-            <Tab>Resources</Tab>
-            <Tab>Assignments</Tab>
-            <Tab>Quizzes</Tab>
-            <Tab>Chat</Tab> {/* Changed Comments to Chat */}
-            <Tab>Students</Tab>
+          <TabList className="flex space-x-4 border-b mb-4">
+            <Tab className="px-4 py-2 cursor-pointer">Resources</Tab>
+            <Tab className="px-4 py-2 cursor-pointer">Assignments</Tab>
+            <Tab className="px-4 py-2 cursor-pointer">Quizzes</Tab>
+            <Tab className="px-4 py-2 cursor-pointer">Chat</Tab>
+            <Tab className="px-4 py-2 cursor-pointer">Students</Tab>
           </TabList>
 
           {/* Resources Tab */}
@@ -189,6 +167,9 @@ const DetailedClass = () => {
                     <button
                       key={index}
                       className="p-3 rounded-lg bg-gray-200 flex flex-col items-center mb-4"
+                      onClick={() => {
+                        // Handle resource click if needed
+                      }}
                     >
                       {resource.type === "ZIP" && <GoFileZip size={30} />}
                       {resource.type === "Code" && <GoFileCode size={30} />}
@@ -218,67 +199,85 @@ const DetailedClass = () => {
                 classData.assignments.map((assignment, index) => (
                   <div
                     key={index}
-                    className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4"
+                    className="flex flex-col md:flex-row justify-between items-start gap-4 mb-4"
                   >
-                    <h3 className="font-semibold text-lg">
-                      {assignment.title}
-                    </h3>
-                    <p>
-                      <span className="font-semibold">Description: </span>
-                      {assignment.description}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Total Marks: </span>
-                      {assignment.marks}
-                    </p>
-                    <h3>
-                      <span className="font-semibold">Due Date: </span>
-                      {assignment.dueDate.split("T")[0]}
-                    </h3>
-                    <h3>{assignment.fileUrl.split("-")[1]}</h3>
+                    <div>
+                      <h3 className="font-semibold text-lg">
+                        {assignment.title}
+                      </h3>
+                      <p className="text-sm">
+                        <span className="font-semibold">Description: </span>
+                        {assignment.description}
+                      </p>
+                      <p className="text-sm">
+                        <span className="font-semibold">Total Marks: </span>
+                        {assignment.marks}
+                      </p>
+                      <p className="text-sm">
+                        <span className="font-semibold">Due Date: </span>
+                        {new Date(assignment.dueDate).toLocaleDateString()}
+                      </p>
+                      {assignment.fileUrl && (
+                        <p className="text-sm">
+                          <span className="font-semibold">File: </span>
+                          {decodeURIComponent(assignment.fileUrl)}
+                        </p>
+                      )}
+                    </div>
 
-                    {assignment.fileUrl && (
-                      <button
-                        onClick={() =>
-                          handleDownloadAssignment(assignment.fileUrl)
-                        }
-                        className="bg-[#004085] text-white px-4 py-2 rounded-lg"
-                      >
-                        Download
-                      </button>
-                    )}
-
-                    {role === "student" && (
-                      <div>
-                        {assignment.assignmentSubmissions && assignment.assignmentSubmissions.find(submitted_student=> submitted_student.student_email === user?.email) ? (
-                          <h3 className="border p-1 text-green-600 font-semibold">Submitted</h3>
-                        ) : (
-                          <button
-                            onClick={() => setIsSubmitAssignmentModalOpen(true)}
-                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1"
-                          >
-                            <IoDocumentAttachOutline size={18} />
-                            Submit
-                          </button>
-                        )}
-                        {/* Submit assignment modal */}
-                        <SubmitAssignmentModal
-                          isOpen={isSubmitAssignmentModalOpen}
-                          onRequestClose={() =>
-                            setIsSubmitAssignmentModalOpen(false)
+                    <div className="flex flex-col items-start space-y-2">
+                      {assignment.fileUrl && (
+                        <button
+                          onClick={() =>
+                            handleDownloadAssignment(assignment.fileUrl)
                           }
-                          assignment={assignment}
-                          classId={classData.classId}
-                        ></SubmitAssignmentModal>
-                      </div>
-                    )}
+                          className="bg-[#004085] text-white px-4 py-2 rounded-lg"
+                        >
+                          Download
+                        </button>
+                      )}
+
+                      {role === "student" && (
+                        <div>
+                          {assignment.assignmentSubmissions &&
+                          assignment.assignmentSubmissions.find(
+                            (submitted_student) =>
+                              submitted_student.student_email === user?.email
+                          ) ? (
+                            <h3 className="border p-1 text-green-600 font-semibold">
+                              Submitted
+                            </h3>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                setIsSubmitAssignmentModalOpen(true)
+                              }
+                              className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center"
+                            >
+                              <IoDocumentAttachOutline size={18} />
+                              Submit
+                            </button>
+                          )}
+                          {/* Submit assignment modal */}
+                          <SubmitAssignmentModal
+                            isOpen={isSubmitAssignmentModalOpen}
+                            onRequestClose={() =>
+                              setIsSubmitAssignmentModalOpen(false)
+                            }
+                            assignment={assignment}
+                            classId={classData.classId}
+                            refetch={refetch}
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ))
               ) : role === "teacher" ? (
                 <div className="text-center">
                   <p>No assignments available.</p>
                   <button
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => setIsAssignmentModalOpen(true)}
                     className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
                   >
                     Add Assignment
@@ -286,11 +285,11 @@ const DetailedClass = () => {
 
                   {/* Modal for adding assignment */}
                   <AddAssignmentModal
-                    isOpen={isModalOpen}
-                    onRequestClose={() => setIsModalOpen(false)}
+                    isOpen={isAssignmentModalOpen}
+                    onRequestClose={() => setIsAssignmentModalOpen(false)}
                     classId={classData.classId}
                     refetch={refetch}
-                  ></AddAssignmentModal>
+                  />
                 </div>
               ) : (
                 <p>No assignments available.</p>
@@ -302,90 +301,124 @@ const DetailedClass = () => {
           <TabPanel>
             <div className="bg-white p-6 shadow rounded-lg mb-6">
               <h2 className="text-2xl font-semibold mb-4">Quizzes</h2>
-              {classData?.quizzes?.length ? (
-                classData.quizzes.map((quiz, index) => (
-                  <div key={index} className="mb-4">
-                    <h3 className="font-semibold">{quiz.title}</h3>
-                    <p>{quiz.description}</p>
+              <div className="grid gap-5">
+                {classData?.quizzes?.length ? (
+                  classData.quizzes.map((quiz, index) => (
+                    <div
+                      key={index}
+                      className="p-4 border rounded-lg mb-4 shadow"
+                    >
+                      <h3 className="font-semibold text-lg">{quiz.title}</h3>
+                      <p className="text-md">{quiz.description}</p>
+                      <p className="text-sm">
+                        <span className="font-semibold">Due: </span>
+                        {new Date(quiz.dueDate).toLocaleDateString()}
+                      </p>
+                      <button
+                        onClick={() => handleTakeQuiz(quiz.questions)}
+                        className="mt-2 bg-[#004085] text-white px-4 py-2 rounded-lg"
+                      >
+                        Take Quiz
+                      </button>
+                      <SubmitQuizModal
+                        isOpen={isSubmitQuizModalOpen}
+                        quiz={quiz}
+                        classId={id}
+                        refetch={refetch}
+                      />
+                    </div>
+                  ))
+                ) : role === "teacher" ? (
+                  <div className="text-center">
+                    <p>No quizzes available.</p>
+                    <button
+                      onClick={() => setIsQuizModalOpen(true)}
+                      className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
+                    >
+                      Add Quiz
+                    </button>
+                    <AddQuizModal
+                      isOpen={isQuizModalOpen}
+                      onRequestClose={() => setIsQuizModalOpen(false)}
+                      classId={classData.classId}
+                      refetch={refetch}
+                    />
                   </div>
-                ))
-              ) : role === "teacher" ? (
-                <div className="text-center">
+                ) : (
                   <p>No quizzes available.</p>
-                  <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">
-                    Add Quiz
-                  </button>
-                </div>
-              ) : (
-                <p>No quizzes available.</p>
-              )}
+                )}
+              </div>
             </div>
           </TabPanel>
 
           {/* Chat Tab */}
           <TabPanel>
             <div className="bg-white p-6 shadow rounded-lg mb-6 flex flex-col h-[400px]">
-              <h2 className="text-2xl font-semibold mb-4">Chat</h2>
+              <h2 className="text-2xl font-semibold mb-4">Class Chat</h2>
               <div className="flex-grow overflow-y-auto p-3 border border-gray-300 rounded-lg">
                 <ul className="space-y-3">
-                  {students.map((student) =>
-                    student.messages.map((message, index) => (
-                      <li
-                        key={index}
-                        className="flex items-start p-3 bg-gray-100 rounded-lg"
-                      >
-                        <img
-                          src={
-                            message.profileImage ||
-                            "https://via.placeholder.com/40"
-                          } // Placeholder for profile image
-                          alt={`${message.user}'s profile`}
-                          className="w-10 h-10 rounded-full mr-3"
-                        />
-                        <div>
-                          <p className="font-semibold">{message.user}</p>
-                          <p className="text-gray-600">{message.text}</p>
-                          <p className="text-xs text-gray-500">
-                            {message.time}
-                          </p>
-                          {message.replies?.length > 0 && (
-                            <div className="ml-5 mt-2">
-                              <h3 className="font-semibold">Replies:</h3>
-                              {message.replies.map((reply, replyIndex) => (
-                                <div
-                                  key={replyIndex}
-                                  className="bg-blue-100 p-2 rounded-lg mt-1 flex items-start"
-                                >
-                                  <img
-                                    src={
-                                      reply.profileImage ||
-                                      "https://via.placeholder.com/40"
-                                    } // Placeholder for reply profile image
-                                    alt={`${reply.user}'s profile`}
-                                    className="w-8 h-8 rounded-full mr-2"
-                                  />
-                                  <div>
-                                    <p className="font-semibold">
-                                      {reply.user}
-                                    </p>
-                                    <p className="text-gray-600">
-                                      {reply.text}
-                                    </p>
-                                    <p className="text-xs text-gray-500">
-                                      {reply.time}
-                                    </p>
+                  {students.length === 0 ? (
+                    <li>No messages yet.</li>
+                  ) : (
+                    students.map((student) =>
+                      student.messages.map((message, index) => (
+                        <li
+                          key={index}
+                          className="flex items-start p-3 bg-gray-100 rounded-lg"
+                        >
+                          <img
+                            src={
+                              message.profileImage ||
+                              "https://via.placeholder.com/40"
+                            } // Placeholder for profile image
+                            alt={`${message.user}'s profile`}
+                            className="w-10 h-10 rounded-full mr-3"
+                          />
+                          <div>
+                            <p className="font-semibold">{message.user}</p>
+                            <p className="text-gray-600">{message.text}</p>
+                            <p className="text-xs text-gray-500">
+                              {message.time}
+                            </p>
+                            {message.replies?.length > 0 && (
+                              <div className="ml-5 mt-2">
+                                <h3 className="font-semibold">Replies:</h3>
+                                {message.replies.map((reply, replyIndex) => (
+                                  <div
+                                    key={replyIndex}
+                                    className="bg-blue-100 p-2 rounded-lg mt-1 flex items-start"
+                                  >
+                                    <img
+                                      src={
+                                        reply.profileImage ||
+                                        "https://via.placeholder.com/40"
+                                      } // Placeholder for reply profile image
+                                      alt={`${reply.user}'s profile`}
+                                      className="w-8 h-8 rounded-full mr-2"
+                                    />
+                                    <div>
+                                      <p className="font-semibold">
+                                        {reply.user}
+                                      </p>
+                                      <p className="text-gray-600">
+                                        {reply.text}
+                                      </p>
+                                      <p className="text-xs text-gray-500">
+                                        {reply.time}
+                                      </p>
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </li>
-                    ))
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </li>
+                      ))
+                    )
                   )}
                 </ul>
               </div>
-              <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
+              <form onSubmit={handleSubmit(onMessageSubmit)} className="mt-4">
                 <textarea
                   className="w-full p-3 rounded-lg border shadow-sm"
                   placeholder="Type your message..."
@@ -405,16 +438,30 @@ const DetailedClass = () => {
           <TabPanel>
             <div className="bg-white p-6 shadow rounded-lg mb-6">
               <h2 className="text-2xl font-semibold mb-4">Students</h2>
-              {classData?.students?.length ? (
-                <ul>
-                  {classData?.students.map((student, index) => (
-                    <li key={index} className="p-2 border-b">
-                      {student.name} - {student.email}
+              {students.length ? (
+                <ul className="space-y-3">
+                  {students.map((student, index) => (
+                    <li
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-gray-100 rounded-lg"
+                    >
+                      <div className="flex items-center">
+                        <img
+                          src={
+                            student.profileImage ||
+                            "https://via.placeholder.com/40"
+                          }
+                          alt="Profile"
+                          className="w-10 h-10 rounded-full mr-3"
+                        />
+                        <p className="font-semibold">{student.name}</p>
+                      </div>
+                      <p className="text-gray-500">{student.email}</p>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p>No students enrolled in this class.</p>
+                <p>No students found.</p>
               )}
             </div>
           </TabPanel>

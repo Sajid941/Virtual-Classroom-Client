@@ -159,7 +159,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/assignments" className="dashboard-link">
+                <NavLink to="/dashboard/assignments" className="dashboard-link">
                   <MdAssignmentAdd size={25} />
                   Assignments
                 </NavLink>

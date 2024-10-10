@@ -4,7 +4,6 @@ import { AiOutlineLeft } from "react-icons/ai"; // Import the left arrow icon
 import { useParams, useNavigate } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import { useForm } from "react-hook-form"; // Import useForm from react-hook-form
 import fileDownload from "js-file-download";
 
 import useRole from "../../CustomHooks/useRole";
@@ -15,18 +14,13 @@ import AddAssignmentModal from "../../Components/AddAssignmentModal/AddAssignmen
 import JoinMeetButton from "../../Components/DashboardComponent/JoinMeetButton";
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import SubmitAssignmentModal from "../../Components/SubmitAssignmentModal/SubmitAssignmentModal";
+import ChatTab from "../../Components/ClassComponents/ChatTab";
 
 const DetailedClass = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  const [students, setStudents] = useState([]);
-
   const { role } = useRole();
-
-  // Initialize React Hook Form
-  const { register, handleSubmit, reset } = useForm();
 
   const axiosPublic = useAxiosPublic();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -97,29 +91,7 @@ const DetailedClass = () => {
   // }, [id]);
 
   // Handle sending a message
-  const onSubmit = (data) => {
-    if (data.message.trim()) {
-      const newMessage = {
-        user: "You", // The user sending the message
-        text: data.message,
-        time: new Date().toLocaleString(), // Format the current date and time
-        replies: [], // Initialize with an empty array for replies
-        profileImage: "https://via.placeholder.com/40", // Placeholder for profile image
-      };
 
-      // Find the currently logged-in student (this is a placeholder)
-      const currentStudent = students.find(
-        (student) => student.email === "alice.smith@example.com"
-      ); // Replace with actual logged-in student's email
-
-      if (currentStudent) {
-        currentStudent.messages.push(newMessage);
-        setStudents([...students]); // Trigger re-render
-      }
-
-      reset(); // Clear the form
-    }
-  };
 
   const handleDownloadAssignment = async (filename) => {
     const cleanedFileName = filename.replace("/assignmentUploads/", "");
@@ -250,7 +222,7 @@ const DetailedClass = () => {
 
                     {role === "student" && (
                       <div>
-                        {assignment.assignmentSubmissions && assignment.assignmentSubmissions.find(submitted_student=> submitted_student.student_email === user?.email) ? (
+                        {assignment.assignmentSubmissions && assignment.assignmentSubmissions.find(submitted_student => submitted_student.student_email === user?.email) ? (
                           <h3 className="border p-1 text-green-600 font-semibold">Submitted</h3>
                         ) : (
                           <button
@@ -324,81 +296,7 @@ const DetailedClass = () => {
 
           {/* Chat Tab */}
           <TabPanel>
-            <div className="bg-white p-6 shadow rounded-lg mb-6 flex flex-col h-[400px]">
-              <h2 className="text-2xl font-semibold mb-4">Chat</h2>
-              <div className="flex-grow overflow-y-auto p-3 border border-gray-300 rounded-lg">
-                <ul className="space-y-3">
-                  {students.map((student) =>
-                    student.messages.map((message, index) => (
-                      <li
-                        key={index}
-                        className="flex items-start p-3 bg-gray-100 rounded-lg"
-                      >
-                        <img
-                          src={
-                            message.profileImage ||
-                            "https://via.placeholder.com/40"
-                          } // Placeholder for profile image
-                          alt={`${message.user}'s profile`}
-                          className="w-10 h-10 rounded-full mr-3"
-                        />
-                        <div>
-                          <p className="font-semibold">{message.user}</p>
-                          <p className="text-gray-600">{message.text}</p>
-                          <p className="text-xs text-gray-500">
-                            {message.time}
-                          </p>
-                          {message.replies?.length > 0 && (
-                            <div className="ml-5 mt-2">
-                              <h3 className="font-semibold">Replies:</h3>
-                              {message.replies.map((reply, replyIndex) => (
-                                <div
-                                  key={replyIndex}
-                                  className="bg-blue-100 p-2 rounded-lg mt-1 flex items-start"
-                                >
-                                  <img
-                                    src={
-                                      reply.profileImage ||
-                                      "https://via.placeholder.com/40"
-                                    } // Placeholder for reply profile image
-                                    alt={`${reply.user}'s profile`}
-                                    className="w-8 h-8 rounded-full mr-2"
-                                  />
-                                  <div>
-                                    <p className="font-semibold">
-                                      {reply.user}
-                                    </p>
-                                    <p className="text-gray-600">
-                                      {reply.text}
-                                    </p>
-                                    <p className="text-xs text-gray-500">
-                                      {reply.time}
-                                    </p>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </li>
-                    ))
-                  )}
-                </ul>
-              </div>
-              <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
-                <textarea
-                  className="w-full p-3 rounded-lg border shadow-sm"
-                  placeholder="Type your message..."
-                  {...register("message", { required: true })}
-                ></textarea>
-                <button
-                  className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
-                  type="submit"
-                >
-                  Send
-                </button>
-              </form>
-            </div>
+            <ChatTab classroomId={id} />
           </TabPanel>
 
           {/* Students Tab */}

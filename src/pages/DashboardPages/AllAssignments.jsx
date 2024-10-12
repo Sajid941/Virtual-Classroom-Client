@@ -6,6 +6,7 @@ import useAuth from "../../CustomHooks/useAuth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { useCallback, useEffect, useState } from "react";
 import AssignmentSubmitCard from "./AssignmentSubmitCard";
+import fileDownload from "js-file-download";
 
 const AllAssignments = () => {
   const { userdb } = useUser();
@@ -48,6 +49,24 @@ const AllAssignments = () => {
     extractSubmissions();
   }, [extractSubmissions]);
 
+  // For download submitted assignment
+  const handleDownloadSubmitAssignment = async (filename) => {
+    const submittedFileName = filename.replace("/submittedAssignments/", "");
+    
+    axiosPublic({
+      url: `classes/submitted-file-download/${encodeURIComponent(submittedFileName)}`,
+      method: "GET",
+      responseType: "blob", // Important for handling binary files
+    })
+      .then((response) => {
+        fileDownload(response.data, submittedFileName);
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+        alert("Failed to download the assignment. Please try again.");
+      });
+  };
+
   return (
     <div className="flex flex-col h-full w-full p-4 bg-gray-100">
       {userdb?.role === "teacher" ? (
@@ -77,7 +96,9 @@ const AllAssignments = () => {
                     </td>
                     <td className="p-2 text-center">
                       {submission.submit_file && (
-                        <button className="bg-[#004085] btn btn-sm text-white">
+                        <button
+                        onClick={()=>handleDownloadSubmitAssignment(submission.submit_file)} 
+                        className="bg-[#004085] btn btn-sm text-white">
                           Download
                         </button>
                       )}

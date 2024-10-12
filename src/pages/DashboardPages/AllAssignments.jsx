@@ -5,6 +5,7 @@ import useUser from "../../CustomHooks/useUser";
 import useAuth from "../../CustomHooks/useAuth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { useCallback, useEffect, useState } from "react";
+import AssignmentSubmitCard from "./AssignmentSubmitCard";
 
 const AllAssignments = () => {
   const { userdb } = useUser();
@@ -47,27 +48,56 @@ const AllAssignments = () => {
     extractSubmissions();
   }, [extractSubmissions]);
 
-  console.log(assignmentSubmissions);
-
   return (
-    <div>
+    <div className="flex flex-col h-full w-full p-4 bg-gray-100">
       {userdb?.role === "teacher" ? (
-        <div>
-          <h3>You have {classes.length} classes</h3>
-          {assignmentSubmissions.map((submission) => (
-            <div key={submission._id}>
-              <h3>{submission.assignment_name}</h3>
-              <h3>{submission.student_name}</h3>
-              <h3>{submission.submitAt}</h3>
-              <h3>{submission.submit_file}</h3>
-            </div>
-          ))}
+        <div className="flex-grow overflow-hidden">
+          <div className="overflow-x-auto h-full border rounded">
+            <table className="table-auto w-full">
+              {/* Table Head */}
+              <thead>
+                <tr className="bg-gray-800 text-white">
+                  <th className="p-2">#</th>
+                  <th className="p-2">Assignment Name</th>
+                  <th className="p-2">Student Name</th>
+                  <th className="p-2">Submission Date</th>
+                  <th className="p-2">Download</th>
+                  <th className="p-2">Feedback</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {assignmentSubmissions.map((submission, index) => (
+                  <tr key={submission._id} className="hover:bg-gray-200">
+                    <td className="p-2 text-center">{index + 1}</td>
+                    <td className="p-2">{submission.assignment_name}</td>
+                    <td className="p-2">{submission.student_name}</td>
+                    <td className="p-2">
+                      {submission.submitAt.split("T")[0]}
+                    </td>
+                    <td className="p-2 text-center">
+                      {submission.submit_file && (
+                        <button className="bg-[#004085] btn btn-sm text-white">
+                          Download
+                        </button>
+                      )}
+                    </td>
+                    <td className="p-2 text-center">
+                      {submission.submit_file && (
+                        <button className="bg-green-600 btn btn-sm text-white">
+                          Feedback
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : (
-        <div>
-          <h3 className="text-lg flex justify-center items-center">
-            This page is under development
-          </h3>
+        <div className="flex justify-center items-center h-full">
+          <h3 className="text-lg">This page is under development</h3>
         </div>
       )}
     </div>

@@ -87,6 +87,7 @@ const AllAssignments = () => {
 
               <tbody>
                 {assignmentSubmissions.map((submission, index) => (
+                  // <AssignmentSubmitCard key={submission._id} submission={submission}></AssignmentSubmitCard>
                   <tr key={submission._id} className="hover:bg-gray-200">
                     <td className="p-2 text-center">{index + 1}</td>
                     <td className="p-2">{submission.assignment_name}</td>

@@ -1,60 +1,39 @@
 // import PropTypes from 'prop-types';
-
 import { useQuery } from "@tanstack/react-query";
 import useUser from "../../CustomHooks/useUser";
 import useAuth from "../../CustomHooks/useAuth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
-import { useCallback, useEffect, useState } from "react";
-import AssignmentSubmitCard from "./AssignmentSubmitCard";
+import { useState } from "react";
 import fileDownload from "js-file-download";
 
 const AllAssignments = () => {
-  const { userdb } = useUser();
+  const { userdb } = useUser(); // Extract role and email
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
 
-  const [assignmentSubmissions, setAssignmentSubmissions] = useState([]);
+  const [selectedClassName, setSelectedClassName] = useState("");
 
-  const {
-    data: classes = [], // Set default value to an empty array to avoid undefined issues
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["classes", user?.email], // Unique key for caching
+  // Fetch role-based submissions
+  const { data: submissions = [], isLoading, isError } = useQuery({
+    queryKey: ["user-submissions", user?.email, userdb?.role],
     queryFn: async () => {
-      if (!user?.email) return []; // Prevent query if email is not available
-      const res = await axiosPublic.get(
-        `/classes/${userdb.role}?email=${user?.email}`
-      );
-      return res.data;
+      if (!user?.email || !userdb?.role) return [];
+      const res = await axiosPublic.get("/classes/user-submissions", {
+        params: { email: user?.email, role: userdb?.role },
+      });
+      return res.data.submissions;
     },
-    keepPreviousData: true,
-    enabled: !!user?.email, // Only run the query if the user has an email
+    enabled: !!user?.email && !!userdb?.role,
   });
 
-  // Using useCallback to avoid unnecessary re-renders
-  const extractSubmissions = useCallback(() => {
-    const submissions = [];
-    classes.forEach((cls) => {
-      cls?.assignments?.forEach((assignment) => {
-        assignment?.assignmentSubmissions?.forEach((submission) => {
-          submissions.push(submission);
-        });
-      });
-    });
-    setAssignmentSubmissions(submissions);
-  }, [classes]);
-
-  useEffect(() => {
-    extractSubmissions();
-  }, [extractSubmissions]);
-
-  // For download submitted assignment
+  // Download submitted assignment file
   const handleDownloadSubmitAssignment = async (filename) => {
     const submittedFileName = filename.replace("/submittedAssignments/", "");
-    
+
     axiosPublic({
-      url: `classes/submitted-file-download/${encodeURIComponent(submittedFileName)}`,
+      url: `classes/submitted-file-download/${encodeURIComponent(
+        submittedFileName
+      )}`,
       method: "GET",
       responseType: "blob", // Important for handling binary files
     })
@@ -69,11 +48,23 @@ const AllAssignments = () => {
 
   return (
     <div className="flex flex-col h-full w-full p-4 bg-gray-100">
+      {/* Class Selection Dropdown */}
+      <select
+        className="select select-info w-full max-w-xs mb-4"
+        onChange={(e) => setSelectedClassName(e.target.value)}
+      >
+        <option defaultValue>Select Class</option>
+        {submissions.map((sub) => sub.className).map((clsName, idx) => (
+          <option key={idx} value={clsName}>
+            {clsName}
+          </option>
+        ))}
+      </select>
+
       {userdb?.role === "teacher" ? (
         <div className="flex-grow overflow-hidden">
           <div className="overflow-x-auto h-full border rounded">
             <table className="table-auto w-full">
-              {/* Table Head */}
               <thead>
                 <tr className="bg-gray-800 text-white">
                   <th className="p-2">#</th>
@@ -84,35 +75,40 @@ const AllAssignments = () => {
                   <th className="p-2">Feedback</th>
                 </tr>
               </thead>
-
               <tbody>
-                {assignmentSubmissions.map((submission, index) => (
-                  // <AssignmentSubmitCard key={submission._id} submission={submission}></AssignmentSubmitCard>
-                  <tr key={submission._id} className="hover:bg-gray-200">
-                    <td className="p-2 text-center">{index + 1}</td>
-                    <td className="p-2">{submission.assignment_name}</td>
-                    <td className="p-2">{submission.student_name}</td>
-                    <td className="p-2">
-                      {submission.submitAt.split("T")[0]}
-                    </td>
-                    <td className="p-2 text-center">
-                      {submission.submit_file && (
-                        <button
-                        onClick={()=>handleDownloadSubmitAssignment(submission.submit_file)} 
-                        className="bg-[#004085] btn btn-sm text-white">
-                          Download
-                        </button>
-                      )}
-                    </td>
-                    <td className="p-2 text-center">
-                      {submission.submit_file && (
-                        <button className="bg-green-600 btn btn-sm text-white">
-                          Feedback
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                {submissions
+                  .filter((sub) =>  selectedClassName === "" || sub.className === selectedClassName)
+                  .map((submission, index) => (
+                    <tr key={submission._id} className="hover:bg-gray-200">
+                      <td className="p-2 text-center">{index + 1}</td>
+                      <td className="p-2">{submission.assignmentName}</td>
+                      <td className="p-2">{submission.student_name}</td>
+                      <td className="p-2">
+                        {submission.submitAt.split("T")[0]}
+                      </td>
+                      <td className="p-2 text-center">
+                        {submission.submit_file && (
+                          <button
+                            onClick={() =>
+                              handleDownloadSubmitAssignment(
+                                submission.submit_file
+                              )
+                            }
+                            className="bg-[#004085] btn btn-sm text-white"
+                          >
+                            Download
+                          </button>
+                        )}
+                      </td>
+                      <td className="p-2 text-center">
+                        {submission.submit_file && (
+                          <button className="bg-green-600 btn btn-sm text-white">
+                            Feedback
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
@@ -125,7 +121,5 @@ const AllAssignments = () => {
     </div>
   );
 };
-
-AllAssignments.propTypes = {};
 
 export default AllAssignments;

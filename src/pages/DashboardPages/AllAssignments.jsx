@@ -6,11 +6,13 @@ import { useState } from "react";
 import fileDownload from "js-file-download";
 
 const AllAssignments = () => {
-  const { userdb } = useUser(); // Extract role and email
+  const { userdb } = useUser();
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
 
   const [selectedClassName, setSelectedClassName] = useState("");
+  const [selectedAssignmentName, setSelectedAssignmentName] = useState("");
+  const [studentName, setStudentName] = useState("");
 
   // get role-based assignment submissions
   const {
@@ -18,12 +20,10 @@ const AllAssignments = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["user-submissions", user?.email, userdb?.role],
+    queryKey: ["user-submissions", user?.email, userdb?.role, selectedClassName, selectedAssignmentName, studentName],
     queryFn: async () => {
       if (!user?.email || !userdb?.role) return [];
-      const res = await axiosPublic.get("/classes/user-submissions", {
-        params: { email: user?.email, role: userdb?.role },
-      });
+      const res = await axiosPublic.get(`/classes/user-submissions?email=${user?.email}&&role=${userdb?.role}&&className=${selectedClassName}&&assignmentName=${selectedAssignmentName}&&search=${studentName}`);
       return res.data.submissions;
     },
     enabled: !!user?.email && !!userdb?.role,
@@ -45,7 +45,6 @@ const AllAssignments = () => {
       })
       .catch((error) => {
         console.error("Error downloading file:", error);
-        alert("Failed to download the assignment. Please try again.");
       });
   };
 
@@ -58,20 +57,50 @@ const AllAssignments = () => {
 
   return (
     <div className="flex flex-col h-full w-full p-4 bg-gray-100">
-      {/* Class Selection Dropdown */}
-      <select
-        className="select select-info w-full max-w-xs mb-4"
-        onChange={(e) => setSelectedClassName(e.target.value)}
-      >
-        <option defaultValue>Select Class</option>
-        {submissions
-          .map((sub) => sub.className)
-          .map((clsName, idx) => (
-            <option key={idx} value={clsName}>
-              {clsName}
-            </option>
-          ))}
-      </select>
+      <div className="flex gap-1 flex-col lg:flex-row">
+        {/* Class Selection Dropdown */}
+        <select
+          className="select select-info w-full max-w-xs mb-4"
+          onChange={(e) => setSelectedClassName(e.target.value)}
+          value={selectedClassName}
+        >
+          <option value="">Select Class</option>
+          {submissions
+            .map((sub) => sub.className)
+            .map((clsName, idx) => (
+              <option key={idx} value={clsName}>
+                {clsName}
+              </option>
+            ))}
+        </select>
+
+        {/* Assignment Selection Dropdown */}
+        <select
+          className="select select-info w-full max-w-xs mb-4"
+          onChange={(e) => {setSelectedAssignmentName(e.target.value)}}
+          value={selectedAssignmentName}
+        >
+          <option value="">Select Assignment</option>
+          {submissions
+            .map((sub) => sub.assignmentName)
+            .map((assignment, idx) => (
+              <option key={idx} value={assignment}>
+                {assignment}
+              </option>
+            ))}
+        </select>
+      </div>
+
+      {/* Search bar to search student */}
+      <input
+        onChange={(e) => {
+          e.preventDefault();
+          setStudentName(e.target.value)}}
+          value={studentName}
+        type="text"
+        placeholder="Student Name"
+        className="input input-bordered input-info w-full mb-4"
+      />
 
       <div className="flex-grow overflow-hidden">
         <div className="overflow-x-auto h-full border rounded">
@@ -87,13 +116,7 @@ const AllAssignments = () => {
               </tr>
             </thead>
             <tbody>
-              {submissions
-                .filter(
-                  (sub) =>
-                    selectedClassName === "" ||
-                    sub.className === selectedClassName
-                )
-                .map((submission, index) => (
+              {submissions.map((submission, index) => (
                   <tr key={submission._id} className="hover:bg-gray-200">
                     <td className="p-2 text-center">{index + 1}</td>
                     <td className="p-2">{submission.assignmentName}</td>

@@ -12,8 +12,8 @@ const NavDashboard = ({ handleToggleDrawer }) => {
   const { userdb } = useUser();
   console.log(userdb);
   return (
-    <div className="flex  sticky top-4 z-50 w-full justify-center mb-2">
-      <div className="navbar container mx-auto bg-base-100 shadow rounded-2xl py-4  z-50 bg-white/10 backdrop-blur-md bg-opacity-15">
+    <div className="flex justify-center mt-2">
+      <div className="navbar w-[90%] mx-auto bg-base-100 shadow rounded-2xl py-4 fixed z-50 bg-white/10 backdrop-blur-md bg-opacity-15">
         {/* Logo Section */}
         <div className="container mx-auto">
           <div className="flex-1 flex items-center">
@@ -41,7 +41,14 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                 className="btn btn-ghost btn-circle avatar"
               >
                 <div className="w-10 rounded-full">
-                  <img alt="User Avatar" src={user.photoURL} />
+                  <img
+                    alt="User Avatar"
+                    src={
+                      user?.photoURL
+                        ? user.photoURL
+                        : "https://i.postimg.cc/CLkQzVS1/user-1.png"
+                    }
+                  />
                 </div>
               </div>
               <ul

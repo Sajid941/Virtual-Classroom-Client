@@ -17,7 +17,7 @@ const Dashboard = () => {
       <NavDashboard handleToggleDrawer={handleToggleDrawer} />
 
       {/* Responsive Layout */}
-      <div className="flex flex-col md:flex-row p-4 w-full justify-between container mx-auto gap-5 mt-8">
+      <div className="flex flex-col md:flex-row p-4 w-full justify-between container mx-auto gap-5 mt-24">
         
         {/* Drawer for mobile and tablet view */}
         <aside className="md:hidden">

@@ -10,33 +10,25 @@ const Dashboard = () => {
   const handleToggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
-
   return (
     <>
-      {/* Navbar */}
       <NavDashboard handleToggleDrawer={handleToggleDrawer} />
-
-      {/* Responsive Layout */}
-      <div className="flex flex-col md:flex-row p-4 w-full justify-between container mx-auto gap-5 mt-8">
+      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-10 pt-16 md:pt-28 px-5 md:px-10 lg:px-20">
+        <aside className="">
+          <Drawer
+            isDrawerOpen={isDrawerOpen}
+            handleToggleDrawer={handleToggleDrawer}
+          />
+        </aside>
         
-        {/* Drawer for mobile and tablet view */}
-        <aside className="md:hidden">
-          <Drawer isDrawerOpen={isDrawerOpen} handleToggleDrawer={handleToggleDrawer} />
-        </aside>
-
-        {/* Sidebar (visible on larger screens) */}
-        <aside className="hidden md:block md:basis-2/12">
-          <Drawer isDrawerOpen={isDrawerOpen} handleToggleDrawer={handleToggleDrawer} />
-        </aside>
-
-        {/* Main content area */}
-        <main className="flex-grow md:flex-initial md:basis-6/12 z-40">
+        <main className="md:col-span-2 lg:col-span-2 xl:ml-0 md:ml-80  2xl:ml-2">
           <Outlet />
         </main>
 
-        {/* Sidebar for extra content on larger screens */}
-        <aside className="hidden xl:block xl:basis-3/12">
-          <DashboardSidebar />
+        <aside className="hidden xl:block pr-10">
+          <div className="fixed right-16 h-4/5 border rounded-lg bg-[#004085] text-white py-10 px-5 w-72">
+            <DashboardSidebar />
+          </div>
         </aside>
       </div>
     </>
@@ -44,3 +36,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

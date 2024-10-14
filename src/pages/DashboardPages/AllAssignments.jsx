@@ -4,21 +4,25 @@ import useAuth from "../../CustomHooks/useAuth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { useState } from "react";
 import fileDownload from "js-file-download";
+import AssignmentFeedbackModal from "../../Components/AssignmentFeedbackModal/AssignmentFeedbackModal";
 
 const AllAssignments = () => {
   const { userdb } = useUser();
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
 
+  // states for filtering
   const [selectedClassName, setSelectedClassName] = useState("");
   const [selectedAssignmentName, setSelectedAssignmentName] = useState("");
   const [studentName, setStudentName] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   // get role-based assignment submissions
   const {
     data: submissions = [],
     isLoading,
-    isError,
+    // isError,
   } = useQuery({
     queryKey: ["user-submissions", user?.email, userdb?.role, selectedClassName, selectedAssignmentName, studentName],
     queryFn: async () => {
@@ -95,8 +99,9 @@ const AllAssignments = () => {
       <input
         onChange={(e) => {
           e.preventDefault();
-          setStudentName(e.target.value)}}
-          value={studentName}
+          setStudentName(e.target.value)
+        }}
+        value={studentName}
         type="text"
         placeholder="Student Name"
         className="input input-bordered input-info w-full mb-4"
@@ -139,7 +144,7 @@ const AllAssignments = () => {
                     {userdb?.role === "teacher" ? (
                       <td className="p-2 text-center">
                         {submission.submit_file && (
-                          <button className="bg-green-600 btn btn-sm text-white">
+                          <button className="bg-green-600 btn btn-sm text-white" onClick={()=>setIsModalOpen(true)}>
                             Feedback
                           </button>
                         )}
@@ -153,6 +158,7 @@ const AllAssignments = () => {
           </table>
         </div>
       </div>
+      <AssignmentFeedbackModal isOpen={isModalOpen} onRequestClose={()=>setIsModalOpen(false)}></AssignmentFeedbackModal>
     </div>
   );
 };

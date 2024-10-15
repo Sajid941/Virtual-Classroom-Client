@@ -17,7 +17,6 @@ const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment}) =
   const onSubmit = async () => {
     const formData = new FormData();
 
-    formData.append("assignment_name", title);
     formData.append("student_name", userdb.name);
     formData.append("student_email", userdb.email);
 

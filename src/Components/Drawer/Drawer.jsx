@@ -126,7 +126,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
   };
 
   return (
-    <div className=" top-0   relative">
+    <div className=" top-0  z-50 relative">
       <div className="drawer fixed md:drawer-open">
         <input
           id="my-drawer-2"

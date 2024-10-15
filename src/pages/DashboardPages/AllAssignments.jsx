@@ -18,6 +18,13 @@ const AllAssignments = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  // states for feedback modal
+  const [classId , setClassId] = useState('');
+  const [assignmentId , setAssignmentId] = useState('');
+  const [submissionId , setSubmissionId] = useState('');
+
+  console.log(classId, assignmentId, submissionId);
+  
   // get role-based assignment submissions
   const {
     data: submissions = [],
@@ -144,7 +151,11 @@ const AllAssignments = () => {
                     {userdb?.role === "teacher" ? (
                       <td className="p-2 text-center">
                         {submission.submit_file && (
-                          <button className="bg-green-600 btn btn-sm text-white" onClick={()=>setIsModalOpen(true)}>
+                          <button className="bg-green-600 btn btn-sm text-white" onClick={()=>{setIsModalOpen(true)
+                            setClassId(submission.classID)
+                            setAssignmentId(submission.assignmentId)
+                            setSubmissionId(submission._id)
+                          }}>
                             Feedback
                           </button>
                         )}

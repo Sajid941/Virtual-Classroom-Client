@@ -30,7 +30,7 @@ const Dashboard = () => {
         </aside>
 
         {/* Main content area */}
-        <main className="flex-grow md:flex-initial md:basis-6/12 z-0">
+        <main className="flex-grow md:flex-initial md:basis-6/12 z-40">
           <Outlet />
         </main>
 

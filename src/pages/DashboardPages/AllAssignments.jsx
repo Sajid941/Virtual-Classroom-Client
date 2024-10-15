@@ -16,25 +16,33 @@ const AllAssignments = () => {
   const [selectedAssignmentName, setSelectedAssignmentName] = useState("");
   const [studentName, setStudentName] = useState("");
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // states for feedback modal
-  const [classId , setClassId] = useState('');
-  const [assignmentId , setAssignmentId] = useState('');
-  const [submissionId , setSubmissionId] = useState('');
+  const [classId, setClassId] = useState("");
+  const [assignmentId, setAssignmentId] = useState("");
+  const [submissionId, setSubmissionId] = useState("");
 
-  console.log(classId, assignmentId, submissionId);
-  
   // get role-based assignment submissions
   const {
     data: submissions = [],
     isLoading,
     // isError,
+    refetch
   } = useQuery({
-    queryKey: ["user-submissions", user?.email, userdb?.role, selectedClassName, selectedAssignmentName, studentName],
+    queryKey: [
+      "user-submissions",
+      user?.email,
+      userdb?.role,
+      selectedClassName,
+      selectedAssignmentName,
+      studentName,
+    ],
     queryFn: async () => {
       if (!user?.email || !userdb?.role) return [];
-      const res = await axiosPublic.get(`/classes/user-submissions?email=${user?.email}&&role=${userdb?.role}&&className=${selectedClassName}&&assignmentName=${selectedAssignmentName}&&search=${studentName}`);
+      const res = await axiosPublic.get(
+        `/classes/user-submissions?email=${user?.email}&&role=${userdb?.role}&&className=${selectedClassName}&&assignmentName=${selectedAssignmentName}&&search=${studentName}`
+      );
       return res.data.submissions;
     },
     enabled: !!user?.email && !!userdb?.role,
@@ -67,7 +75,7 @@ const AllAssignments = () => {
     );
 
   return (
-    <div className="flex flex-col h-full w-full p-4 bg-gray-100">
+    <div className="flex flex-col h-full w-full p-4 bg-gray-100 relative">
       <div className="flex gap-1 flex-col lg:flex-row">
         {/* Class Selection Dropdown */}
         <select
@@ -88,7 +96,9 @@ const AllAssignments = () => {
         {/* Assignment Selection Dropdown */}
         <select
           className="select select-info w-full max-w-xs mb-4"
-          onChange={(e) => {setSelectedAssignmentName(e.target.value)}}
+          onChange={(e) => {
+            setSelectedAssignmentName(e.target.value);
+          }}
           value={selectedAssignmentName}
         >
           <option value="">Select Assignment</option>
@@ -106,7 +116,7 @@ const AllAssignments = () => {
       <input
         onChange={(e) => {
           e.preventDefault();
-          setStudentName(e.target.value)
+          setStudentName(e.target.value);
         }}
         value={studentName}
         type="text"
@@ -123,53 +133,66 @@ const AllAssignments = () => {
                 <th className="p-2">Assignment Name</th>
                 <th className="p-2">Student Name</th>
                 <th className="p-2">Submission Date</th>
-                <th className="p-2">Download</th>
+                <th className="p-2">Marks</th>
                 <th className="p-2">Feedback</th>
+                <th className="p-2">Action</th>
+                <th className="p-2">Action</th>
               </tr>
             </thead>
             <tbody>
               {submissions.map((submission, index) => (
-                  <tr key={submission._id} className="hover:bg-gray-200">
-                    <td className="p-2 text-center">{index + 1}</td>
-                    <td className="p-2">{submission.assignmentName}</td>
-                    <td className="p-2">{submission.student_name}</td>
-                    <td className="p-2">{submission.submitAt.split("T")[0]}</td>
+                <tr key={submission._id} className="hover:bg-gray-200">
+                  <td className="p-2 text-center">{index + 1}</td>
+                  <td className="p-2">{submission.assignmentName}</td>
+                  <td className="p-2">{submission.student_name}</td>
+                  <td className="p-2">{submission.submitAt.split("T")[0]}</td>
+                  <td className="p-2">{submission.student_marks && submission.student_marks}</td>
+                  <td className="p-2">{submission.assignment_feedback && submission.assignment_feedback}</td>
+                  <td className="p-2 text-center">
+                    {submission.submit_file && (
+                      <button
+                        onClick={() =>
+                          handleDownloadSubmitAssignment(submission.submit_file)
+                        }
+                        className="bg-[#004085] btn btn-sm text-white"
+                      >
+                        Download
+                      </button>
+                    )}
+                  </td>
+                  {userdb?.role === "teacher" ? (
                     <td className="p-2 text-center">
                       {submission.submit_file && (
                         <button
-                          onClick={() =>
-                            handleDownloadSubmitAssignment(
-                              submission.submit_file
-                            )
-                          }
-                          className="bg-[#004085] btn btn-sm text-white"
+                          className="bg-green-600 btn btn-sm text-white"
+                          onClick={() => {
+                            setIsModalOpen(true);
+                            setClassId(submission.classID);
+                            setAssignmentId(submission.assignmentId);
+                            setSubmissionId(submission._id);
+                          }}
                         >
-                          Download
+                          Feedback
                         </button>
                       )}
                     </td>
-                    {userdb?.role === "teacher" ? (
-                      <td className="p-2 text-center">
-                        {submission.submit_file && (
-                          <button className="bg-green-600 btn btn-sm text-white" onClick={()=>{setIsModalOpen(true)
-                            setClassId(submission.classID)
-                            setAssignmentId(submission.assignmentId)
-                            setSubmissionId(submission._id)
-                          }}>
-                            Feedback
-                          </button>
-                        )}
-                      </td>
-                    ) : (
-                      <td>No Feedback</td>
-                    )}
-                  </tr>
-                ))}
+                  ) : (
+                    <td>No Feedback</td>
+                  )}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       </div>
-      <AssignmentFeedbackModal isOpen={isModalOpen} onRequestClose={()=>setIsModalOpen(false)}></AssignmentFeedbackModal>
+      <AssignmentFeedbackModal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        classId={classId}
+        assignmentId={assignmentId}
+        submissionId={submissionId}
+        refetch={refetch}
+      ></AssignmentFeedbackModal>
     </div>
   );
 };

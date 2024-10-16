@@ -1,4 +1,4 @@
-import  { useContext } from "react";
+import React, { useContext } from "react";
 import Modal from "react-modal";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
@@ -54,7 +54,7 @@ const SubmitQuizModal = ({
       reset(); // Reset the form
     } catch (error) {
       console.error("Error submitting quiz:", error);
-      toast.error("Failed to submit quiz. Please try again.",error);
+    toast.error("Failed to submit quiz. Please try again.",error);
     }
   };
 

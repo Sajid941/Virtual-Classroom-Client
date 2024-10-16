@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
-import { set, useForm } from "react-hook-form";
+import {  useForm } from "react-hook-form";
 import { FaGithub } from "react-icons/fa";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import useAuth from "../../CustomHooks/useAuth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
@@ -16,7 +16,6 @@ const SignIn = () => {
     const { logInUser, signInWithGoogle } = useAuth();
     const axiosPublic = useAxiosPublic();
     const navigate = useNavigate();
-    const location = useLocation();
     const { user } = useContext(AuthContext);
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -25,7 +24,7 @@ const SignIn = () => {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm(); // Form handling
+    } = useForm(); 
 
     // User login submission handler with email and password
     const onSubmit = async (data) => {
@@ -44,7 +43,7 @@ const SignIn = () => {
             } else {
                 toast.error(
                     "An error occurred during login. Please try again."
-                )
+                );
             }
         }
     };
@@ -93,6 +92,9 @@ const SignIn = () => {
     }
     return (
         <div className="flex justify-center items-center bg-[url('https://i.ibb.co.com/rsBqjVJ/sign-In-backround.png')] pt-5 min-h-screen bg-cover bg-center bg-no-repeat">
+            <Helmet>
+                <title>Sign In | Class Net</title>
+            </Helmet>
             <div className="flex items-center border border-gray-400/35 w-full max-w-sm mx-auto overflow-hidden backdrop-blur-sm bg-opacity-30 rounded-lg shadow-lg lg:max-w-4xl">
                 <div className="hidden p-10 lg:block lg:w-1/2">
                     <img src={sideImg} alt="" />

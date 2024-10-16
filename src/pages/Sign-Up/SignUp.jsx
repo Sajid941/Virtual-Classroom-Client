@@ -17,7 +17,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 const SignUp = () => {
     // data from context api
-    const { createUser , signInWithGoogle } = useAuth();
+    const { createUser, signInWithGoogle } = useAuth();
     const navigate = useNavigate();
     const axiosPublic = useAxiosPublic();
 
@@ -92,43 +92,44 @@ const SignUp = () => {
         }
     };
 
-
     const handleGoogleSignIn = async () => {
-      try {
-          const result = await signInWithGoogle();
-          const userData = {
-              email: result.user.email,
-              name: result.user.displayName,
-          };
+        try {
+            const result = await signInWithGoogle();
+            const userData = {
+                email: result.user.email,
+                name: result.user.displayName,
+            };
 
-          // Send user data to backend for registration
-          const response = await axiosPublic.post(
-              "/users/register",
-              userData,
-              {
-                  withCredentials: true,
-              }
-          );
+            // Send user data to backend for registration
+            const response = await axiosPublic.post(
+                "/users/register",
+                userData,
+                {
+                    withCredentials: true,
+                }
+            );
 
-          // Handle response: navigate to dashboard if user exists or is newly created
-          if (response.status === 201 || response.status === 200) {
-              navigate("/dashboard");
-          } else {
-              console.error("Unexpected response:", response);
-          }
-      } catch (error) {
-          console.error("Error during Google sign-in:", error);
-      }
-  };
+            // Handle response: navigate to dashboard if user exists or is newly created
+            if (response.status === 201 || response.status === 200) {
+                navigate("/dashboard");
+            } else {
+                console.error("Unexpected response:", response);
+            }
+        } catch (error) {
+            console.error("Error during Google sign-in:", error);
+        }
+    };
 
+    const handleGithubSignIn = async () => {
+        toast.error("Github sign-in is not available at the moment.");
+    };
+
+    const errorsKeys = Object.keys(errors);
     useEffect(() => {
-      const errorsKeys = Object.keys(errors);
-      console.log(errorsKeys);
-      
         if (errorsKeys.length > 0) {
             setLoading(false);
         }
-    }, [errors]);
+    }, [errorsKeys]);
 
     if (user) {
         navigate("/");
@@ -416,7 +417,7 @@ const SignUp = () => {
 
                             <div className="flex flex-col lg:flex-row gap-5">
                                 <a
-                                onClick={handleGoogleSignIn}
+                                    onClick={handleGoogleSignIn}
                                     href="#"
                                     className="flex items-center justify-center mt-4 border-gray-400/30 transition-colors duration-300 transform border rounded-lg hover:bg-transparent w-full"
                                 >
@@ -449,11 +450,12 @@ const SignUp = () => {
                                     </span>
                                 </a>
                                 <a
+                                    onClick={handleGithubSignIn}
                                     href="#"
                                     className="flex items-center justify-center mt-4 border-gray-400/30 transition-colors duration-300 transform border rounded-lg hover:bg-transparent w-full"
                                 >
                                     <div className="px-4 py-2">
-                                    <FaGithub size={20}/>
+                                        <FaGithub size={20} />
                                     </div>
 
                                     <span className="w-5/6 px-4 py-3 font-bold text-center">

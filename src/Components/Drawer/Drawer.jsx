@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import useRole from "../../CustomHooks/useRole";
 import useUser from "../../CustomHooks/useUser";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+import toast from "react-hot-toast";
 
 const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
   const [classCode, setClassCode] = useState(""); // state for storing class code
@@ -76,7 +77,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
       }
     } catch (error) {
       console.error("Error posting data:", error);
-      alert("Failed to post data");
+      toast.error("Failed to post data");
     }
   };
 
@@ -114,12 +115,12 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
             console.error("Failed to add the student to the class");
           }
         } else {
-          alert("Class not found.");
+          toast.error("Class not found.");
         }
       }
     } catch (error) {
       console.error("Error joining class:", error);
-      alert("An error occurred while joining the class.");
+      toast.error("An error occurred while joining the class.");
     }
 
     setIsJoinClassFormOpen(false);

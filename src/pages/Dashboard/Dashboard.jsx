@@ -3,6 +3,7 @@ import Drawer from "../../Components/Drawer/Drawer";
 import { Outlet } from "react-router-dom";
 import DashboardSidebar from "../../Components/DashboardSidebar/DashboardSidebar";
 import NavDashboard from "../../Components/DashboardComponent/NavDashboard";
+import { Toaster } from "react-hot-toast";
 
 const Dashboard = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -38,6 +39,7 @@ const Dashboard = () => {
         <aside className="hidden xl:block xl:basis-3/12">
           <DashboardSidebar />
         </aside>
+        <Toaster/>
       </div>
     </>
   );

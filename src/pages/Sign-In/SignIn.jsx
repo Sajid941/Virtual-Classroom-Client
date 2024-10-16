@@ -78,7 +78,7 @@ const SignIn = () => {
 
     // Placeholder for GitHub sign-in (optional)
     const handleGithubSignIn = () => {
-        alert("GitHub Sign In");
+        toast.error("GitHub sign-in is not available at the moment.");
     };
 
     useEffect(() => {

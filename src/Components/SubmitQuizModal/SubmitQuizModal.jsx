@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import  { useContext } from "react";
 import Modal from "react-modal";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
-import { toast } from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
 
 const SubmitQuizModal = ({
   isOpen,
@@ -48,13 +48,13 @@ const SubmitQuizModal = ({
       });
       console.log(sub);
 
-      alert(`you have got ${sub.data.quizzes[0].submissions[0].score}`)
+      toast.success(`you have got ${sub.data.quizzes[0].submissions[0].score}`)
       // Refetch the quiz data after submission
       refetch();
       reset(); // Reset the form
     } catch (error) {
       console.error("Error submitting quiz:", error);
-      alert("Failed to submit quiz. Please try again.",error);
+      toast.error("Failed to submit quiz. Please try again.",error);
     }
   };
 
@@ -86,6 +86,7 @@ const SubmitQuizModal = ({
           Submit
         </button>
       </form>
+      <Toaster/>
     </Modal>
   );
 };

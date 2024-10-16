@@ -81,11 +81,11 @@ console.log(sort);
               to={`/forum/discussion/${discussion?.slug}`}
               className="flex items-start shadow-md mb-4 p-4 rounded-lg shadow-gray-400 transition-all border hover:shadow-gray-500 hover:-translate-y-1 w-full relative"
             >
-              <div className="basis-1/6">
+              <div className="">
                 <img
                   src={discussion?.author?.profilePic ? discussion.author.profilePic : "https://i.postimg.cc/Wb62RdHN/user.png"}
-                  alt={discussion?.author?.name || "Unknown Author"} // Use a fallback name
-                  className="w-20 h-20 rounded-full mr-2"
+                  alt={discussion?.author?.name || "Unknown Author"} 
+                  className="md:w-20 md:h-20 w-16 h-16 rounded-full mr-2"
                 />
               </div>
               <div className="basis-4/6">

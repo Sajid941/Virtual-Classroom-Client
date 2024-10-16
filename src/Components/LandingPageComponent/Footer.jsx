@@ -31,12 +31,6 @@ const Footer = () => {
                     >
                         Forum
                     </NavLink>
-                    <NavLink
-                        to="/contact"
-                        className="link link-hover text-gray-400 hover:text-white transition duration-200"
-                    >
-                        Contact
-                    </NavLink>
                 </nav>
 
                 {/* Social Media Links */}

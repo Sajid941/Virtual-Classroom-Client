@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { MdAssignmentAdd } from "react-icons/md";
 import Modal from "react-modal";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
 const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
   const { register, handleSubmit, reset } = useForm();
@@ -37,6 +38,13 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
 
       reset();
       onRequestClose();
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Assignment posted successfully",
+        showConfirmButton: false,
+        timer: 1500
+      });
       refetch();
     } catch (error) {
       console.error("assignment not added", error);

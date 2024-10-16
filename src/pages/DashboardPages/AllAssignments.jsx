@@ -136,7 +136,7 @@ const AllAssignments = () => {
                 <th className="p-2">Marks</th>
                 <th className="p-2">Feedback</th>
                 <th className="p-2">Action</th>
-                <th className="p-2">Action</th>
+                <th className="p-2">{userdb?.role === "teacher" && "Action"}</th>
               </tr>
             </thead>
             <tbody>
@@ -160,7 +160,7 @@ const AllAssignments = () => {
                       </button>
                     )}
                   </td>
-                  {userdb?.role === "teacher" ? (
+                  {userdb?.role === "teacher" && (
                     <td className="p-2 text-center">
                       {submission.submit_file && (
                         <button
@@ -176,8 +176,6 @@ const AllAssignments = () => {
                         </button>
                       )}
                     </td>
-                  ) : (
-                    <td>No Feedback</td>
                   )}
                 </tr>
               ))}

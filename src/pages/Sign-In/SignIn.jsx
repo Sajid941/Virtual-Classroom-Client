@@ -90,7 +90,7 @@ const SignIn = () => {
         return navigate("/");
     }
     return (
-        <div className="flex justify-center items-center bg-black bg-[url('https://i.postimg.cc/dt26S0d1/Blue-and-White-Neon-Tech-Online-Sale-Cyber-Monday-Banner-2.png')] pt-5 min-h-screen bg-cover bg-center bg-no-repeat">
+        <div className="flex justify-center items-center bg-black bg-[url('https://i.postimg.cc/dt26S0d1/yellow-and-White-Neon-Tech-Online-Sale-Cyber-Monday-Banner-2.png')] pt-5 min-h-screen bg-cover bg-center bg-no-repeat">
             <Helmet>
                 <title>Sign In | Class Net</title>
             </Helmet>
@@ -179,7 +179,7 @@ const SignIn = () => {
                             </label>
                             <input
                                 id="LoggingEmailAddress"
-                                className="block w-full px-4 py-2 text-white bg-transparent border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
+                                className="block w-full px-4 py-2 text-white bg-transparent border rounded-lg focus:border-yellow-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-yellow-300"
                                 placeholder="john@example.com"
                                 type="email"
                                 name="email"
@@ -210,7 +210,7 @@ const SignIn = () => {
                             <div className="relative">
                                 <input
                                     id="loggingPassword"
-                                    className="block w-full px-4 py-2 text-white bg-transparent border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
+                                    className="block w-full px-4 py-2 text-white bg-transparent border rounded-lg focus:border-yellow-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-yellow-300"
                                     placeholder="••••••••"
                                     type={showPassword ? "text" : "password"}
                                     name="password"

@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from "react";
 import useAuth from "../../CustomHooks/useAuth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
-import logo from "../../assets/classNet.png";
 import sideImg from "../../assets/images/SignIn-pana .svg";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
@@ -91,7 +90,7 @@ const SignIn = () => {
         return navigate("/");
     }
     return (
-        <div className="flex justify-center items-center bg-[url('https://i.ibb.co.com/rsBqjVJ/sign-In-backround.png')] pt-5 min-h-screen bg-cover bg-center bg-no-repeat">
+        <div className="flex justify-center items-center bg-black bg-[url('https://i.postimg.cc/dt26S0d1/Blue-and-White-Neon-Tech-Online-Sale-Cyber-Monday-Banner-2.png')] pt-5 min-h-screen bg-cover bg-center bg-no-repeat">
             <Helmet>
                 <title>Sign In | Class Net</title>
             </Helmet>
@@ -104,7 +103,7 @@ const SignIn = () => {
                     <div className="flex justify-center mx-auto">
                         <img
                             className="w-auto h-10 rounded-full sm:h-8"
-                            src={logo}
+                            src={"/favicon.png"}
                             alt="logo"
                         />
                     </div>

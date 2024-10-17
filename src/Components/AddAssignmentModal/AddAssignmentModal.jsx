@@ -6,7 +6,7 @@ import Modal from "react-modal";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import Swal from "sweetalert2";
 
-const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
+const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch }) => {
   const { register, handleSubmit, reset } = useForm();
 
   const [file, setFile] = useState();
@@ -14,8 +14,9 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
 
   const onSubmit = async (data) => {
     const formData = new FormData();
+    const title = className + " | " + data.title;
 
-    formData.append("title", data.title);
+    formData.append("title", title);
     formData.append("description", data.description);
     formData.append("marks", data.marks);
     formData.append("end", data.dueDate);
@@ -136,6 +137,7 @@ AddAssignmentModal.propTypes = {
   onRequestClose: PropTypes.func,
   classId: PropTypes.string,
   refetch: PropTypes.func,
+  className: PropTypes.string
 };
 
 export default AddAssignmentModal;

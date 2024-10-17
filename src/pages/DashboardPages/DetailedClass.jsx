@@ -350,6 +350,7 @@ const DetailedClass = () => {
                                             setIsAssignmentModalOpen(false)
                                         }
                                         classId={classData.classId}
+                                        className={classData.className}
                                         refetch={refetch}
                                     />
                                 </div>

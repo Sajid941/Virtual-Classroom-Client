@@ -146,7 +146,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
             <ul className="space-y-5 p-5 pl-8">
               {/* Sidebar Links */}
               <li>
-                <NavLink to="/dashboard" className="dashboard-link">
+                <NavLink to="/dashboard/dashboardHome" className="dashboard-link">
                   <IoHomeOutline size={25} />
                   Home
                 </NavLink>

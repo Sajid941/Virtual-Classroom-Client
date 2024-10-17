@@ -271,7 +271,7 @@ const DetailedClass = () => {
                                                 </button>
                                             )}
 
-                                            {assignment.fileUrl && (
+                                            {(assignment.fileUrl && role === "teacher") && (
                                                 <button
                                                     onClick={() =>
                                                         handleDeleteFile(
@@ -324,6 +324,7 @@ const DetailedClass = () => {
                                                         classId={
                                                             classData.classId
                                                         }
+                                                        refetch={refetch}
                                                     />
                                                 </div>
                                             )}

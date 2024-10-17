@@ -166,7 +166,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
               {role === "teacher" && (
                 <>
                   <li>
-                    <NavLink to="/schedules" className="dashboard-link">
+                    <NavLink to="/dashboard/calendar" className="dashboard-link">
                       <AiOutlineSchedule size={25} />
                       Schedules
                     </NavLink>

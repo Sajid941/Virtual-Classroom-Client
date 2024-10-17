@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { MdAssignmentAdd } from "react-icons/md";
 import Modal from "react-modal";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
 const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
   const { register, handleSubmit, reset } = useForm();
@@ -17,7 +18,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
     formData.append("title", data.title);
     formData.append("description", data.description);
     formData.append("marks", data.marks);
-    formData.append("dueDate", data.dueDate);
+    formData.append("end", data.dueDate);
     if (file) {
       formData.append("file", file);
     }
@@ -37,6 +38,13 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
 
       reset();
       onRequestClose();
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Assignment posted successfully",
+        showConfirmButton: false,
+        timer: 1500
+      });
       refetch();
     } catch (error) {
       console.error("assignment not added", error);
@@ -102,18 +110,20 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
 
           <div className="flex justify-center">
             <button
-              type="button"
-              onClick={onRequestClose}
-              className="mr-2 px-4 py-2 bg-gray-300 rounded"
-            >
-              Cancel
-            </button>
-            <button
               type="submit"
-              className="px-4 py-2 bg-[#004085] text-white rounded"
+              className="mr-2 px-4 py-2 bg-[#004085] text-white rounded"
             >
               Submit
             </button>
+
+            <button
+              type="button"
+              onClick={onRequestClose}
+              className="px-4 py-2 bg-gray-300 rounded"
+            >
+              Cancel
+            </button>
+            
           </div>
         </form>
       </Modal>

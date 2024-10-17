@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import useUser from "../../CustomHooks/useUser";
 import useAxiosPrivate from "../../CustomHooks/useAxiosPrivate";
+import Swal from "sweetalert2";
 
 const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment}) => {
   const { register, handleSubmit, reset } = useForm();
@@ -30,6 +31,13 @@ const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment}) =
         console.log("Submitted successfully", response.data);
         reset();
         onRequestClose();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Submitted successfully",
+          showConfirmButton: false,
+          timer: 2000
+        });
         refetch();
       }
     } catch (error) {

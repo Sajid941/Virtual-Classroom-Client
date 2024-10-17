@@ -39,7 +39,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
       reset();
       onRequestClose();
       Swal.fire({
-        position: "top-end",
+        position: "center",
         icon: "success",
         title: "Assignment posted successfully",
         showConfirmButton: false,

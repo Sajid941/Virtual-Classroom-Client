@@ -6,13 +6,13 @@ import useUser from "../../CustomHooks/useUser";
 import useAxiosPrivate from "../../CustomHooks/useAxiosPrivate";
 import Swal from "sweetalert2";
 
-const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment}) => {
+const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment, refetch}) => {
   const { register, handleSubmit, reset } = useForm();
   const [file, setFile] = useState(null);
 
   const axiosPrivate = useAxiosPrivate();
 
-  const { userdb, refetch } = useUser();
+  const { userdb } = useUser();
   const { title, _id } = assignment;
 
   const onSubmit = async () => {
@@ -81,14 +81,14 @@ const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment}) =
         <div className="flex justify-center gap-1">
           <button
             type="submit"
-            className="px-4 py-2 bg-[#004085] text-white rounded"
+            className="px-4 py-2 bg-[#004085] text-white hover:bg-gray-400 rounded-md"
           >
             Submit
           </button>
           <button
             type="button"
             onClick={onRequestClose}
-            className="mr-2 px-4 py-2 bg-gray-300 rounded"
+            className="mr-2 px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md"
           >
             Cancel
           </button>
@@ -103,6 +103,7 @@ SubmitAssignmentModal.propTypes = {
   onRequestClose: PropTypes.func,
   assignment: PropTypes.object,
   classId: PropTypes.string,
+  refetch: PropTypes.func
 };
 
 export default SubmitAssignmentModal;

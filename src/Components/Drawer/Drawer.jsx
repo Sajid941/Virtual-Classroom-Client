@@ -127,8 +127,8 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
   };
 
   return (
-    <div className=" top-0 z-50 relative">
-      <div className="drawer fixed md:drawer-open">
+    <div className="">
+      <div className="drawer w-64 fixed md:drawer-open">
         <input
           id="my-drawer-2"
           type="checkbox"
@@ -136,14 +136,6 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
           checked={isDrawerOpen}
           onChange={handleToggleDrawer}
         />
-        <div className="drawer-content flex flex-col items-center md:z-10 justify-center">
-          <label
-            htmlFor="my-drawer-2"
-            className="btn btn-primary drawer-button hidden"
-          >
-            Open drawer
-          </label>
-        </div>
         <div className="drawer-side ">
           <label
             htmlFor="my-drawer-2"
@@ -222,7 +214,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
         <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 z-50">
           <form
             onSubmit={handleSubmitCreateClass(onSubmitCreateClass)}
-            className="bg-white p-6 rounded-lg shadow-lg w-2/5 z-50"
+            className="bg-white p-6 rounded-lg shadow-lg md:w-2/5"
           >
             <h2 className="text-xl font-bold mb-4">Create a Class</h2>
             {/* Form Fields */}
@@ -309,7 +301,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
         <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 z-50">
           <form
             onSubmit={handleSubmitJoinClass(onSubmitJoinClass)}
-            className="bg-white p-6 rounded-lg shadow-lg w-2/5 z-50"
+            className="bg-white p-6 rounded-lg shadow-lg md:w-2/5"
           >
             <h2 className="text-xl font-bold mb-4">Join a Class</h2>
 
@@ -354,7 +346,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
       {/* Modal for displaying class code */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-2/5 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-2/5">
             <h2 className="text-xl font-bold mb-4">Class Created Successfully</h2>
             <p>Your class code is: <strong>{classCode}</strong></p>
             <div className="flex justify-end mt-4">

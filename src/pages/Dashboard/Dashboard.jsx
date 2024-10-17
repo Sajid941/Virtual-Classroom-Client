@@ -21,7 +21,7 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row p-4 w-full justify-between container mx-auto gap-5 mt-24">
         
         {/* Drawer for mobile and tablet view */}
-        <aside className="md:hidden">
+        <aside className="md:hidden w-64">
           <Drawer isDrawerOpen={isDrawerOpen} handleToggleDrawer={handleToggleDrawer} />
         </aside>
 
@@ -31,7 +31,7 @@ const Dashboard = () => {
         </aside>
 
         {/* Main content area */}
-        <main className="flex-grow md:flex-initial md:basis-6/12 z-30">
+        <main className="flex-grow md:flex-initial md:basis-6/12">
           <Outlet />
         </main>
 

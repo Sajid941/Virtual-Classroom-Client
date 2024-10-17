@@ -64,7 +64,7 @@ const router = createBrowserRouter([
 
     // Dashboard Routes
     {
-        path: "/dashboard",
+        path: "dashboard",
         element: (
             <PrivateRoute>
                 <Dashboard />
@@ -73,17 +73,17 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             {
-                path: "/dashboard",
+                path: "dashboardHome",
 
                 element: <DashboardHome />,
             },
             {
-                path: "/dashboard/classes",
+                path: "classes",
 
                 element: <DashboardBody />,
             },
             {
-                path: "/dashboard/assignments",
+                path: "assignments",
 
                 element: <AllAssignments />,
             },

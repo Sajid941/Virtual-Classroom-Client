@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import Modal from "react-modal";
 import { useForm } from "react-hook-form";
 import useAxiosPrivate from "../../CustomHooks/useAxiosPrivate";
+import Swal from "sweetalert2";
 
 const AssignmentFeedbackModal = ({
   isOpen,
@@ -27,6 +28,13 @@ const AssignmentFeedbackModal = ({
       if (res.data) {
         reset();
         onRequestClose();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Feedback has been saved",
+          showConfirmButton: false,
+          timer: 2000
+        });
         refetch();
       }
     } catch (error) {

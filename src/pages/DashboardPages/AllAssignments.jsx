@@ -22,7 +22,7 @@ const AllAssignments = () => {
   const [classId, setClassId] = useState("");
   const [assignmentId, setAssignmentId] = useState("");
   const [submissionId, setSubmissionId] = useState("");
-
+  
   // get role-based assignment submissions
   const {
     data: submissions = [],
@@ -46,7 +46,7 @@ const AllAssignments = () => {
       return res.data.submissions;
     },
     enabled: !!user?.email && !!userdb?.role,
-  });
+  });  
 
   // Download submitted assignment file
   const handleDownloadSubmitAssignment = async (filename) => {
@@ -76,6 +76,7 @@ const AllAssignments = () => {
 
   return (
     <div className="flex flex-col h-full w-full p-4 bg-gray-100 relative">
+      <h2 className="text-lg lg:text-3xl font-semibold text-center mb-6">Submitted Assignments</h2>
       <div className="flex gap-1 flex-col lg:flex-row">
         {/* Class Selection Dropdown */}
         <select
@@ -136,11 +137,11 @@ const AllAssignments = () => {
                 <th className="p-2">Marks</th>
                 <th className="p-2">Feedback</th>
                 <th className="p-2">Action</th>
-                <th className="p-2">Action</th>
+                <th className="p-2">{userdb?.role === "teacher" && "Action"}</th>
               </tr>
             </thead>
             <tbody>
-              {submissions.map((submission, index) => (
+              {submissions.length ? submissions.map((submission, index) => (
                 <tr key={submission._id} className="hover:bg-gray-200">
                   <td className="p-2 text-center">{index + 1}</td>
                   <td className="p-2">{submission.assignmentName}</td>
@@ -160,7 +161,7 @@ const AllAssignments = () => {
                       </button>
                     )}
                   </td>
-                  {userdb?.role === "teacher" ? (
+                  {userdb?.role === "teacher" && (
                     <td className="p-2 text-center">
                       {submission.submit_file && (
                         <button
@@ -176,11 +177,9 @@ const AllAssignments = () => {
                         </button>
                       )}
                     </td>
-                  ) : (
-                    <td>No Feedback</td>
                   )}
                 </tr>
-              ))}
+              )) : <tr><td colSpan={8} className="py-4 text-center">No submissions yet</td></tr>}
             </tbody>
           </table>
         </div>

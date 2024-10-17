@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useUser from "../../CustomHooks/useUser";
 import { AuthContext } from "../../Provider/AuthProvider";
@@ -11,6 +11,9 @@ import useAxiosPrivate from './../../CustomHooks/useAxiosPrivate';
 const DashboardHome = () => {
   const { userdb } = useUser();
   const { role } = useRole();
+
+  const [assignmentCount, setAssignmentCount]= useState(0);
+
   const axiosPublic = useAxiosPublic();
   const axiosPrivate =useAxiosPrivate()
   console.log(role);
@@ -31,6 +34,13 @@ const DashboardHome = () => {
     enabled: !!userdb?.email,
   });
 
+  // Calculating total assignments
+  useEffect(()=>{
+    const totalAssignments = classes.reduce((acc, cls)=> acc + cls.assignments.length, 0)
+
+    setAssignmentCount(totalAssignments)
+  }, [classes])
+  
   // Handle loading state
   if (isLoading) {
     return <Loading />;
@@ -48,7 +58,7 @@ const DashboardHome = () => {
   }
 
   return (
-    <div className="w-full basis-3/5 p-4 rounded-xl min-h-[80vh] bg-secondary z-40">
+    <div className="w-full basis-3/5 p-4 rounded-xl min-h-[80vh] bg-secondary ">
       <div className="topText mb-4">
         <h1 className="text-2xl font-bold text-white">
           Welcome Back, {userdb?.name}
@@ -69,7 +79,7 @@ const DashboardHome = () => {
             <FaTasks className="text-3xl text-green-500 mr-3" />
             <div>
               <h2 className="text-lg font-semibold">Assignments</h2>
-              <p className="text-2xl font-bold">0</p>
+              <p className="text-2xl font-bold">{assignmentCount}</p>
             </div>
           </div>
         </div>

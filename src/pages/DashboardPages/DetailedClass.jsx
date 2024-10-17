@@ -20,6 +20,7 @@ import SubmitAssignmentModal from "../../Components/SubmitAssignmentModal/Submit
 import ChatTab from "../../Components/ClassComponents/ChatTab";
 import SubmitQuizModal from "../../Components/SubmitQuizModal/SubmitQuizModal";
 import toast, { Toaster } from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const DetailedClass = () => {
     const { id } = useParams();
@@ -61,8 +62,7 @@ const DetailedClass = () => {
         }
     }, [classData.students]);
 
-    // Handle sending a message
-
+    // Handle download assignment
     const handleDownloadAssignment = async (filename) => {
         const cleanedFileName = filename.replace("/assignmentUploads/", "");
 
@@ -81,6 +81,34 @@ const DetailedClass = () => {
                 );
             });
     };
+
+    // Handle delete of teacher added assignment
+    const handleDeleteFile = (id)=>{
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then( async(result) => {
+            if (result.isConfirmed) {
+                const response = await axiosPublic.delete(`classes/delete/${id}`)
+
+                if(response.data.message){
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                    refetch();
+                }
+            }
+          });
+    }
+
     const handleTakeQuiz = (quiz) => {
         console.log(quiz);
         setSelectedQuiz(quiz); // Set the selected quiz
@@ -214,7 +242,7 @@ const DetailedClass = () => {
                                                     Due Date:{" "}
                                                 </span>
                                                 {new Date(
-                                                    assignment.dueDate
+                                                    assignment.end
                                                 ).toLocaleDateString()}
                                             </p>
                                             {assignment.fileUrl && (
@@ -237,9 +265,22 @@ const DetailedClass = () => {
                                                             assignment.fileUrl
                                                         )
                                                     }
-                                                    className="bg-[#004085] text-white px-4 py-2 rounded-lg"
+                                                    className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
                                                 >
                                                     Download
+                                                </button>
+                                            )}
+
+                                            {assignment.fileUrl && (
+                                                <button
+                                                    onClick={() =>
+                                                        handleDeleteFile(
+                                                            assignment._id
+                                                        )
+                                                    }
+                                                    className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
+                                                >
+                                                    Delete
                                                 </button>
                                             )}
 
@@ -261,7 +302,7 @@ const DetailedClass = () => {
                                                                     true
                                                                 )
                                                             }
-                                                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center"
+                                                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center hover:bg-gray-400"
                                                         >
                                                             <IoDocumentAttachOutline
                                                                 size={18}

@@ -31,7 +31,7 @@ const SignIn = () => {
             const res = await logInUser(data.email, data.password);
             console.log(res.user?.email);
             if (res.user?.email) {
-                navigate("/dashboard");
+                navigate("/dashboard/dashboardHome");
             }
         } catch (err) {
             console.error("Login error:", err);
@@ -67,7 +67,7 @@ const SignIn = () => {
 
             // Handle response: navigate to dashboard if user exists or is newly created
             if (response.status === 201 || response.status === 200) {
-                navigate("/dashboard");
+                navigate("/dashboard/dashboardHome");
             } else {
                 console.error("Unexpected response:", response);
             }

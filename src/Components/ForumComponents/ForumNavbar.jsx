@@ -50,7 +50,7 @@ const ForumNavbar = ({isShowDrawer,setIsShowDrawer}) => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/dashboard">Dashboard</Link>
+                                    <Link to="/dashboard/dashboardHome">Dashboard</Link>
                                 </li>
                                 <li>
                                     <Link to="/">Home</Link>

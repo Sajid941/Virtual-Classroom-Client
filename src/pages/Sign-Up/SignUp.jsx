@@ -74,7 +74,7 @@ const SignUp = () => {
                                 });
 
                                 await axiosPublic.post("/users", userData);
-                                navigate("/dashboard");
+                                navigate("/dashboard/dashboardHome");
                             }
                         }
                     })
@@ -111,7 +111,7 @@ const SignUp = () => {
 
             // Handle response: navigate to dashboard if user exists or is newly created
             if (response.status === 201 || response.status === 200) {
-                navigate("/dashboard");
+                navigate("/dashboard/dashboardHome");
             } else {
                 console.error("Unexpected response:", response);
             }

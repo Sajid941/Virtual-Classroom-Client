@@ -256,57 +256,78 @@ const DetailedClass = () => {
                       </button>
                     )}
 
-                    {assignment.fileUrl && (
-                      <button
-                        onClick={() => handleDeleteFile(assignment._id)}
-                        className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
-                      >
-                        Delete
-                      </button>
-                    )}
+                                            {(assignment.fileUrl && role === "teacher") && (
+                                                <button
+                                                    onClick={() =>
+                                                        handleDeleteFile(
+                                                            assignment._id
+                                                        )
+                                                    }
+                                                    className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
+                                                >
+                                                    Delete
+                                                </button>
+                                            )}
 
-                    {role === "student" && (
-                      <div>
-                        {assignment.assignmentSubmissions &&
-                        assignment.assignmentSubmissions.find(
-                          (submitted_student) =>
-                            submitted_student.student_email === user?.email
-                        ) ? (
-                          <h3 className="border p-1 text-green-600 font-semibold">
-                            Submitted
-                          </h3>
-                        ) : (
-                          <button
-                            onClick={() => setIsSubmitAssignmentModalOpen(true)}
-                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center hover:bg-gray-400"
-                          >
-                            <IoDocumentAttachOutline size={18} />
-                            Submit
-                          </button>
-                        )}
-                        {/* Submit assignment modal */}
-                        <SubmitAssignmentModal
-                          isOpen={isSubmitAssignmentModalOpen}
-                          onRequestClose={() =>
-                            setIsSubmitAssignmentModalOpen(false)
-                          }
-                          assignment={assignment}
-                          classId={classData.classId}
-                        />
-                      </div>
-                    )}
-                    {/* </div> */}
-                  </div>
-                ))
-              ) : role === "teacher" ? (
-                <div className="text-center">
-                  <p>No assignments available.</p>
-                  <button
-                    onClick={() => setIsAssignmentModalOpen(true)}
-                    className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
-                  >
-                    Add Assignment
-                  </button>
+                                            {role === "student" && (
+                                                <div>
+                                                    {assignment.assignmentSubmissions &&
+                                                    assignment.assignmentSubmissions.find(
+                                                        (submitted_student) =>
+                                                            submitted_student.student_email ===
+                                                            user?.email
+                                                    ) ? (
+                                                        <h3 className="border p-1 text-green-600 font-semibold">
+                                                            Submitted
+                                                        </h3>
+                                                    ) : (
+                                                        <button
+                                                            onClick={() =>
+                                                                setIsSubmitAssignmentModalOpen(
+                                                                    true
+                                                                )
+                                                            }
+                                                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center hover:bg-gray-400"
+                                                        >
+                                                            <IoDocumentAttachOutline
+                                                                size={18}
+                                                            />
+                                                            Submit
+                                                        </button>
+                                                    )}
+                                                    {/* Submit assignment modal */}
+                                                    <SubmitAssignmentModal
+                                                        isOpen={
+                                                            isSubmitAssignmentModalOpen
+                                                        }
+                                                        onRequestClose={() =>
+                                                            setIsSubmitAssignmentModalOpen(
+                                                                false
+                                                            )
+                                                        }
+                                                        assignment={assignment}
+                                                        classId={
+                                                            classData.classId
+                                                        }
+                                                        refetch={refetch}
+                                                    />
+                                                </div>
+                                            )}
+                                            {/* </div> */}
+                                        </div>
+                                    )
+                                )
+                            ) : role === "teacher" ? (
+                                <div className="text-center">
+                                    <p>No assignments available.</p>
+                                    <button
+                                        onClick={() =>
+                                            setIsAssignmentModalOpen(true)
+                                        }
+                                        className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
+                                    >
+                                        Add Assignment
+                                    </button>
 
                   {/* Modal for adding assignment */}
                   <AddAssignmentModal

@@ -111,7 +111,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
           <div className="flex justify-center">
             <button
               type="submit"
-              className="mr-2 px-4 py-2 bg-[#004085] text-white rounded"
+              className="mr-2 px-4 py-2 hover:bg-gray-400 bg-[#004085] text-white rounded-md"
             >
               Submit
             </button>
@@ -119,7 +119,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
             <button
               type="button"
               onClick={onRequestClose}
-              className="px-4 py-2 bg-gray-300 rounded"
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md"
             >
               Cancel
             </button>

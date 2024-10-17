@@ -18,7 +18,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
     formData.append("title", data.title);
     formData.append("description", data.description);
     formData.append("marks", data.marks);
-    formData.append("dueDate", data.dueDate);
+    formData.append("end", data.dueDate);
     if (file) {
       formData.append("file", file);
     }
@@ -110,18 +110,20 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
 
           <div className="flex justify-center">
             <button
-              type="button"
-              onClick={onRequestClose}
-              className="mr-2 px-4 py-2 bg-gray-300 rounded"
-            >
-              Cancel
-            </button>
-            <button
               type="submit"
-              className="px-4 py-2 bg-[#004085] text-white rounded"
+              className="mr-2 px-4 py-2 bg-[#004085] text-white rounded"
             >
               Submit
             </button>
+
+            <button
+              type="button"
+              onClick={onRequestClose}
+              className="px-4 py-2 bg-gray-300 rounded"
+            >
+              Cancel
+            </button>
+            
           </div>
         </form>
       </Modal>

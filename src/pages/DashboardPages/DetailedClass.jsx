@@ -242,7 +242,7 @@ const DetailedClass = () => {
                                                     Due Date:{" "}
                                                 </span>
                                                 {new Date(
-                                                    assignment.dueDate
+                                                    assignment.end
                                                 ).toLocaleDateString()}
                                             </p>
                                             {assignment.fileUrl && (
@@ -265,7 +265,7 @@ const DetailedClass = () => {
                                                             assignment.fileUrl
                                                         )
                                                     }
-                                                    className="bg-[#004085] text-white btn"
+                                                    className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
                                                 >
                                                     Download
                                                 </button>
@@ -278,7 +278,7 @@ const DetailedClass = () => {
                                                             assignment._id
                                                         )
                                                     }
-                                                    className="bg-[#004085] text-white btn"
+                                                    className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
                                                 >
                                                     Delete
                                                 </button>
@@ -302,7 +302,7 @@ const DetailedClass = () => {
                                                                     true
                                                                 )
                                                             }
-                                                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center"
+                                                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center hover:bg-gray-400"
                                                         >
                                                             <IoDocumentAttachOutline
                                                                 size={18}

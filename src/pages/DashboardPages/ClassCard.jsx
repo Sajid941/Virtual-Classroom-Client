@@ -5,13 +5,13 @@ const ClassCard = ({ classData }) => {
   return (
     <Link
       to={`/class/${classData?.classId}`}
-      className="shadow w-full md:z-50 my-4 rounded-xl"
+      className="shadow w-full my-4 rounded-xl"
     >
       <div className="rounded-xl overflow-hidden">
         {" "}
         {/* Added overflow-hidden */}
         <div
-          className="bg-cover h-[200px] md:h-[250px] lg:h-[300px] text-white relative z-[-9999] "
+          className="bg-cover h-[200px] md:h-[250px] lg:h-[300px] text-white relative "
           style={{ backgroundImage: `url(${classData?.classImage})` }}
         >
           <div className="bg-black/30 w-full h-full absolute"></div>

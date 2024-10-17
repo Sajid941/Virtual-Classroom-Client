@@ -13,7 +13,7 @@ const NavDashboard = ({ handleToggleDrawer }) => {
   console.log(userdb);
   return (
     <div className="flex justify-center mt-2">
-      <div className="navbar w-[90%] mx-auto bg-base-100 shadow rounded-2xl py-4 fixed z-50 bg-white/10 backdrop-blur-md bg-opacity-15">
+      <div className="navbar w-[90%] mx-auto bg-base-100 shadow rounded-2xl py-4 fixed  bg-white/10 backdrop-blur-md bg-opacity-15">
         {/* Logo Section */}
         <div className="container mx-auto">
           <div className="flex-1 flex items-center">
@@ -53,7 +53,7 @@ const NavDashboard = ({ handleToggleDrawer }) => {
               </div>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow mt-44"
+                className="menu menu-sm dropdown-content bg-base-100 rounded-box  w-52 p-2 shadow mt-44"
               >
                 <li>
                   <a href="/">Home</a>

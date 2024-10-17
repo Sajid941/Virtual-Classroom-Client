@@ -38,9 +38,9 @@ const SubmitQuizModal = ({
           submissionData,
         }
       );
-      console.log(sub);
-      toast.success(`You scored ${submissionData.score}`);
+      window.location.reload()
       refetch();
+      toast.success(`You scored ${submissionData.score}`);
       reset();
       onRequestClose();
     } catch (error) {

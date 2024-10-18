@@ -334,6 +334,7 @@ const DetailedClass = () => {
                     isOpen={isAssignmentModalOpen}
                     onRequestClose={() => setIsAssignmentModalOpen(false)}
                     classId={classData.classId}
+                    className={classData.className}
                     refetch={refetch}
                   />
                 </div>

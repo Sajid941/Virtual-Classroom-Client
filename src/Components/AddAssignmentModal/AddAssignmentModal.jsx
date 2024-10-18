@@ -4,8 +4,9 @@ import { useForm } from "react-hook-form";
 import { MdAssignmentAdd } from "react-icons/md";
 import Modal from "react-modal";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
-const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
+const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch }) => {
   const { register, handleSubmit, reset } = useForm();
 
   const [file, setFile] = useState();
@@ -13,11 +14,13 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
 
   const onSubmit = async (data) => {
     const formData = new FormData();
+    const title = className + " | " + data.title;
 
-    formData.append("title", data.title);
+    formData.append("title", title);
     formData.append("description", data.description);
     formData.append("marks", data.marks);
-    formData.append("dueDate", data.dueDate);
+    formData.append("end", data.dueDate);
+    formData.append("classId", classId);
     if (file) {
       formData.append("file", file);
     }
@@ -37,6 +40,13 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
 
       reset();
       onRequestClose();
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Assignment posted successfully",
+        showConfirmButton: false,
+        timer: 1500
+      });
       refetch();
     } catch (error) {
       console.error("assignment not added", error);
@@ -73,7 +83,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
           <div className="form-control">
             <input
               {...register("marks", { required: true })}
-              type="text"
+              type="number"
               placeholder="Marks"
               className="input input-bordered"
             />
@@ -99,21 +109,28 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId, refetch }) => {
               className="input input-bordered w-full lg:w-1/3 mb-2 pt-2"
             />
           </div>
+          <div>
+            <input 
+            {...register("classId", { required: true })}
+            type="text" defaultValue={classId} className="hidden" />
+          </div>
 
           <div className="flex justify-center">
             <button
-              type="button"
-              onClick={onRequestClose}
-              className="mr-2 px-4 py-2 bg-gray-300 rounded"
-            >
-              Cancel
-            </button>
-            <button
               type="submit"
-              className="px-4 py-2 bg-[#004085] text-white rounded"
+              className="mr-2 px-4 py-2 hover:bg-gray-400 bg-[#004085] text-white rounded-md"
             >
               Submit
             </button>
+
+            <button
+              type="button"
+              onClick={onRequestClose}
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md"
+            >
+              Cancel
+            </button>
+            
           </div>
         </form>
       </Modal>
@@ -126,6 +143,7 @@ AddAssignmentModal.propTypes = {
   onRequestClose: PropTypes.func,
   classId: PropTypes.string,
   refetch: PropTypes.func,
+  className: PropTypes.string
 };
 
 export default AddAssignmentModal;

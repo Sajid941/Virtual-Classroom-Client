@@ -4,14 +4,19 @@ import useUser from "../../CustomHooks/useUser";
 import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { IoIosLogOut } from "react-icons/io";
+import { TiThMenu } from "react-icons/ti";
+import PropTypes from 'prop-types'
 
-const ForumNavbar = () => {
+const ForumNavbar = ({isShowDrawer,setIsShowDrawer}) => {
     const { user, logOut } = useContext(AuthContext);
     const { userDb, isLoading, isError } = useUser();
     return (
         <div>
             <div className="navbar pt-5 mx-auto md:px-10 lg:px-20 w-full gap-6 lg:gap-0 z-30 fixed g-white/10 backdrop-blur-md bg-opacity-15">
                 <div className="flex-1">
+                    <button onClick={() => setIsShowDrawer(!isShowDrawer)} className="md:hidden pr-3">
+                        <TiThMenu size={20} />
+                    </button>
                     <a href="/">
                         <img
                             src={
@@ -45,7 +50,7 @@ const ForumNavbar = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/dashboard">Dashboard</Link>
+                                    <Link to="/dashboard/dashboardHome">Dashboard</Link>
                                 </li>
                                 <li>
                                     <Link to="/">Home</Link>
@@ -84,3 +89,8 @@ const ForumNavbar = () => {
 };
 
 export default ForumNavbar;
+
+ForumNavbar.propTypes = {
+    isShowDrawer: PropTypes.bool.isRequired,
+    setIsShowDrawer: PropTypes.func.isRequired,
+};

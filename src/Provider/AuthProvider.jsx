@@ -65,10 +65,6 @@ export const AuthProvider = ({ children }) => {
 
     const logOut = async () => {
         setLoading(true);
-        // await axios.get(`https://class-net-server.vercel.app/logout`, {
-        //   withCredentials: true,
-        // });
-        // localStorage.removeItem("token"); // Clear token on logout
         return signOut(auth);
     };
 

@@ -13,7 +13,8 @@ import PrivateRoute from "./PrivateRoute";
 import DashboardHome from "../pages/DashboardPages/DashboardHome";
 import DetailedDiscussion from "../Components/ForumComponents/DetailedDiscussion";
 import AllAssignments from "../pages/DashboardPages/AllAssignments";
-
+import Calendar from "../pages/DashboardPages/Calendar";
+import Profile from "../pages/Profile/Profile";
 
 const router = createBrowserRouter([
     // Root routes
@@ -54,16 +55,14 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
     },
 
-
     {
         path: "/forum/discussion/:slug",
         element: <DetailedDiscussion />,
     },
 
-
     // Dashboard Routes
     {
-        path: "/dashboard",
+        path: "dashboard",
         element: (
             <PrivateRoute>
                 <Dashboard />
@@ -72,19 +71,28 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             {
-                path: "/dashboard",
+                path: "dashboardHome",
 
                 element: <DashboardHome />,
             },
             {
-                path: "/dashboard/classes",
+                path: "classes",
 
                 element: <DashboardBody />,
             },
             {
-                path: "/dashboard/assignments",
+                path: "assignments",
 
                 element: <AllAssignments />,
+            },
+            {
+                path: "calendar",
+                element: <Calendar />,
+            },
+            {
+                path: "profile",
+
+                element: <Profile />,
             },
         ],
     },

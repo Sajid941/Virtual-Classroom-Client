@@ -2,32 +2,55 @@ import { useQuery } from "@tanstack/react-query";
 import useUser from "../../CustomHooks/useUser";
 import useAuth from "../../CustomHooks/useAuth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import fileDownload from "js-file-download";
+import AssignmentFeedbackModal from "../../Components/AssignmentFeedbackModal/AssignmentFeedbackModal";
+import { Helmet } from "react-helmet-async";
 
 const AllAssignments = () => {
-  const { userdb } = useUser(); // Extract role and email
+  const { userdb } = useUser();
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
 
+  // states for filtering
   const [selectedClassName, setSelectedClassName] = useState("");
+  const [selectedAssignmentName, setSelectedAssignmentName] = useState("");
+  const [studentName, setStudentName] = useState("");
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // states for feedback modal
+  const [classId, setClassId] = useState("");
+  const [assignmentId, setAssignmentId] = useState("");
+  const [submissionId, setSubmissionId] = useState("");
+  
   // get role-based assignment submissions
   const {
-    data: submissions = [],
+    data: responseData = {},
     isLoading,
-    isError,
+    // isError,
+    refetch
   } = useQuery({
-    queryKey: ["user-submissions", user?.email, userdb?.role],
+    queryKey: [
+      "user-submissions",
+      user?.email,
+      userdb?.role,
+    ],
     queryFn: async () => {
       if (!user?.email || !userdb?.role) return [];
-      const res = await axiosPublic.get("/classes/user-submissions", {
-        params: { email: user?.email, role: userdb?.role },
-      });
-      return res.data.submissions;
+      const res = await axiosPublic.get(
+        `/classes/user-submissions?email=${user?.email}&&role=${userdb?.role}&&className=${selectedClassName}&&assignmentName=${selectedAssignmentName}&&search=${studentName}`
+      );
+      return res.data;
     },
     enabled: !!user?.email && !!userdb?.role,
-  });
+  });  
+
+  const {classNames, assignmentNames, submissions} = responseData;
+  
+  useEffect(() => {
+    refetch();
+  }, [studentName, selectedClassName, selectedAssignmentName, refetch]);
 
   // Download submitted assignment file
   const handleDownloadSubmitAssignment = async (filename) => {
@@ -45,7 +68,6 @@ const AllAssignments = () => {
       })
       .catch((error) => {
         console.error("Error downloading file:", error);
-        alert("Failed to download the assignment. Please try again.");
       });
   };
 
@@ -57,21 +79,56 @@ const AllAssignments = () => {
     );
 
   return (
-    <div className="flex flex-col h-full w-full p-4 bg-gray-100">
-      {/* Class Selection Dropdown */}
-      <select
-        className="select select-info w-full max-w-xs mb-4"
-        onChange={(e) => setSelectedClassName(e.target.value)}
-      >
-        <option defaultValue>Select Class</option>
-        {submissions
-          .map((sub) => sub.className)
-          .map((clsName, idx) => (
-            <option key={idx} value={clsName}>
-              {clsName}
-            </option>
-          ))}
-      </select>
+    <div className="flex flex-col h-full w-full p-4 bg-gray-100 relative">
+      <Helmet>
+        <title>Assignments | Class Net</title>
+      </Helmet>
+      <h2 className="text-lg lg:text-3xl font-semibold text-center mb-6">Submitted Assignments</h2>
+      <div className="flex gap-1 flex-col lg:flex-row">
+        {/* Class Selection Dropdown */}
+        <select
+          className="select select-info w-full max-w-xs mb-4"
+          onChange={(e) => setSelectedClassName(e.target.value)}
+          value={selectedClassName}
+        >
+          <option value="all">Select Class</option>
+          {classNames
+            .map((clsName, idx) => (
+              <option key={idx} value={clsName}>
+                {clsName}
+              </option>
+            ))}
+        </select>
+
+        {/* Assignment Selection Dropdown */}
+        <select
+          className="select select-info w-full max-w-xs mb-4"
+          onChange={(e) => {
+            setSelectedAssignmentName(e.target.value);
+          }}
+          value={selectedAssignmentName}
+        >
+          <option value="all">Select Assignment</option>
+          {assignmentNames
+            .map((name, idx) => (
+              <option key={idx} value={name}>
+                {name}
+              </option>
+            ))}
+        </select>
+      </div>
+
+      {/* Search bar to search student */}
+      <input
+        onChange={(e) => {
+          e.preventDefault();
+          setStudentName(e.target.value);
+        }}
+        value={studentName}
+        type="text"
+        placeholder="Student Name"
+        className="input input-bordered input-info w-full mb-4"
+      />
 
       <div className="flex-grow overflow-hidden">
         <div className="overflow-x-auto h-full border rounded">
@@ -80,56 +137,66 @@ const AllAssignments = () => {
               <tr className="bg-gray-800 text-white">
                 <th className="p-2">#</th>
                 <th className="p-2">Assignment Name</th>
-                <th className="p-2">Student Name</th>
+                {userdb?.role === "teacher" && <th className="p-2">Student Name</th>}
                 <th className="p-2">Submission Date</th>
-                <th className="p-2">Download</th>
+                <th className="p-2">Marks</th>
                 <th className="p-2">Feedback</th>
+                <th className="p-2">Action</th>
+                <th className="p-2">{userdb?.role === "teacher" && "Action"}</th>
               </tr>
             </thead>
             <tbody>
-              {submissions
-                .filter(
-                  (sub) =>
-                    selectedClassName === "" ||
-                    sub.className === selectedClassName
-                )
-                .map((submission, index) => (
-                  <tr key={submission._id} className="hover:bg-gray-200">
-                    <td className="p-2 text-center">{index + 1}</td>
-                    <td className="p-2">{submission.assignmentName}</td>
-                    <td className="p-2">{submission.student_name}</td>
-                    <td className="p-2">{submission.submitAt.split("T")[0]}</td>
+              {submissions.length ? submissions.map((submission, index) => (
+                <tr key={submission._id} className="hover:bg-gray-200">
+                  <td className="p-2 text-center">{index + 1}</td>
+                  <td className="p-2">{submission.assignmentName}</td>
+                  {userdb?.role === "teacher" && <td className="p-2">{submission.student_name}</td>}
+                  <td className="p-2">{submission.submitAt.split("T")[0]}</td>
+                  <td className="p-2">{submission.student_marks && submission.student_marks}</td>
+                  <td className="p-2">{submission.assignment_feedback && submission.assignment_feedback}</td>
+                  <td className="p-2 text-center">
+                    {submission.submit_file && (
+                      <button
+                        onClick={() =>
+                          handleDownloadSubmitAssignment(submission.submit_file)
+                        }
+                        className="bg-[#004085] btn btn-sm text-white"
+                      >
+                        Download
+                      </button>
+                    )}
+                  </td>
+                  {userdb?.role === "teacher" && (
                     <td className="p-2 text-center">
                       {submission.submit_file && (
                         <button
-                          onClick={() =>
-                            handleDownloadSubmitAssignment(
-                              submission.submit_file
-                            )
-                          }
-                          className="bg-[#004085] btn btn-sm text-white"
+                          className="bg-green-600 btn btn-sm text-white"
+                          onClick={() => {
+                            setIsModalOpen(true);
+                            setClassId(submission.classID);
+                            setAssignmentId(submission.assignmentId);
+                            setSubmissionId(submission._id);
+                          }}
                         >
-                          Download
+                          Feedback
                         </button>
                       )}
                     </td>
-                    {userdb?.role === "teacher" ? (
-                      <td className="p-2 text-center">
-                        {submission.submit_file && (
-                          <button className="bg-green-600 btn btn-sm text-white">
-                            Feedback
-                          </button>
-                        )}
-                      </td>
-                    ) : (
-                      <td>No Feedback</td>
-                    )}
-                  </tr>
-                ))}
+                  )}
+                </tr>
+              )) : <tr><td colSpan={8} className="py-4 text-center">No submissions yet</td></tr>}
             </tbody>
           </table>
         </div>
       </div>
+      <AssignmentFeedbackModal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        classId={classId}
+        assignmentId={assignmentId}
+        submissionId={submissionId}
+        refetch={refetch}
+      ></AssignmentFeedbackModal>
     </div>
   );
 };

@@ -1,91 +1,126 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Modal from "react-modal";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
-import { toast } from 'react-hot-toast';
+import { toast, Toaster } from "react-hot-toast";
 
-const SubmitQuizModal = ({
-  isOpen,
-  onRequestClose,
-  quiz,
-  classId,
-  refetch,
-}) => {
-  const { register, handleSubmit, reset } = useForm();
+const SubmitQuizModal = ({ isOpen, onRequestClose, quiz, classId, refetch }) => {
+  const { register, handleSubmit, reset, setValue, watch } = useForm();
   const axiosPublic = useAxiosPublic();
   const { user } = useContext(AuthContext);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track current question index
+  const [answers, setAnswers] = useState({}); // Store answers
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     try {
-      // Calculate the score
-      let score = 0;
       const totalQuestions = quiz.questions.length;
 
-      // Iterate over the questions to check answers
-      quiz.questions.forEach((question, index) => {
-        // Log the user's answer and the correct answer
-        console.log(
-          `Comparing user's answer: ${data.answers[index]} with correct answer: ${question.correctAnswer}`
-        );
-
-        // Convert both to string to avoid type issues
-        if (String(data.answers[index]) === String(question.correctAnswer)) {
-          score += 1; // Increment score for each correct answer
-        }
-      });
-
-      // Prepare the data to be sent
+      // Prepare the submission data
       const submissionData = {
-        answers: data.answers, // Collect answers
-        studentEmail: user?.email, // Student email
-        score: score, // Store the calculated score
-        totalQuestions: totalQuestions, // Optionally, store the total number of questions
+        answers: answers,
+        studentEmail: user?.email,
+        totalQuestions: totalQuestions,
+        score: calculateScore(), // Calculate score based on stored answers
       };
-      // Make the PATCH API call using axiosPublic
-      const sub=await axiosPublic.patch(`/classes/${classId}/quizsubmission`, {
-        submissionData, // Send submissionData in the request body
-      });
-      console.log(sub);
 
-      alert(`you have got ${sub.data.quizzes[0].submissions[0].score}`)
-      // Refetch the quiz data after submission
+      console.log(submissionData);
+
+      // Make the PATCH API call using axiosPublic
+      await axiosPublic.patch(`/quizzes/${classId}/quizsubmission`, {
+        submissionData,
+      });
+
+      window.location.reload();
       refetch();
-      reset(); // Reset the form
+      toast.success(`You scored ${submissionData.score}`);
+      reset();
+      onRequestClose();
     } catch (error) {
       console.error("Error submitting quiz:", error);
-      alert("Failed to submit quiz. Please try again.",error);
+      toast.error("Failed to submit quiz. Please try again.");
+    }
+  };
+
+  // Function to calculate the score based on stored answers
+  const calculateScore = () => {
+    let score = 0;
+    quiz.questions.forEach((question, index) => {
+      if (String(answers[index]) === String(question.correctAnswer)) {
+        score += 1;
+      }
+    });
+    return score;
+  };
+
+  // Handle the answer submission for each question
+  const handleAnswerSubmit = (data) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [currentQuestionIndex]: data[`answer-${currentQuestionIndex}`], // Store the answer
+    }));
+
+    // Move to the next question or submit the quiz
+    if (currentQuestionIndex < quiz.questions.length - 1) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    } else {
+      onSubmit(); // If last question, submit the entire quiz
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
-      <h2 className="text-lg font-semibold">Submit Quiz</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
-        {quiz.questions.map((question, index) => (
-          <div key={index} className="mb-4">
-            <p className="font-semibold">{question.questionText}</p>
-            {/* Render options as radio buttons */}
-            {question.options.map((option, optionIndex) => (
-              <div key={optionIndex} className="flex items-center mb-2">
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      className="bg-white rounded-lg p-6 relative shadow-xl max-w-lg mx-auto mt-20 animate-fade-in"
+    >
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold text-[#004085]">Submit Quiz</h2>
+        <button
+          onClick={onRequestClose}
+          className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+        >
+          &times;
+        </button>
+      </div>
+
+      <form onSubmit={handleSubmit(handleAnswerSubmit)} className="space-y-6">
+        {/* Render only the current question */}
+        <div className="mb-6">
+          <p className="font-semibold text-gray-700 mb-2">
+            {quiz.questions[currentQuestionIndex].questionText}
+          </p>
+          {quiz.questions[currentQuestionIndex].options.map(
+            (option, optionIndex) => (
+              <div key={optionIndex} className=" mb-3">
                 <input
                   type="radio"
-                  value={option} // Set the option value
-                  {...register(`answers.${index}`, { required: true })} // Register the input
-                  className="mr-2"
+                  value={option}
+                  {...register(`answer-${currentQuestionIndex}`, { required: true })} // Unique name for each question
+                  id={`question-${currentQuestionIndex}-option-${optionIndex}`}
+                  className="text-[#004085] border-gray-300 focus:ring-2 focus:ring-[#004085]"
                 />
-                <label className="text-md">{option}</label>
+                <label
+                  htmlFor={`question-${currentQuestionIndex}-option-${optionIndex}`}
+                  className="text-gray-600 cursor-pointer"
+                >
+                  {option}
+                </label>
               </div>
-            ))}
-          </div>
-        ))}
+            )
+          )}
+        </div>
+
+        {/* Show "Next" button until the last question, then show "Submit" */}
         <button
           type="submit"
-          className="bg-[#004085] text-white px-4 py-2 rounded-lg"
+          className="w-full py-3 bg-[#004085] text-white font-semibold rounded-lg hover:bg-[#002a62] transition duration-300 ease-in-out transform hover:-translate-y-1"
         >
-          Submit
+          {currentQuestionIndex < quiz.questions.length - 1 ? "Next" : "Submit"}
         </button>
       </form>
+
+      <Toaster />
     </Modal>
   );
 };

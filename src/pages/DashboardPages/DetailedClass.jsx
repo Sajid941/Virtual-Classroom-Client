@@ -19,6 +19,8 @@ import { IoDocumentAttachOutline } from "react-icons/io5";
 import SubmitAssignmentModal from "../../Components/SubmitAssignmentModal/SubmitAssignmentModal";
 import ChatTab from "../../Components/ClassComponents/ChatTab";
 import SubmitQuizModal from "../../Components/SubmitQuizModal/SubmitQuizModal";
+import toast, { Toaster } from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -30,6 +32,9 @@ const DetailedClass = () => {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
   const [isSubmitAssignmentModalOpen, setIsSubmitAssignmentModalOpen] =
     useState(false);
+
+  const [canTakeQuiz, setCanTakeQuiz] = useState(true); // To check if student can take quiz
+  const [quizResult, setQuizResult] = useState(null); // To store the quiz result
 
   const [isQuizModalOpen, setIsQuizModalOpen] = useState(false); // State for AddQuizModal
   const [isSubmitQuizModalOpen, setIsSubmitQuizModalOpen] = useState(false);
@@ -60,8 +65,7 @@ const DetailedClass = () => {
     }
   }, [classData.students]);
 
-  // Handle sending a message
-
+  // Handle download assignment
   const handleDownloadAssignment = async (filename) => {
     const cleanedFileName = filename.replace("/assignmentUploads/", "");
 
@@ -75,9 +79,57 @@ const DetailedClass = () => {
       })
       .catch((error) => {
         console.error("Error downloading file:", error);
-        alert("Failed to download the assignment. Please try again.");
+        toast.error("Failed to download the assignment. Please try again.");
       });
   };
+
+  // Handle delete of teacher added assignment
+  const handleDeleteFile = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await axiosPublic.delete(`/classes/delete/${id}`);
+
+        if (response.data.message) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+          refetch();
+        }
+      }
+    });
+  };
+  useEffect(() => {
+    const checkQuizSubmission = async () => {
+      try {
+        const response = await axiosPublic.get(
+          `/quizzes/${id}/quizsubmission/${user.email}`
+        );
+        if (response) {
+          setCanTakeQuiz(false); // Student can take the quiz
+          console.log(response.data);
+          setQuizResult(response.data.submission); // Set the quiz result if it exists
+        } else {
+          setCanTakeQuiz(true); // Student can take the quiz
+        }
+      } catch (error) {
+        console.error("Error checking quiz submission:", error);
+      }
+    };
+    if (user?.email) {
+      checkQuizSubmission();
+    }
+  }, [user.email]);
+
   const handleTakeQuiz = (quiz) => {
     console.log(quiz);
     setSelectedQuiz(quiz); // Set the selected quiz
@@ -170,89 +222,118 @@ const DetailedClass = () => {
                     key={index}
                     className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4"
                   >
-                      <h3 className="font-semibold text-lg">
-                        {assignment.title}
-                      </h3>
+                    <h3 className="font-semibold text-lg">
+                      {assignment.title}
+                    </h3>
+                    <p className="text-sm">
+                      <span className="font-semibold">Description: </span>
+                      {assignment.description}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-semibold">Total Marks: </span>
+                      {assignment.marks}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-semibold">Due Date: </span>
+                      {new Date(assignment.end).toLocaleDateString()}
+                    </p>
+                    {assignment.fileUrl && (
                       <p className="text-sm">
-                        <span className="font-semibold">Description: </span>
-                        {assignment.description}
+                        <span className="font-semibold">File: </span>
+                        {assignment.fileUrl.split("-")[1]}
                       </p>
-                      <p className="text-sm">
-                        <span className="font-semibold">Total Marks: </span>
-                        {assignment.marks}
-                      </p>
-                      <p className="text-sm">
-                        <span className="font-semibold">Due Date: </span>
-                        {new Date(assignment.dueDate).toLocaleDateString()}
-                      </p>
-                      {assignment.fileUrl && (
-                        <p className="text-sm">
-                          <span className="font-semibold">File: </span>
-                          {assignment.fileUrl.split('-')[1]}
-                        </p>
-                      )}
+                    )}
 
                     {assignment.fileUrl && (
                       <button
                         onClick={() =>
                           handleDownloadAssignment(assignment.fileUrl)
                         }
-                        className="bg-[#004085] text-white px-4 py-2 rounded-lg"
+                        className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
                       >
                         Download
                       </button>
                     )}
 
-                      {role === "student" && (
-                        <div>
-                          {assignment.assignmentSubmissions &&
-                          assignment.assignmentSubmissions.find(
-                            (submitted_student) =>
-                              submitted_student.student_email === user?.email
-                          ) ? (
-                            <h3 className="border p-1 text-green-600 font-semibold">
-                              Submitted
-                            </h3>
-                          ) : (
-                            <button
-                              onClick={() =>
-                                setIsSubmitAssignmentModalOpen(true)
-                              }
-                              className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center"
-                            >
-                              <IoDocumentAttachOutline size={18} />
-                              Submit
-                            </button>
-                          )}
-                          {/* Submit assignment modal */}
-                          <SubmitAssignmentModal
-                            isOpen={isSubmitAssignmentModalOpen}
-                            onRequestClose={() =>
-                              setIsSubmitAssignmentModalOpen(false)
-                            }
-                            assignment={assignment}
-                            classId={classData.classId}
-                          />
-                        </div>
-                      )}
-                    {/* </div> */}
-                  </div>
-                ))
-              ) : role === "teacher" ? (
-                <div className="text-center">
-                  <p>No assignments available.</p>
-                  <button
-                    onClick={() => setIsAssignmentModalOpen(true)}
-                    className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
-                  >
-                    Add Assignment
-                  </button>
+                                            {(assignment.fileUrl && role === "teacher") && (
+                                                <button
+                                                    onClick={() =>
+                                                        handleDeleteFile(
+                                                            assignment._id
+                                                        )
+                                                    }
+                                                    className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
+                                                >
+                                                    Delete
+                                                </button>
+                                            )}
+
+                                            {role === "student" && (
+                                                <div>
+                                                    {assignment.assignmentSubmissions &&
+                                                    assignment.assignmentSubmissions.find(
+                                                        (submitted_student) =>
+                                                            submitted_student.student_email ===
+                                                            user?.email
+                                                    ) ? (
+                                                        <h3 className="border p-1 text-green-600 font-semibold">
+                                                            Submitted
+                                                        </h3>
+                                                    ) : (
+                                                        <button
+                                                            onClick={() =>
+                                                                setIsSubmitAssignmentModalOpen(
+                                                                    true
+                                                                )
+                                                            }
+                                                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center hover:bg-gray-400"
+                                                        >
+                                                            <IoDocumentAttachOutline
+                                                                size={18}
+                                                            />
+                                                            Submit
+                                                        </button>
+                                                    )}
+                                                    {/* Submit assignment modal */}
+                                                    <SubmitAssignmentModal
+                                                        isOpen={
+                                                            isSubmitAssignmentModalOpen
+                                                        }
+                                                        onRequestClose={() =>
+                                                            setIsSubmitAssignmentModalOpen(
+                                                                false
+                                                            )
+                                                        }
+                                                        assignment={assignment}
+                                                        classId={
+                                                            classData.classId
+                                                        }
+                                                        refetch={refetch}
+                                                    />
+                                                </div>
+                                            )}
+                                            {/* </div> */}
+                                        </div>
+                                    )
+                                )
+                            ) : role === "teacher" ? (
+                                <div className="text-center">
+                                    <p>No assignments available.</p>
+                                    <button
+                                        onClick={() =>
+                                            setIsAssignmentModalOpen(true)
+                                        }
+                                        className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
+                                    >
+                                        Add Assignment
+                                    </button>
 
                   {/* Modal for adding assignment */}
                   <AddAssignmentModal
                     isOpen={isAssignmentModalOpen}
                     onRequestClose={() => setIsAssignmentModalOpen(false)}
                     classId={classData.classId}
+                    className={classData.className}
                     refetch={refetch}
                   />
                 </div>
@@ -279,18 +360,40 @@ const DetailedClass = () => {
                         <span className="font-semibold">Due: </span>
                         {new Date(quiz.dueDate).toLocaleDateString()}
                       </p>
-                      <button
-                        onClick={() => handleTakeQuiz(quiz.questions)}
-                        className="mt-2 bg-[#004085] text-white px-4 py-2 rounded-lg"
-                      >
-                        Take Quiz
-                      </button>
-                      <SubmitQuizModal
-                        isOpen={isSubmitQuizModalOpen}
-                        quiz={quiz}
-                        classId={id}
-                        refetch={refetch}
-                      />
+
+                      {/* Check if the user can take the quiz */}
+                      {canTakeQuiz ? (
+                        <>
+                          {/* Show the "Take Quiz" button if the user can take the quiz */}
+                          <button
+                            onClick={() => handleTakeQuiz(quiz.questions)}
+                            className="mt-2 bg-[#004085] text-white px-4 py-2 rounded-lg"
+                          >
+                            Take Quiz
+                          </button>
+
+                          {/* SubmitQuizModal for quiz submission */}
+                          <SubmitQuizModal
+                            isOpen={isSubmitQuizModalOpen}
+                            quiz={quiz}
+                            onRequestClose={() =>
+                              setIsSubmitQuizModalOpen(false)
+                            }
+                            classId={id}
+                            refetch={refetch}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          {/* Show quiz result if the user has already taken the quiz */}
+                          <div className="badge badge-warning font-bold animate-pulse p-4 rounded-2xl ">
+                            <p>
+                              You have scored {quizResult?.score}/
+                              {quizResult?.totalQuestions}
+                            </p>
+                          </div>
+                        </>
+                      )}
                     </div>
                   ))
                 ) : role === "teacher" ? (
@@ -354,6 +457,7 @@ const DetailedClass = () => {
           </TabPanel>
         </Tabs>
       </div>
+      <Toaster />
     </div>
   );
 };

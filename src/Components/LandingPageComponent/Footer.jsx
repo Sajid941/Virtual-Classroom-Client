@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { FaTwitter, FaYoutube, FaFacebook, FaInstagram } from 'react-icons/fa';
+import { FaTwitter, FaYoutube, FaFacebook, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
     return (
@@ -12,25 +12,63 @@ const Footer = () => {
                 </div>
 
                 {/* Navigation Links */}
-                <nav className="flex flex-col md:flex-row md:space-x-10 mb-4 md:mb-0">
-                    <NavLink to='/' className="link link-hover text-gray-400 hover:text-white transition duration-200">Home</NavLink>
-                    <NavLink to='/aboutUs' className="link link-hover text-gray-400 hover:text-white transition duration-200">About Us</NavLink>
-                    <NavLink to='/forum' className="link link-hover text-gray-400 hover:text-white transition duration-200">Forum</NavLink>
-                    <NavLink to='/contact' className="link link-hover text-gray-400 hover:text-white transition duration-200">Contact</NavLink>
+                <nav className="flex flex-wrap gap-5 mb-4 md:mb-0">
+                    <NavLink
+                        to="/"
+                        className="link link-hover text-gray-400 hover:text-white transition duration-200"
+                    >
+                        Home
+                    </NavLink>
+                    <NavLink
+                        to="/aboutUs"
+                        className="link link-hover text-gray-400 hover:text-white transition duration-200"
+                    >
+                        About Us
+                    </NavLink>
+                    <NavLink
+                        to="/forum"
+                        className="link link-hover text-gray-400 hover:text-white transition duration-200"
+                    >
+                        Forum
+                    </NavLink>
                 </nav>
 
                 {/* Social Media Links */}
                 <div className="flex space-x-6 mt-4 md:mt-0">
-                    <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors duration-200">
+                    <a
+                        href="https://twitter.com"
+                        aria-label="Twitter"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-blue-400 transition-colors duration-200"
+                    >
                         <FaTwitter className="h-6 w-6 fill-current" />
                     </a>
-                    <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors duration-200">
+                    <a
+                        href="https://facebook.com"
+                        aria-label="Facebook"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-blue-600 transition-colors duration-200"
+                    >
                         <FaFacebook className="h-6 w-6 fill-current" />
                     </a>
-                    <a href="https://youtube.com" aria-label="YouTube" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors duration-200">
+                    <a
+                        href="https://youtube.com"
+                        aria-label="YouTube"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-red-600 transition-colors duration-200"
+                    >
                         <FaYoutube className="h-6 w-6 fill-current" />
                     </a>
-                    <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer" className="hover:text-pink-600 transition-colors duration-200">
+                    <a
+                        href="https://instagram.com"
+                        aria-label="Instagram"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-pink-600 transition-colors duration-200"
+                    >
                         <FaInstagram className="h-6 w-6 fill-current" />
                     </a>
                 </div>

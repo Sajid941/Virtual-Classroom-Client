@@ -20,6 +20,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
     formData.append("description", data.description);
     formData.append("marks", data.marks);
     formData.append("end", data.dueDate);
+    formData.append("classId", classId);
     if (file) {
       formData.append("file", file);
     }
@@ -82,7 +83,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
           <div className="form-control">
             <input
               {...register("marks", { required: true })}
-              type="text"
+              type="number"
               placeholder="Marks"
               className="input input-bordered"
             />
@@ -107,6 +108,11 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
               onChange={(e) => setFile(e.target.files[0])}
               className="input input-bordered w-full lg:w-1/3 mb-2 pt-2"
             />
+          </div>
+          <div>
+            <input 
+            {...register("classId", { required: true })}
+            type="text" defaultValue={classId} className="hidden" />
           </div>
 
           <div className="flex justify-center">

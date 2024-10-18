@@ -13,7 +13,12 @@ import PrivateRoute from "./PrivateRoute";
 import DashboardHome from "../pages/DashboardPages/DashboardHome";
 import DetailedDiscussion from "../Components/ForumComponents/DetailedDiscussion";
 import AllAssignments from "../pages/DashboardPages/AllAssignments";
+<<<<<<< HEAD
 import Calendar from "../pages/DashboardPages/Calendar";
+=======
+import Profile from "../pages/Profile/Profile";
+
+>>>>>>> 21046e4f855c5bdae2e0b4187fc579c52720c145
 
 const router = createBrowserRouter([
     // Root routes
@@ -85,8 +90,14 @@ const router = createBrowserRouter([
                 element: <AllAssignments />,
             },
             {
+<<<<<<< HEAD
                 path: "calendar",
                 element: <Calendar />,
+=======
+                path: "/dashboard/profile",
+
+                element: <Profile />,
+>>>>>>> 21046e4f855c5bdae2e0b4187fc579c52720c145
             },
         ],
     },

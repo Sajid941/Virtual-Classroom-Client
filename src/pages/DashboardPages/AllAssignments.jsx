@@ -2,9 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import useUser from "../../CustomHooks/useUser";
 import useAuth from "../../CustomHooks/useAuth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import fileDownload from "js-file-download";
 import AssignmentFeedbackModal from "../../Components/AssignmentFeedbackModal/AssignmentFeedbackModal";
+import { Helmet } from "react-helmet-async";
 
 const AllAssignments = () => {
   const { userdb } = useUser();
@@ -25,7 +26,7 @@ const AllAssignments = () => {
   
   // get role-based assignment submissions
   const {
-    data: submissions = [],
+    data: responseData = {},
     isLoading,
     // isError,
     refetch
@@ -34,19 +35,22 @@ const AllAssignments = () => {
       "user-submissions",
       user?.email,
       userdb?.role,
-      selectedClassName,
-      selectedAssignmentName,
-      studentName,
     ],
     queryFn: async () => {
       if (!user?.email || !userdb?.role) return [];
       const res = await axiosPublic.get(
         `/classes/user-submissions?email=${user?.email}&&role=${userdb?.role}&&className=${selectedClassName}&&assignmentName=${selectedAssignmentName}&&search=${studentName}`
       );
-      return res.data.submissions;
+      return res.data;
     },
     enabled: !!user?.email && !!userdb?.role,
   });  
+
+  const {classNames, assignmentNames, submissions} = responseData;
+  
+  useEffect(() => {
+    refetch();
+  }, [studentName, selectedClassName, selectedAssignmentName, refetch]);
 
   // Download submitted assignment file
   const handleDownloadSubmitAssignment = async (filename) => {
@@ -76,6 +80,9 @@ const AllAssignments = () => {
 
   return (
     <div className="flex flex-col h-full w-full p-4 bg-gray-100 relative">
+      <Helmet>
+        <title>Assignments | Class Net</title>
+      </Helmet>
       <h2 className="text-lg lg:text-3xl font-semibold text-center mb-6">Submitted Assignments</h2>
       <div className="flex gap-1 flex-col lg:flex-row">
         {/* Class Selection Dropdown */}
@@ -84,9 +91,8 @@ const AllAssignments = () => {
           onChange={(e) => setSelectedClassName(e.target.value)}
           value={selectedClassName}
         >
-          <option value="">Select Class</option>
-          {submissions
-            .map((sub) => sub.className)
+          <option value="all">Select Class</option>
+          {classNames
             .map((clsName, idx) => (
               <option key={idx} value={clsName}>
                 {clsName}
@@ -102,12 +108,11 @@ const AllAssignments = () => {
           }}
           value={selectedAssignmentName}
         >
-          <option value="">Select Assignment</option>
-          {submissions
-            .map((sub) => sub.assignmentName)
-            .map((assignment, idx) => (
-              <option key={idx} value={assignment}>
-                {assignment}
+          <option value="all">Select Assignment</option>
+          {assignmentNames
+            .map((name, idx) => (
+              <option key={idx} value={name}>
+                {name}
               </option>
             ))}
         </select>
@@ -132,7 +137,7 @@ const AllAssignments = () => {
               <tr className="bg-gray-800 text-white">
                 <th className="p-2">#</th>
                 <th className="p-2">Assignment Name</th>
-                <th className="p-2">Student Name</th>
+                {userdb?.role === "teacher" && <th className="p-2">Student Name</th>}
                 <th className="p-2">Submission Date</th>
                 <th className="p-2">Marks</th>
                 <th className="p-2">Feedback</th>
@@ -145,7 +150,7 @@ const AllAssignments = () => {
                 <tr key={submission._id} className="hover:bg-gray-200">
                   <td className="p-2 text-center">{index + 1}</td>
                   <td className="p-2">{submission.assignmentName}</td>
-                  <td className="p-2">{submission.student_name}</td>
+                  {userdb?.role === "teacher" && <td className="p-2">{submission.student_name}</td>}
                   <td className="p-2">{submission.submitAt.split("T")[0]}</td>
                   <td className="p-2">{submission.student_marks && submission.student_marks}</td>
                   <td className="p-2">{submission.assignment_feedback && submission.assignment_feedback}</td>

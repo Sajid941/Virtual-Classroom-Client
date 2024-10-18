@@ -255,78 +255,58 @@ const DetailedClass = () => {
                       </button>
                     )}
 
-                                            {(assignment.fileUrl && role === "teacher") && (
-                                                <button
-                                                    onClick={() =>
-                                                        handleDeleteFile(
-                                                            assignment._id
-                                                        )
-                                                    }
-                                                    className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
-                                                >
-                                                    Delete
-                                                </button>
-                                            )}
+                    {assignment.fileUrl && role === "teacher" && (
+                      <button
+                        onClick={() => handleDeleteFile(assignment._id)}
+                        className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
+                      >
+                        Delete
+                      </button>
+                    )}
 
-                                            {role === "student" && (
-                                                <div>
-                                                    {assignment.assignmentSubmissions &&
-                                                    assignment.assignmentSubmissions.find(
-                                                        (submitted_student) =>
-                                                            submitted_student.student_email ===
-                                                            user?.email
-                                                    ) ? (
-                                                        <h3 className="border p-1 text-green-600 font-semibold">
-                                                            Submitted
-                                                        </h3>
-                                                    ) : (
-                                                        <button
-                                                            onClick={() =>
-                                                                setIsSubmitAssignmentModalOpen(
-                                                                    true
-                                                                )
-                                                            }
-                                                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center hover:bg-gray-400"
-                                                        >
-                                                            <IoDocumentAttachOutline
-                                                                size={18}
-                                                            />
-                                                            Submit
-                                                        </button>
-                                                    )}
-                                                    {/* Submit assignment modal */}
-                                                    <SubmitAssignmentModal
-                                                        isOpen={
-                                                            isSubmitAssignmentModalOpen
-                                                        }
-                                                        onRequestClose={() =>
-                                                            setIsSubmitAssignmentModalOpen(
-                                                                false
-                                                            )
-                                                        }
-                                                        assignment={assignment}
-                                                        classId={
-                                                            classData.classId
-                                                        }
-                                                        refetch={refetch}
-                                                    />
-                                                </div>
-                                            )}
-                                            {/* </div> */}
-                                        </div>
-                                    )
-                                )
-                            ) : role === "teacher" ? (
-                                <div className="text-center">
-                                    <p>No assignments available.</p>
-                                    <button
-                                        onClick={() =>
-                                            setIsAssignmentModalOpen(true)
-                                        }
-                                        className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
-                                    >
-                                        Add Assignment
-                                    </button>
+                    {role === "student" && (
+                      <div>
+                        {assignment.assignmentSubmissions &&
+                        assignment.assignmentSubmissions.find(
+                          (submitted_student) =>
+                            submitted_student.student_email === user?.email
+                        ) ? (
+                          <h3 className="border p-1 text-green-600 font-semibold">
+                            Submitted
+                          </h3>
+                        ) : (
+                          <button
+                            onClick={() => setIsSubmitAssignmentModalOpen(true)}
+                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center hover:bg-gray-400"
+                          >
+                            <IoDocumentAttachOutline size={18} />
+                            Submit
+                          </button>
+                        )}
+                        {/* Submit assignment modal */}
+                        <SubmitAssignmentModal
+                          isOpen={isSubmitAssignmentModalOpen}
+                          onRequestClose={() =>
+                            setIsSubmitAssignmentModalOpen(false)
+                          }
+                          assignment={assignment}
+                          classId={classData.classId}
+                          refetch={refetch}
+                        />
+                      </div>
+                    )}
+                    {/* </div> */}
+                  </div>
+                ))
+              ) : role === "teacher" ? (
+                <div className="text-center">
+                  <p>No assignments available.</p>
+                  <button
+                    onClick={() => setIsAssignmentModalOpen(true)}
+                    className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
+                  >
+                    Add Assignment
+                  </button>
 
                   {/* Modal for adding assignment */}
                   <AddAssignmentModal
@@ -348,7 +328,7 @@ const DetailedClass = () => {
             <div className="bg-white p-6 shadow rounded-lg mb-6">
               <h2 className="text-2xl font-semibold mb-4">Quizzes</h2>
               <div className="grid gap-5">
-                {classData?.quizzes?.length ? (
+                {classData?.quizzes?.length && role === "student" ? (
                   classData.quizzes.map((quiz, index) => (
                     <div
                       key={index}
@@ -396,7 +376,7 @@ const DetailedClass = () => {
                       )}
                     </div>
                   ))
-                ) : role === "teacher" ? (
+                ) : role === "teacher" && classData?.quizzes?.length < 1 ? (
                   <div className="text-center">
                     <p>No quizzes available.</p>
                     <button
@@ -413,7 +393,29 @@ const DetailedClass = () => {
                     />
                   </div>
                 ) : (
-                  <p>No quizzes available.</p>
+                  <>
+                    {classData.quizzes[0].submissions.map((submission) => {
+                      return (
+                        <div
+                          key={submission._id}
+                          className="border p-4 rounded-lg mb-4 shadow"
+                        >
+                          <h3 className="font-semibold text-lg">
+                            Quiz Submission
+                          </h3>
+                          <div className="card card-body shadow">
+                            <p className="text-md">
+                              Student: {submission.studentEmail}
+                            </p>
+                            <p className="text-md">
+                              Score: {submission.score}/
+                              {submission.totalQuestions}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </>
                 )}
               </div>
             </div>

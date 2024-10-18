@@ -5,13 +5,7 @@ import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { toast, Toaster } from "react-hot-toast";
 
-const SubmitQuizModal = ({
-  isOpen,
-  onRequestClose,
-  quiz,
-  classId,
-  refetch,
-}) => {
+const SubmitQuizModal = ({ isOpen, onRequestClose, quiz, classId, refetch }) => {
   const { register, handleSubmit, reset, setValue, watch } = useForm();
   const axiosPublic = useAxiosPublic();
   const { user } = useContext(AuthContext);
@@ -31,14 +25,13 @@ const SubmitQuizModal = ({
       };
 
       console.log(submissionData);
+
       // Make the PATCH API call using axiosPublic
-      const sub = await axiosPublic.patch(
-        `/classes/${classId}/quizsubmission`,
-        {
-          submissionData,
-        }
-      );
-      window.location.reload()
+      await axiosPublic.patch(`/quizzes/${classId}/quizsubmission`, {
+        submissionData,
+      });
+
+      window.location.reload();
       refetch();
       toast.success(`You scored ${submissionData.score}`);
       reset();
@@ -62,9 +55,12 @@ const SubmitQuizModal = ({
 
   // Handle the answer submission for each question
   const handleAnswerSubmit = (data) => {
-    setAnswers((prev) => ({ ...prev, [currentQuestionIndex]: data[`answer`] })); // Store the answer
+    setAnswers((prev) => ({
+      ...prev,
+      [currentQuestionIndex]: data[`answer-${currentQuestionIndex}`], // Store the answer
+    }));
 
-    // Move to the next question
+    // Move to the next question or submit the quiz
     if (currentQuestionIndex < quiz.questions.length - 1) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     } else {
@@ -100,9 +96,9 @@ const SubmitQuizModal = ({
                 <input
                   type="radio"
                   value={option}
-                  {...register(`answer`, { required: true })}
+                  {...register(`answer-${currentQuestionIndex}`, { required: true })} // Unique name for each question
                   id={`question-${currentQuestionIndex}-option-${optionIndex}`}
-                  className=" text-[#004085] border-gray-300 focus:ring-2 focus:ring-[#004085]"
+                  className="text-[#004085] border-gray-300 focus:ring-2 focus:ring-[#004085]"
                 />
                 <label
                   htmlFor={`question-${currentQuestionIndex}-option-${optionIndex}`}

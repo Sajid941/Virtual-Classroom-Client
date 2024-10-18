@@ -40,7 +40,7 @@ const AddQuizModal = ({ isOpen, onRequestClose, classId, refetch }) => {
         try {
             // Send PATCH request to add the quiz
             const response = await axiosPublic.patch(
-                `/classes/${classId}/quiz`,
+                `/quizzes/${classId}/quiz`,
                 {
                     quiz: data,
                 },

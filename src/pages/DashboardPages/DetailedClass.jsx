@@ -95,7 +95,7 @@ const DetailedClass = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await axiosPublic.delete(`classes/delete/${id}`);
+        const response = await axiosPublic.delete(`/classes/delete/${id}`);
 
         if (response.data.message) {
           Swal.fire({
@@ -112,7 +112,7 @@ const DetailedClass = () => {
     const checkQuizSubmission = async () => {
       try {
         const response = await axiosPublic.get(
-          `/classes/${id}/quizsubmission/${user.email}`
+          `/quizzes/${id}/quizsubmission/${user.email}`
         );
         if (response) {
           setCanTakeQuiz(false); // Student can take the quiz
@@ -130,7 +130,6 @@ const DetailedClass = () => {
     }
   }, [user.email]);
 
-  console.log(canTakeQuiz, quizResult);
   const handleTakeQuiz = (quiz) => {
     console.log(quiz);
     setSelectedQuiz(quiz); // Set the selected quiz

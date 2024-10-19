@@ -135,7 +135,6 @@ const DetailedClass = () => {
     setSelectedQuiz(quiz); // Set the selected quiz
     setIsSubmitQuizModalOpen(true);
   };
-
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Section */}

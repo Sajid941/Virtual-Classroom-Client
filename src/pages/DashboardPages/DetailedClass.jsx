@@ -135,6 +135,8 @@ const DetailedClass = () => {
     setSelectedQuiz(quiz); // Set the selected quiz
     setIsSubmitQuizModalOpen(true);
   };
+  const quizzes = classData.quizzes
+  console.log(quizzes);
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Section */}
@@ -391,9 +393,9 @@ const DetailedClass = () => {
                       refetch={refetch}
                     />
                   </div>
-                ) : (
+                ) : role === "teacher" && classData?.quizzes?.length > 0 ? (
                   <>
-                    {classData.quizzes[0].submissions.map((submission) => {
+                    {classData.quizzes[0]?.submissions.map((submission) => {
                       return (
                         <div
                           key={submission._id}
@@ -415,7 +417,7 @@ const DetailedClass = () => {
                       );
                     })}
                   </>
-                )}
+                ):''}
               </div>
             </div>
           </TabPanel>

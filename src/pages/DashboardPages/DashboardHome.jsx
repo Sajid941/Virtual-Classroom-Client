@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useUser from "../../CustomHooks/useUser";
 import { AuthContext } from "../../Provider/AuthProvider";
@@ -6,18 +6,28 @@ import useRole from "../../CustomHooks/useRole";
 import { FaChalkboardTeacher, FaTasks, FaClipboardList } from "react-icons/fa";
 import Loading from "../../Components/Loading";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
-import useAxiosPrivate from './../../CustomHooks/useAxiosPrivate';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 const DashboardHome = () => {
   const { userdb } = useUser();
   const { role } = useRole();
 
-  const [assignmentCount, setAssignmentCount]= useState(0);
-
+  const [assignmentCount, setAssignmentCount] = useState(0);
+  const [submissions, setSubmissions] = useState([]);
+  const [selectedClass, setSelectedClass] = useState("");
+  const [filteredSubmissions, setFilteredSubmissions] = useState([]);
   const axiosPublic = useAxiosPublic();
-  const axiosPrivate =useAxiosPrivate()
-  console.log(role);
-  // Fetch classes based on the user's email
+
+  const axiosPublicMemo = useMemo(() => axiosPublic, [axiosPublic]);
+
   const {
     data: classes = [],
     isLoading,
@@ -26,46 +36,91 @@ const DashboardHome = () => {
   } = useQuery({
     queryKey: ["classes", userdb?.email],
     queryFn: async () => {
-      if (!userdb?.email) return []; // Prevent query if email is not available
-      const res = await axiosPublic.get(`/classes/${role}?email=${userdb.email}`);
+      if (!userdb?.email) return [];
+      const res = await axiosPublic.get(
+        `/classes/${role}?email=${userdb.email}`
+      );
       return res.data;
     },
     keepPreviousData: true,
     enabled: !!userdb?.email,
   });
 
-  // Calculating total assignments
-  useEffect(()=>{
-    const totalAssignments = classes.reduce((acc, cls)=> acc + cls.assignments.length, 0)
+  useEffect(() => {
+    const totalAssignments = classes.reduce(
+      (acc, cls) => acc + cls.assignments.length,
+      0
+    );
 
-    setAssignmentCount(totalAssignments)
-  }, [classes])
-  
-  // Handle loading state
+    setAssignmentCount(totalAssignments);
+  }, [classes]);
+
+  // State to track whether submissions have been fetched
+  const [submissionsFetched, setSubmissionsFetched] = useState(false);
+
+  useEffect(() => {
+    const fetchSubmissions = async () => {
+      if (!userdb?.email || submissionsFetched) return;
+
+      try {
+        const response = await axiosPublicMemo.get(`/quizzes/submissions`, {
+          params: { studentEmail: userdb.email },
+        });
+
+        setSubmissions(response.data.submissions);
+        setSubmissionsFetched(true); // Mark submissions as fetched
+      } catch (err) {
+        console.error("Error fetching quiz submissions:", err);
+      }
+    };
+
+    fetchSubmissions();
+  }, [axiosPublicMemo, userdb, submissionsFetched]);
+
+  useEffect(() => {
+    console.log("Selected Class:", selectedClass);
+
+    if (selectedClass) {
+      const filtered = classes.filter(
+        (submission) => submission.classId === selectedClass
+      );
+      console.log("Filtered Submissions:", filtered[0]?.quizzes[0].submissions); // Check the filtered results
+      setFilteredSubmissions(filtered[0]?.quizzes[0]?.submissions);
+      console.log(filteredSubmissions);
+    } else {
+      setFilteredSubmissions(submissions);
+    }
+  }, [classes, selectedClass, submissions]);
+
   if (isLoading) {
     return <Loading />;
   }
 
-  // Handle error state
   if (isError) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <h1 className="text-error">
-          An error occurred while fetching class data. Please try again later.{error}
+          An error occurred while fetching class data. Please try again later.
+          {error}
         </h1>
       </div>
     );
   }
 
+  const chartData = submissions.map((submission) => ({
+    quiz: submission.quizTitle,
+    score: submission.score,
+  }));
+
   return (
-    <div className="w-full basis-3/5 p-4 rounded-xl min-h-[80vh] bg-secondary ">
+    <div className="w-full basis-3/5 p-4 rounded-xl min-h-[80vh] bg-secondary">
       <div className="topText mb-4">
         <h1 className="text-2xl font-bold text-white">
           Welcome Back, {userdb?.name}
         </h1>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+        <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
           <div className="flex items-center">
             <FaChalkboardTeacher className="text-3xl text-blue-500 mr-3" />
             <div>
@@ -74,7 +129,7 @@ const DashboardHome = () => {
             </div>
           </div>
         </div>
-        <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+        <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
           <div className="flex items-center">
             <FaTasks className="text-3xl text-green-500 mr-3" />
             <div>
@@ -83,16 +138,84 @@ const DashboardHome = () => {
             </div>
           </div>
         </div>
-        <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+        <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
           <div className="flex items-center">
             <FaClipboardList className="text-3xl text-orange-500 mr-3" />
             <div>
               <h2 className="text-lg font-semibold">Quizzes</h2>
-              <p className="text-2xl font-bold">0</p>
+              <p className="text-2xl font-bold">{submissions.length}</p>
             </div>
           </div>
         </div>
       </div>
+      {role === "teacher" ? (
+        <>
+          <div className="mt-6">
+            <label
+              htmlFor="class-select"
+              className="block text-lg font-semibold mb-2"
+            >
+              Select Class:
+            </label>
+            <select
+              id="class-select"
+              className="p-2 border border-gray-300 rounded"
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+            >
+              <option value="">All Classes</option>
+              {classes.map((cls) => (
+                <option key={cls.classId} value={cls.classId}>
+                  {cls.className}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mt-6 bg-white rounded-lg shadow-lg p-4">
+            <h2 className="text-lg font-semibold mb-4">
+              Quiz Submissions for{" "}
+              {selectedClass
+                ? classes.find((cls) => cls.classId === selectedClass)
+                    ?.className
+                : "All Classes"}
+            </h2>
+            <ul>
+              {filteredSubmissions.length > 0 ? (
+                filteredSubmissions.map((submission) => (
+                  <li key={submission.id} className="mb-2">
+                    <div className="flex justify-between">
+                      <span>{submission.studentEmail}</span>
+                      <span>Score: {submission.score}</span>
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <>
+                  <div className="capitalize bg-red-900 text-white badge text-center">
+                    no submission for this class's quiz
+                  </div>
+                </>
+              )}
+            </ul>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Chart displaying scores */}
+          <div className="mt-6 bg-white rounded-lg shadow-lg p-4">
+            <h2 className="text-lg font-semibold mb-4">Score Chart</h2>
+            <BarChart width={600} height={300} data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="quiz" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="score" fill="#8884d8" />
+            </BarChart>
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -84,13 +84,10 @@ const DashboardHome = () => {
       const filtered = classes.filter(
         (submission) => submission.classId === selectedClass
       );
-      console.log("Filtered Submissions:", filtered[0]?.quizzes[0].submissions); // Check the filtered results
       setFilteredSubmissions(filtered[0]?.quizzes[0]?.submissions);
       console.log(filteredSubmissions);
-    } else {
-      setFilteredSubmissions(submissions);
     }
-  }, [classes, selectedClass, submissions]);
+  }, [classes, filteredSubmissions, selectedClass, submissions]);
 
   if (isLoading) {
     return <Loading />;
@@ -181,7 +178,7 @@ const DashboardHome = () => {
                 : "All Classes"}
             </h2>
             <ul>
-              {filteredSubmissions.length > 0 ? (
+              {filteredSubmissions?.length > 0 ? (
                 filteredSubmissions.map((submission) => (
                   <li key={submission.id} className="mb-2">
                     <div className="flex justify-between">

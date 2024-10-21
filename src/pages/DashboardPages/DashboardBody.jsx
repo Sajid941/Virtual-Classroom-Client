@@ -18,6 +18,7 @@ const DashboardBody = () => {
     data: classes = [], // Set default value to an empty array to avoid undefined issues
     isLoading,
     isError,
+    refetch
   } = useQuery({
     queryKey: ["classes", user?.email], // Unique key for caching
     queryFn: async () => {
@@ -57,7 +58,7 @@ const DashboardBody = () => {
   return (
     <div className="">
       {classes?.map((classData) => (
-        <ClassCard key={classData.classId} classData={classData} />
+        <ClassCard key={classData.classId} refetch={refetch} classData={classData} />
       ))}
     </div>
   );

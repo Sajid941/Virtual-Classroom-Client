@@ -92,8 +92,7 @@ const AllAssignments = () => {
           value={selectedClassName}
         >
           <option value="all">Select Class</option>
-          {classNames
-            .map((clsName, idx) => (
+          {classNames?.map((clsName, idx) => (
               <option key={idx} value={clsName}>
                 {clsName}
               </option>
@@ -109,8 +108,7 @@ const AllAssignments = () => {
           value={selectedAssignmentName}
         >
           <option value="all">Select Assignment</option>
-          {assignmentNames
-            .map((name, idx) => (
+          {assignmentNames?.map((name, idx) => (
               <option key={idx} value={name}>
                 {name}
               </option>
@@ -146,7 +144,7 @@ const AllAssignments = () => {
               </tr>
             </thead>
             <tbody>
-              {submissions.length ? submissions.map((submission, index) => (
+              {submissions?.length ? submissions?.map((submission, index) => (
                 <tr key={submission._id} className="hover:bg-gray-200">
                   <td className="p-2 text-center">{index + 1}</td>
                   <td className="p-2">{submission.assignmentName}</td>

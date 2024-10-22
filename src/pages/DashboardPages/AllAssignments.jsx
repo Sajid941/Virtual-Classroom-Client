@@ -79,21 +79,21 @@ const AllAssignments = () => {
     );
 
   return (
-    <div className="flex flex-col h-full w-full p-4 bg-gray-100 relative">
+    <div className="flex flex-col w-full p-4 bg-secondary text-white rounded-xl relative min-h-[80vh]">
       <Helmet>
         <title>Assignments | Class Net</title>
       </Helmet>
-      <h2 className="text-lg lg:text-3xl font-semibold text-center mb-6">Submitted Assignments</h2>
-      <div className="flex gap-1 flex-col lg:flex-row">
+      <h2 className="text-lg lg:text-3xl font-semibold text-center mb-6 ">Submitted Assignments</h2>
+      <div className="flex gap-1 flex-col lg:flex-row justify-between">
         {/* Class Selection Dropdown */}
         <select
-          className="select select-info w-full max-w-xs mb-4"
+          className="select select-info w-full max-w-xs mb-4 bg-transparent"
           onChange={(e) => setSelectedClassName(e.target.value)}
           value={selectedClassName}
         >
-          <option value="all">Select Class</option>
+          <option value="all" className="backdrop-blur">Select Class</option>
           {classNames?.map((clsName, idx) => (
-              <option key={idx} value={clsName}>
+              <option key={idx} value={clsName} className="bg-primary">
                 {clsName}
               </option>
             ))}
@@ -101,15 +101,15 @@ const AllAssignments = () => {
 
         {/* Assignment Selection Dropdown */}
         <select
-          className="select select-info w-full max-w-xs mb-4"
+          className="select select-info w-full max-w-xs mb-4 bg-transparent"
           onChange={(e) => {
             setSelectedAssignmentName(e.target.value);
           }}
           value={selectedAssignmentName}
         >
-          <option value="all">Select Assignment</option>
+          <option value="all bg-primary">Select Assignment</option>
           {assignmentNames?.map((name, idx) => (
-              <option key={idx} value={name}>
+              <option key={idx} value={name} className="bg-primary">
                 {name}
               </option>
             ))}
@@ -125,7 +125,7 @@ const AllAssignments = () => {
         value={studentName}
         type="text"
         placeholder="Student Name"
-        className="input input-bordered input-info w-full mb-4"
+        className="input input-bordered input-info w-full mb-4 bg-transparent text-white"
       />
 
       <div className="flex-grow overflow-hidden">

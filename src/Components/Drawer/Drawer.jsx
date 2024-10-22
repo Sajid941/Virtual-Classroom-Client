@@ -337,12 +337,12 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                         <div className="flex justify-end space-x-2">
                             <button
                                 type="button"
-                                className="btn btn-secondary"
+                                className="btn bg-primary text-white rounded-none"
                                 onClick={() => setIsFormOpen(false)}
                             >
                                 Cancel
                             </button>
-                            <button type="submit" className="btn btn-primary">
+                            <button type="submit" className="btn bg-secondary text-white rounded-none">
                                 Create Class
                             </button>
                         </div>
@@ -381,16 +381,16 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                             )}
                         </div>
 
-                        <div className="flex justify-end space-x-2">
+                        <div className="flex justify-end space-x-2 ">
+                            <button type="submit" className="btn bg-secondary rounded-none text-white">
+                                Join Class
+                            </button>
                             <button
                                 type="button"
-                                className="btn btn-secondary"
+                                className="btn bg-primary rounded-none text-white"
                                 onClick={() => setIsJoinClassFormOpen(false)}
                             >
                                 Cancel
-                            </button>
-                            <button type="submit" className="btn btn-primary">
-                                Join Class
                             </button>
                         </div>
                     </form>

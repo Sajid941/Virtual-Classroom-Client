@@ -69,7 +69,8 @@ const FeaturesSection = () => {
         {cards.map((card, index) => (
           <div
             key={card.id}
-            className="group relative bg-secondary rounded-lg p-10 shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 hover:border cursor-pointer"
+            className="group relative bg-secondary rounded-lg p-10 shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 hover:border cursor-grabbing 
+            flex flex-col justify-between min-h-fit"
             draggable
             onDragStart={(e) => handleDragStart(e, index)}
             onDragOver={handleDragOver}
@@ -79,17 +80,17 @@ const FeaturesSection = () => {
             <div className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-gray-700 border border-yellow-500 to-gray-900 mb-6 group-hover:animate-pulse">
               {card.icon}
             </div>
-            
+
             {/* Card title */}
             <h2 className="font-extrabold text-2xl text-gray-100 mb-4 group-hover:text-yellow-400 transition-colors duration-300">
               {card.title}
             </h2>
-            
+
             {/* Card description */}
             <p className="text-gray-400 group-hover:text-gray-200 transition-colors duration-300">
               {card.description}
             </p>
-            
+
             {/* Subtle background animation */}
             <div className="absolute inset-0 opacity-0 bg-gradient-to-br from-transparent to-yellow-500 group-hover:opacity-80 transition-opacity duration-300 rounded-lg"></div>
           </div>

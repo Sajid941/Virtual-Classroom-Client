@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useUser from "../../CustomHooks/useUser";
 import { AuthContext } from "../../Provider/AuthProvider";
 import useRole from "../../CustomHooks/useRole";
-import { FaChalkboardTeacher, FaTasks, FaClipboardList } from "react-icons/fa";
+import { FaChalkboardTeacher, FaTasks, FaClipboardList, FaUsers } from "react-icons/fa";
 import Loading from "../../Components/Loading";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import {
@@ -54,7 +54,11 @@ const DashboardHome = () => {
 
     setAssignmentCount(totalAssignments);
   }, [classes]);
-
+  //total students
+  const totalStudents = classes.reduce((acc, currentClass) => {
+    return acc + (currentClass.students?.length || 0);
+  }, 0);
+  
   // State to track whether submissions have been fetched
   const [submissionsFetched, setSubmissionsFetched] = useState(false);
 
@@ -135,15 +139,31 @@ const DashboardHome = () => {
             </div>
           </div>
         </div>
-        <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
-          <div className="flex items-center">
-            <FaClipboardList className="text-3xl text-orange-500 mr-3" />
-            <div>
-              <h2 className="text-lg font-semibold">Quizzes</h2>
-              <p className="text-2xl font-bold">{submissions.length}</p>
+        {role === "student" ? (
+          <>
+            <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+              <div className="flex items-center">
+                <FaClipboardList className="text-3xl text-orange-500 mr-3" />
+                <div>
+                  <h2 className="text-lg font-semibold">Quizzes</h2>
+                  <p className="text-2xl font-bold">{submissions.length}</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        ) : (
+          <>
+            <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+              <div className="flex items-center">
+                <FaUsers className="text-3xl text-orange-500 mr-3" />
+                <div>
+                  <h2 className="text-lg font-semibold">Total Students</h2>
+                  <p className="text-2xl font-bold">{totalStudents}</p>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
       {role === "teacher" ? (
         <>
@@ -160,7 +180,7 @@ const DashboardHome = () => {
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
             >
-              <option value="">All Classes</option>
+              <option value="">Select Classes</option>
               {classes.map((cls) => (
                 <option key={cls.classId} value={cls.classId}>
                   {cls.className}
@@ -175,7 +195,7 @@ const DashboardHome = () => {
               {selectedClass
                 ? classes.find((cls) => cls.classId === selectedClass)
                     ?.className
-                : "All Classes"}
+                : "select class"}
             </h2>
             <ul>
               {filteredSubmissions?.length > 0 ? (
@@ -200,17 +220,23 @@ const DashboardHome = () => {
       ) : (
         <>
           {/* Chart displaying scores */}
-          <div className="mt-6 bg-white rounded-lg shadow-lg p-4">
-            <h2 className="text-lg font-semibold mb-4">Score Chart</h2>
-            <BarChart width={600} height={300} data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="quiz" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="score" fill="#8884d8" />
-            </BarChart>
-          </div>
+          {submissions.length > 0 ? (
+            <div className="mt-6  rounded-lg shadow-lg">
+              <h2 className="text-lg font-semibold mb-4 text-center pt-4 text-white">Score Chart</h2>
+              <BarChart width={600} height={300} data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="quiz" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="score" fill="#8884d8" />
+              </BarChart>
+            </div>
+          ) : (
+            <div className="text-center font-bold">
+              no quiz submission found for this user
+            </div>
+          )}
         </>
       )}
     </div>

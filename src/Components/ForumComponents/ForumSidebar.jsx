@@ -45,11 +45,11 @@ const Sidebar = ({ setDiscussionCategory, isShowDrawer, setIsShowDrawer }) => {
                     <div className="menu bg-base-200 lg:bg-white lg:rounded-xl lg:border-2  text-[#4b5563] min-h-full p-4 scrollbar-hide ">
                         <div className="wrap">
                             <button
-                                className="btn bg-transparent border rounded-lg text-xl w-full justify-start shadow-gray-600 gap-5"
+                                className="btn group bg-transparent   border rounded-lg text-xl w-full justify-start shadow-gray-600 gap-5"
                                 onClick={handleShowModal}
                             >
-                                <FaPlusSquare className="text-gray-600" />
-                                <span className="text-gray-600 text-lg">
+                                <FaPlusSquare className="text-gray-600 group-hover:text-secondary" />
+                                <span className="text-gray-600 text-lg group-hover:text-secondary">
                                     Post a discussion
                                 </span>
                             </button>
@@ -75,7 +75,7 @@ const Sidebar = ({ setDiscussionCategory, isShowDrawer, setIsShowDrawer }) => {
                                     className=" hover:text-black text-xl font-semibold"
                                 >
                                     <span className="flex gap-4">
-                                        <GoDotFill size={30} color="#00d7c0" />{" "}
+                                        <GoDotFill size={30} color="#004085" />{" "}
                                         {category}
                                     </span>
                                 </li>

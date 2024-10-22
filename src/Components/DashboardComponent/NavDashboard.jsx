@@ -12,8 +12,8 @@ const NavDashboard = ({ handleToggleDrawer }) => {
   const { userdb } = useUser();
   console.log(userdb);
   return (
-    <div className="flex justify-center mt-2 z-50">
-      <div className="navbar w-[90%] mx-auto bg-base-100 shadow rounded-2xl py-4 fixed  bg-white/10 backdrop-blur-md bg-opacity-15">
+    <div className="flex justify-center mt-2 ">
+      <div className="navbar w-full container  mx-auto bg-base-100 shadow rounded-2xl py-4 fixed  bg-white/10 backdrop-blur-md bg-opacity-15 z-50">
         {/* Logo Section */}
         <div className="container mx-auto">
           <div className="flex-1 flex items-center">

@@ -18,9 +18,10 @@ import JoinMeetButton from "../../Components/DashboardComponent/JoinMeetButton";
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import SubmitAssignmentModal from "../../Components/SubmitAssignmentModal/SubmitAssignmentModal";
 import ChatTab from "../../Components/ClassComponents/ChatTab";
-import SubmitQuizModal from "../../Components/SubmitQuizModal/SubmitQuizModal";
+
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
+import SubmitQuiz from "../../Components/SubmitQuizModal/SubmitQuizModal";
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -37,8 +38,7 @@ const DetailedClass = () => {
   const [quizResult, setQuizResult] = useState(null); // To store the quiz result
 
   const [isQuizModalOpen, setIsQuizModalOpen] = useState(false); // State for AddQuizModal
-  const [isSubmitQuizModalOpen, setIsSubmitQuizModalOpen] = useState(false);
-  const [selectedQuiz, setSelectedQuiz] = useState(null); // State to store selected quiz
+
   const [students, setStudents] = useState(null); // State to store selected quiz
 
   // Fetch classes based on the user's email
@@ -130,11 +130,6 @@ const DetailedClass = () => {
     }
   }, [user.email]);
 
-  const handleTakeQuiz = (quiz) => {
-    console.log(quiz);
-    setSelectedQuiz(quiz); // Set the selected quiz
-    setIsSubmitQuizModalOpen(true);
-  };
   const quizzes = classData.quizzes;
   console.log(quizzes);
   return (
@@ -145,9 +140,7 @@ const DetailedClass = () => {
         style={{ backgroundImage: `url(${classData.classImage})` }}
       >
         <div className="absolute inset-0 bg-black/50"></div>
-        <div className="absolute">
-          
-        </div>
+        <div className="absolute"></div>
         <div className="relative z-0 flex flex-col items-center justify-center text-center h-full px-5">
           <button
             className="absolute top-5 left-5 flex items-center bg-[#004085] text-white px-4 py-2 rounded-md"
@@ -349,22 +342,11 @@ const DetailedClass = () => {
                       {canTakeQuiz ? (
                         <>
                           {/* Show the "Take Quiz" button if the user can take the quiz */}
-                          <button
-                            onClick={() => handleTakeQuiz(quiz.questions)}
-                            className="mt-2 bg-[#004085] text-white px-4 py-2 rounded-lg"
-                          >
-                            Take Quiz
-                          </button>
-
                           {/* SubmitQuizModal for quiz submission */}
-                          <SubmitQuizModal
-                            isOpen={isSubmitQuizModalOpen}
+                          <SubmitQuiz
                             quiz={quiz}
-                            onRequestClose={() =>
-                              setIsSubmitQuizModalOpen(false)
-                            }
-                            classId={id}
                             refetch={refetch}
+                            classId={classData.classId}
                           />
                         </>
                       ) : (
@@ -398,27 +380,51 @@ const DetailedClass = () => {
                   </div>
                 ) : role === "teacher" && classData?.quizzes?.length > 0 ? (
                   <>
-                    {classData.quizzes[0]?.submissions.map((submission) => {
-                      return (
-                        <div
-                          key={submission._id}
-                          className="border p-4 rounded-lg mb-4 shadow"
-                        >
-                          <h3 className="font-semibold text-lg">
-                            Quiz Submission
-                          </h3>
-                          <div className="card card-body shadow">
-                            <p className="text-md">
-                              Student: {submission.studentEmail}
-                            </p>
-                            <p className="text-md">
-                              Score: {submission.score}/
-                              {submission.totalQuestions}
+                    {classData.quizzes[0]?.submissions.length > 0 ? (
+                      <>
+                        {" "}
+                        {classData.quizzes[0]?.submissions.map((submission) => {
+                          return (
+                            <div
+                              key={submission._id}
+                              className="border p-4 rounded-lg mb-4 shadow"
+                            >
+                              <h3 className="font-semibold text-lg">
+                                Quiz Submission
+                              </h3>
+                              <div className="card card-body shadow">
+                                <p className="text-md">
+                                  Student: {submission.studentEmail}
+                                </p>
+                                <p className="text-md">
+                                  Score: {submission.score}/
+                                  {submission.totalQuestions}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </>
+                    ) : (
+                      <>
+                        {classData.quizzes.map((quiz, index) => (
+                          <div
+                            key={index}
+                            className="p-4 border rounded-lg mb-4 shadow"
+                          >
+                            <h3 className="font-semibold text-lg">
+                              {quiz.title}
+                            </h3>
+                            <p className="text-md">{quiz.description}</p>
+                            <p className="text-sm">
+                              <span className="font-semibold">Due: </span>
+                              {new Date(quiz.dueDate).toLocaleDateString()}
                             </p>
                           </div>
-                        </div>
-                      );
-                    })}
+                        ))}
+                        <div className="div">no submission found</div>
+                      </>
+                    )}
                   </>
                 ) : (
                   ""

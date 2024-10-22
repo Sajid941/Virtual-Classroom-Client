@@ -83,9 +83,9 @@ const LeaderBoard = () => {
         sortedSubmissions.map((submission, idx) => (
           <div key={idx} className="mt-5">
             <div className="bg-white w-full rounded-md px-5 py-2 flex gap-6 text-black items-center">
-              <h1 className="text-4xl font-bold">{idx + 1}</h1>
+              <h1 className="text-lg lg:text-2xl font-bold">{idx + 1}</h1>
               <div>
-                <h3 className="text-2xl font-bold">
+                <h3 className="text-lg font-bold">
                   {submission.student_name}
                 </h3>
                 <p>Total Mark: {submission.student_marks}</p>

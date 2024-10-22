@@ -4,8 +4,10 @@ import "swiper/css/pagination";
 import "./styles.css";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
+import useRole from "../../CustomHooks/useRole";
 
 const HomeBannerSlider = () => {
+  const { role } = useRole();
   return (
     <div className="">
       <Swiper
@@ -14,7 +16,7 @@ const HomeBannerSlider = () => {
           clickable: true,
         }}
         autoplay={{
-          delay: 2500,
+          delay: 4000,
           disableOnInteraction: true,
         }}
         navigation={true}
@@ -55,12 +57,21 @@ const HomeBannerSlider = () => {
                 >
                   Learn More
                 </Link>
-                <Link
-                  to={"/signin"}
-                  className="btn border-none capitalize rounded-none bg-accent font-semibold"
-                >
-                  Take a Class
-                </Link>
+                {role === "teacher" ? (
+                  <Link
+                    to={"/dashboard/classes"}
+                    className="btn border-none capitalize rounded-none bg-accent font-semibold"
+                  >
+                    Create Class
+                  </Link>
+                ) : (
+                  <Link
+                    to={"/dashboard/classes"}
+                    className="btn border-none capitalize rounded-none bg-accent font-semibold"
+                  >
+                    Join a Class
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -106,12 +117,21 @@ const HomeBannerSlider = () => {
                   >
                     Join Our Forum
                   </Link>
-                  <Link
-                    to={"/contact"}
-                    className="btn border-none capitalize rounded-none bg-accent font-semibold"
-                  >
-                    Attend a Class
-                  </Link>
+                  {role === "teacher" ? (
+                    <Link
+                      to={"/dashboard/classes"}
+                      className="btn border-none capitalize rounded-none bg-accent font-semibold"
+                    >
+                      Create Class
+                    </Link>
+                  ) : (
+                    <Link
+                      to={"/dashboard/classes"}
+                      className="btn border-none capitalize rounded-none bg-accent font-semibold"
+                    >
+                      Join a Class
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

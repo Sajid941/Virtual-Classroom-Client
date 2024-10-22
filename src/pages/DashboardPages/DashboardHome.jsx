@@ -147,12 +147,12 @@ const DashboardHome = () => {
       </div>
       {role === "teacher" ? (
         <>
-          <div className="mt-6">
+          <div className="mt-6 flex items-center gap-2">
             <label
               htmlFor="class-select"
-              className="block text-lg font-semibold mb-2"
+              className="block text-lg text-white font-semibold mb-2"
             >
-              Select Class:
+              Class Wise Quiz Submissions
             </label>
             <select
               id="class-select"
@@ -169,7 +169,7 @@ const DashboardHome = () => {
             </select>
           </div>
 
-          <div className="mt-6 bg-white rounded-lg shadow-lg p-4">
+          <div className="mt-2 bg-white rounded-lg shadow-lg p-4">
             <h2 className="text-lg font-semibold mb-4">
               Quiz Submissions for{" "}
               {selectedClass

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import Swal from "sweetalert2";
+import { MdAssignment, MdQuiz } from "react-icons/md";
 const ClassCard = ({ classData, refetch }) => {
   const axiosPublic = useAxiosPublic();
 
@@ -11,9 +12,11 @@ const ClassCard = ({ classData, refetch }) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: "warning",
+      imageUrl: "https://i.ibb.co/hgXFcw0/classNet.png",
+      imageHeight: "120",
+      imageWidth: "120",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#004085",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
@@ -40,12 +43,13 @@ const ClassCard = ({ classData, refetch }) => {
 
   return (
     <div className="relative">
-      <div className="absolute top-2 right-4 text-3xl text-white p-2 rounded hover:shadow-gray-800 cursor-pointer hover:bg-red-700 backdrop-blur-sm shadow bg-Primary group z-50">
+      <div className="absolute top-2 right-4 text-3xl text-white p-2 rounded hover:shadow-gray-800 cursor-pointer hover:bg-red-700 backdrop-blur-sm shadow bg-Primary group z-50 tooltip-accent">
         <div
-          className="group-hover:rotate-180 transition-transform duration-500 ease-in-out"
+          className=" lg:tooltip"
           onClick={handleDelete}
+          data-tip="delete class"
         >
-          <RxCrossCircled />
+          <RxCrossCircled className="group-hover:rotate-180 transition-transform duration-500 ease-in-out p-0 pb-0" />
         </div>
       </div>
 
@@ -77,13 +81,30 @@ const ClassCard = ({ classData, refetch }) => {
               <span className="font-semibold">{classData?.teacher.name}</span>
             </p>
             <div className="flex space-x-2 ">
-              {classData?.resources.map((resource, index) => (
-                <button key={index} className="p-2 rounded">
-                  {resource.type === "ZIP" && <GoFileZip size={30} />}
-                  {resource.type === "Code" && <GoFileCode size={30} />}
-                  {resource.type === "Comments" && <GoComment size={30} />}
-                </button>
-              ))}
+              {classData?.quizzes?.length > 0 ? (
+                <>
+                  <div
+                    className="text-2xl tooltip z-40"
+                    data-tip={`${classData.quizzes.length} quiz`}
+                  >
+                    <MdQuiz />
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+              {classData?.assignments?.length > 0 ? (
+                <>
+                  <div
+                    className="text-2xl tooltip z-40"
+                    data-tip={`${classData.assignments.length} assignment`}
+                  >
+                    <MdAssignment />
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>

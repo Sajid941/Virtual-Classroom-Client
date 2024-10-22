@@ -6,7 +6,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { AiOutlineSchedule } from "react-icons/ai";
 import { MdAssignmentAdd, MdAddToPhotos } from "react-icons/md";
 import { IoCreateOutline } from "react-icons/io5";
-import { GrDocumentPerformance } from "react-icons/gr";
+// import { GrDocumentPerformance } from "react-icons/gr";
 
 import { NavLink } from "react-router-dom";
 import DashboardSidebar from "../DashboardSidebar/DashboardSidebar";
@@ -16,6 +16,7 @@ import useRole from "../../CustomHooks/useRole";
 import useUser from "../../CustomHooks/useUser";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
     const [classCode, setClassCode] = useState(""); // state for storing class code
@@ -50,36 +51,48 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
     };
 
     const onSubmitCreateClass = async (data) => {
-        const classData = {
-            classId: generateUniqueClassCode(),
-            className: data.className,
-            section: data.section,
-            subject: data.subject,
-            teacher: {
-                name: userdb.name,
-                email: userdb.email,
-            },
-            students: [],
-            classImage:
-                "https://i.ibb.co/ngh5dsy/ivan-aleksic-PDRFee-Dni-Ck-unsplash.jpg",
-            resources: [],
-            quizzes: [],
-            assignments: [],
-        };
-
+        // Procedure to get Cloudinary image link
+    
+        // Get the image file from the form
+        const imageFile = data.classImage[0]; // Ensure data.classImage is an array
+        const formData = new FormData();
+        formData.append("file", imageFile); // Use "file" as the key for Cloudinary
+        formData.append("upload_preset", "ClassNet"); // Your upload preset
+    
         try {
-            // Posting data to the server
+            // Upload the file to Cloudinary
+            const uploadResponse = await axios.post('https://api.cloudinary.com/v1_1/dezydstve/image/upload', formData);
+            const uploadedImageUrl = uploadResponse.data.secure_url; // Get the secure URL from the response
+            
+            const classData = {
+                classId: generateUniqueClassCode(),
+                className: data.className,
+                section: data.section,
+                subject: data.subject,
+                teacher: {
+                    name: userdb.name,
+                    email: userdb.email,
+                },
+                students: [],
+                classImage: uploadedImageUrl, // Set the classImage to the uploaded image URL
+                resources: [],
+                quizzes: [],
+                assignments: [],
+            };
+    
+            // Posting class data to the server
             const response = await axiosPublic.post("/classes", classData);
             if (response.status === 201) {
-                setClassCode(response?.data.classId);
+                setClassCode(response.data.classId);
                 setIsFormOpen(false);
                 setIsModalOpen(true); // Open the modal after successful save
             }
         } catch (error) {
-            console.error("Error posting data:", error);
-            toast.error("Failed to post data");
+            console.error("Error uploading image or posting data:", error);
+            toast.error("Failed to upload image or post data");
         }
     };
+    
 
     const onSubmitJoinClass = async (data) => {
         const classCode = data.classCode;
@@ -302,6 +315,24 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                                 </p>
                             )}
                         </div>
+                        
+                        {/* Image thumbnail */}
+                        <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1">Class Thumbnail</label>
+                    <input
+                        type="file"
+                        {...registerCreateClass("classImage", { required: "Class image is required" })}
+                        // accept="image/*"
+                        className={`w-full p-2 border rounded ${
+                            errorsCreateClass.classImage ? "border-red-500" : "border-gray-300"
+                        }`}
+                    />
+                    {errorsCreateClass.classImage && (
+                        <p className="text-red-500 text-xs mt-1">{errorsCreateClass.classImage.message}</p>
+                    )}
+                </div>
+
+
 
                         <div className="flex justify-end space-x-2">
                             <button

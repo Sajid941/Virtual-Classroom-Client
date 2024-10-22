@@ -24,7 +24,7 @@ const AllAssignments = () => {
   const [assignmentId, setAssignmentId] = useState("");
   const [submissionId, setSubmissionId] = useState("");
   
-  // get role-based assignment submissions
+  // get role-based user assignment submissions
   const {
     data: responseData = {},
     isLoading,

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { LiaComment } from "react-icons/lia";
 import { TbPacman } from "react-icons/tb";
 import useRole from "../../CustomHooks/useRole";
+import LeaderBoard from "./LeaderBoard";
 
 const DashboardSidebar = () => {
   const [time, setTime] = useState(moment().format("h : mm : ss  A"));
@@ -24,20 +25,7 @@ const DashboardSidebar = () => {
       <div className="mt-5">
         {role === "teacher" && (
           <div>
-            <h4 className="text-xl font-semibold">Student Leader Board:</h4>
-            <h6 className="font-semibold">
-              Assignment:{" "}
-              <span className="font-normal text-accent">ThermoDynamics</span>
-            </h6>
-            <div className="mt-5">
-              <div className="bg-white w-full rounded-md px-5 py-2 flex gap-6 text-black items-center">
-                <h1 className="text-4xl font-bold">1</h1>
-                <div>
-                  <h3 className="text-2xl font-bold">Jhon Foe</h3>
-                  <p>Total Mark: 90</p>
-                </div>
-              </div>
-            </div>
+            <LeaderBoard></LeaderBoard>
           </div>
         )}
         {role === "student" && (

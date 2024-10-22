@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import Swal from "sweetalert2";
 import { MdAssignment, MdQuiz } from "react-icons/md";
+import { FaTrash } from "react-icons/fa";
 const ClassCard = ({ classData, refetch }) => {
   const axiosPublic = useAxiosPublic();
 
@@ -17,7 +18,7 @@ const ClassCard = ({ classData, refetch }) => {
       imageWidth: "120",
       showCancelButton: true,
       confirmButtonColor: "#004085",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#007BFF",
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -43,18 +44,17 @@ const ClassCard = ({ classData, refetch }) => {
 
   return (
     <div className="relative">
-      <div className="absolute top-2 right-4 text-3xl text-white p-2 rounded hover:shadow-gray-800 cursor-pointer hover:bg-red-700 backdrop-blur-sm shadow bg-Primary group z-50 tooltip-accent">
-        <div
-          className=" lg:tooltip"
-          onClick={handleDelete}
-          data-tip="delete class"
-        >
-          <RxCrossCircled className="group-hover:rotate-180 transition-transform duration-500 ease-in-out p-0 pb-0" />
+      <div
+        className="absolute top-2 right-4 text-2xl text-white p-2 rounded cursor-pointer bg-Primary group z-30 hover:text-red-400"
+        onClick={handleDelete}
+      >
+        <div className=" lg:tooltip" data-tip="delete class">
+          <FaTrash className="" />
         </div>
       </div>
 
       <Link
-        className="wrap shadow w-full my-4 rounded-xl z-40 relative "
+        className="wrap group shadow w-full my-4 rounded-xl z-20 relative "
         to={`/class/${classData?.classId}`}
       >
         <div className="rounded-xl overflow-hidden">
@@ -65,8 +65,8 @@ const ClassCard = ({ classData, refetch }) => {
             style={{ backgroundImage: `url(${classData?.classImage})` }}
           >
             <div className="bg-black/30 w-full h-full absolute"></div>
-            <div className="relative px-5 py-5">
-              <h2 className="font-bold text-lg z-10">{classData?.className}</h2>
+            <div className="relative px-5 py-5 z-40">
+              <h2 className="font-bold text-lg ">{classData?.className}</h2>
               <p>
                 <span className="block">Section: {classData?.section}</span>
                 <span className="block font-semibold">
@@ -74,6 +74,8 @@ const ClassCard = ({ classData, refetch }) => {
                 </span>
               </p>
             </div>
+            
+            <div className="absolute inset-0 bg-gradient-to-t bg-secondary/60 rounded-lg z-30"></div>
           </div>
           <div className="px-4 py-2 mb-5 bg-[#004085] text-white flex justify-between items-center rounded-b-xl">
             <p>

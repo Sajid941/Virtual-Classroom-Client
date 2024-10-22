@@ -40,8 +40,8 @@ console.log(sort);
 
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-5 z-50 mb-5">
-        <select value={sort} onChange={handleSort} className="select select-warning w-full">
+      <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-5 z-50 mb-5 justify-between">
+        <select value={sort} onChange={handleSort} className="select select-secondary  w-full">
           <option value="newest">Newest</option>
           <option value="oldest" >Oldest</option>
           <option value="asc" >Ascending</option>
@@ -64,14 +64,7 @@ console.log(sort);
             </svg>
           </label>
         </div>
-
-
-        {/* Button */}
-        <div className="h-full">
-          <button className="bg-blue-500 w-full h-full text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-            Mark Read
-          </button>
-        </div>
+        
       </div>
       <div>
         {

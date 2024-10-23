@@ -64,7 +64,7 @@ const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment, re
         },
       }}
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="card-body">
+      <form onSubmit={handleSubmit(onSubmit)} className="card-body z-40">
         <h2 className="font-semibold text-lg">{title}</h2>
 
         <div className="">

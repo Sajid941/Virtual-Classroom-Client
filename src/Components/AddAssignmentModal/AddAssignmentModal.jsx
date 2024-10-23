@@ -53,7 +53,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
   };
 
   return (
-    <div className="relative z-50">
+    <div className="relative z-40">
       <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
         <div className="flex gap-2">
           <MdAssignmentAdd size={25} />

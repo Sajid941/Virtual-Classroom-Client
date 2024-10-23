@@ -63,7 +63,7 @@ const AssignmentFeedbackModal = ({
         },
       }}
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="card-body">
+      <form onSubmit={handleSubmit(onSubmit)} className="card-body z-40">
         <div className="">
           <input
             {...register("student_marks", { required: true })}

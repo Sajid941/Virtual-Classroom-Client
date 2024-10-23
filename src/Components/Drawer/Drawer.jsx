@@ -153,7 +153,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         aria-label="close sidebar"
                         className="drawer-overlay"
                     ></label>
-                    <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2 h-screen md:h-4/5 md:rounded-xl w-64 space-y-5 pt-24 md:pt-5">
+                    <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2 h-screen md:h-4/5 md:rounded-xl w-64 space-y-5 pt-5 md:pt-5">
                         <ul className="space-y-5 p-5 pl-8">
                             {/* Sidebar Links */}
                             <li>
@@ -239,7 +239,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
 
             {/* Create Class Form */}
             {isFormOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 z-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 ">
                     <form
                         onSubmit={handleSubmitCreateClass(onSubmitCreateClass)}
                         className="bg-white p-6 rounded-lg shadow-lg md:w-2/5"
@@ -350,7 +350,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
 
             {/* Join Class Form */}
             {isJoinClassFormOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 z-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 ">
                     <form
                         onSubmit={handleSubmitJoinClass(onSubmitJoinClass)}
                         className="bg-white p-6 rounded-lg shadow-lg md:w-2/5"
@@ -397,7 +397,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
 
             {/* Modal for displaying class code */}
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 z-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 ">
                     <div className="bg-white p-6 rounded-lg shadow-lg w-2/5">
                         <h2 className="text-xl font-bold mb-4">
                             Class Created Successfully

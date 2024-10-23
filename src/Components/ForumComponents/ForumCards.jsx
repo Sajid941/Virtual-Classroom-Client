@@ -39,7 +39,7 @@ const ForumCards = ({ discussionCategory }) => {
 
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-5 z-50 mb-5 justify-between">
+      <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-5 mb-5 justify-between">
         <select value={sort} onChange={handleSort} className="select select-bordered  w-full">
           <option value="newest">Newest</option>
           <option value="oldest" >Oldest</option>

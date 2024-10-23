@@ -18,7 +18,7 @@ import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
+const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
     const [classCode, setClassCode] = useState(""); // state for storing class code
     const { userdb } = useUser();
     const { role } = useRole();
@@ -146,7 +146,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                     id="my-drawer-2"
                     type="checkbox"
                     className="drawer-toggle"
-                    checked={isDrawerOpen}
+                    checked={isShowDrawer}
                     onChange={handleToggleDrawer}
                 />
                 <div className="drawer-side ">
@@ -424,7 +424,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
 };
 
 Drawer.propTypes = {
-    isDrawerOpen: PropTypes.bool.isRequired,
+    isShowDrawer: PropTypes.bool.isRequired,
     handleToggleDrawer: PropTypes.func.isRequired,
 };
 

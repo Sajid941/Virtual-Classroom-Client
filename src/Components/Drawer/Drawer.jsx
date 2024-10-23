@@ -335,7 +335,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         <div className="flex justify-end space-x-2">
                             <button
                                 type="button"
-                                className="btn bg-primary hover:bg-[#068fff] ho text-white "
+                                className="btn bg-primary hover:bg-[#068fff] text-white "
                                 onClick={() => setIsFormOpen(false)}
                             >
                                 Cancel
@@ -380,12 +380,12 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         </div>
 
                         <div className="flex justify-end space-x-2 ">
-                            <button type="submit" className="btn bg-secondary rounded-none text-white">
+                            <button type="submit" className="btn bg-secondary text-white hover:bg-[#0053b3]">
                                 Join Class
                             </button>
                             <button
                                 type="button"
-                                className="btn bg-primary rounded-none text-white"
+                                className="btn bg-primary hover:bg-[#068fff] text-white"
                                 onClick={() => setIsJoinClassFormOpen(false)}
                             >
                                 Cancel

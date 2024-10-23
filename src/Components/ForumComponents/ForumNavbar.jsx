@@ -8,7 +8,6 @@ import useAuth from "../../CustomHooks/useAuth";
 const ForumNavbar = ({ isShowDrawer, setIsShowDrawer }) => {
     const { isLoading, isError } = useUser();
     const { user } = useAuth();
-    const { userdb } = useUser();
     return (
         <div>
             <div className="navbar pt-5 mx-auto md:px-10 lg:px-20 w-full gap-6 lg:gap-0 z-30 fixed g-white/10 backdrop-blur-md bg-opacity-15">

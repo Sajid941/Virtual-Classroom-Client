@@ -18,7 +18,7 @@ const Forum = () => {
       <ForumNavbar setIsShowDrawer={setIsShowDrawer} isShowDrawer={isShowDrawer} />
       <div className="flex flex-col lg:flex-row gap-5 mx-5 md:mx-10 lg:mx-20 pt-28">
         <aside className="flex-1 ">
-          <ForumSidebar setIsShowDrawer={setIsShowDrawer} isShowDrawer={isShowDrawer} setDiscussionCategory={setDiscussionCategory}/>
+          <ForumSidebar discussionCategory={discussionCategory} setIsShowDrawer={setIsShowDrawer} isShowDrawer={isShowDrawer} setDiscussionCategory={setDiscussionCategory}/>
         </aside>
         <div className="w-full lg:ml-96">
           <ForumCards discussionCategory={discussionCategory}/>

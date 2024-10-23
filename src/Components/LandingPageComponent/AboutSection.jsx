@@ -75,7 +75,7 @@ const AboutSection = () => {
           transition={{ duration: 0.6 }}
         >
           <img
-            className="w-72 mx-auto h-auto rounded-lg shadow-lg transition-transform duration-300 transform hover:scale-105"
+            className="w-72 hidden md:block mx-auto h-auto rounded-lg shadow-lg transition-transform duration-300 transform hover:scale-105"
             src="https://i.ibb.co/hgXFcw0/classNet.png" // Class Net image
             alt="Class Net"
           />

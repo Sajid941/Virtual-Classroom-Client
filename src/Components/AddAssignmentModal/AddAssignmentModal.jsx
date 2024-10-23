@@ -60,7 +60,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
           <h2 className="text-2xl font-semibold mb-4">Upload Assignment</h2>
         </div>
         {/* assignment form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="card-body">
+        <form onSubmit={handleSubmit(onSubmit)} className="card-body p-0">
           <div className="form-control">
             <input
               {...register("title", { required: true })}
@@ -117,7 +117,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
           <div className="flex justify-center">
             <button
               type="submit"
-              className="mr-2 px-4 py-2 hover:bg-gray-400 bg-[#004085] text-white rounded-md"
+              className="mr-2 px-4 py-2 hover:bg-gray-400 bg-[#004085] text-white rounded-none w-full"
             >
               Submit
             </button>
@@ -125,7 +125,7 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
             <button
               type="button"
               onClick={onRequestClose}
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md"
+              className="px-4 py-2 bg-primary text-white rounded-none w-full"
             >
               Cancel
             </button>

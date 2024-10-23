@@ -269,13 +269,13 @@ const AddQuizModal = ({ isOpen, onRequestClose, classId, refetch }) => {
                     <button
                         type="button"
                         onClick={onRequestClose}
-                        className="mr-4 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg"
+                        className="mr-4 bg-primary text-white px-4 py-2 rounded-none w-full"
                     >
                         Cancel
                     </button>
                     <button
                         type="submit"
-                        className="bg-[#004085] text-white px-4 py-2 rounded-lg"
+                        className="bg-secondary text-white px-4 py-2 rounded-none w-full"
                     >
                         Add Quiz
                     </button>

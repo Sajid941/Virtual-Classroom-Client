@@ -44,7 +44,7 @@ const ClassCard = ({ classData, refetch }) => {
   return (
     <div className="relative px-5 md:px-0">
       <div
-        className="absolute top-2 right-4 text-2xl text-white p-2 rounded cursor-pointer bg-Primary group  hover:text-red-400"
+        className="absolute top-2 right-4 text-2xl text-white p-2 rounded cursor-pointer bg-Primary group z-30 hover:text-red-400"
         onClick={handleDelete}
       >
         <div className=" lg:tooltip" data-tip="delete class">

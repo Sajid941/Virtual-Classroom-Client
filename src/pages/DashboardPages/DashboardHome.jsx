@@ -3,7 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import useUser from "../../CustomHooks/useUser";
 import { AuthContext } from "../../Provider/AuthProvider";
 import useRole from "../../CustomHooks/useRole";
-import { FaChalkboardTeacher, FaTasks, FaClipboardList, FaUsers } from "react-icons/fa";
+import {
+  FaChalkboardTeacher,
+  FaTasks,
+  FaClipboardList,
+  FaUsers,
+} from "react-icons/fa";
 import Loading from "../../Components/Loading";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import {
@@ -14,6 +19,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 
 const DashboardHome = () => {
@@ -58,7 +64,7 @@ const DashboardHome = () => {
   const totalStudents = classes.reduce((acc, currentClass) => {
     return acc + (currentClass.students?.length || 0);
   }, 0);
-  
+
   // State to track whether submissions have been fetched
   const [submissionsFetched, setSubmissionsFetched] = useState(false);
 
@@ -82,7 +88,6 @@ const DashboardHome = () => {
   }, [axiosPublicMemo, userdb, submissionsFetched]);
 
   useEffect(() => {
-
     if (selectedClass) {
       const filtered = classes.filter(
         (submission) => submission.classId === selectedClass
@@ -112,26 +117,26 @@ const DashboardHome = () => {
   }));
 
   return (
-    <div className="w-full basis-3/5 p-4 rounded-xl min-h-[80vh] bg-secondary">
-      <div className="topText mb-4">
+    <div className="md:w-full basis-3/5 p-4  mx-4 md:mx-0 rounded-xl md:min-h-[80vh] bg-secondary ">
+      <div className="topText mt-5 mb-6">
         <h1 className="text-2xl font-bold text-white">
           Welcome Back, {userdb?.name}
         </h1>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 z-auto">
-        <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
-          <div className="flex items-center">
-            <FaChalkboardTeacher className="text-3xl text-blue-500 mr-3" />
-            <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 z-auto">
+        <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+          <div className="flex-col flex md:flex-row items-center justify-center md:justify-start">
+            <FaChalkboardTeacher className="text-3xl text-blue-500 md:mr-3" />
+            <div className="text-center md:text-left">
               <h2 className="text-lg font-semibold">Classes</h2>
               <p className="text-2xl font-bold">{classes?.length}</p>
             </div>
           </div>
         </div>
-        <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
-          <div className="flex items-center">
-            <FaTasks className="text-3xl text-green-500 mr-3" />
-            <div>
+        <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+          <div className="flex-col flex md:flex-row items-center justify-center md:justify-start">
+            <FaTasks className="text-3xl text-green-500 md:mr-3" />
+            <div className="text-center md:text-left">
               <h2 className="text-lg font-semibold">Assignments</h2>
               <p className="text-2xl font-bold">{assignmentCount}</p>
             </div>
@@ -139,10 +144,10 @@ const DashboardHome = () => {
         </div>
         {role === "student" ? (
           <>
-            <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
-              <div className="flex items-center">
-                <FaClipboardList className="text-3xl text-orange-500 mr-3" />
-                <div>
+            <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+              <div className="flex-col flex md:flex-row items-center justify-center md:justify-start">
+                <FaClipboardList className="text-3xl text-orange-500 md:mr-3" />
+                <div className="md:text-left text-center">
                   <h2 className="text-lg font-semibold">Quizzes</h2>
                   <p className="text-2xl font-bold">{submissions.length}</p>
                 </div>
@@ -151,10 +156,10 @@ const DashboardHome = () => {
           </>
         ) : (
           <>
-            <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
-              <div className="flex items-center">
-                <FaUsers className="text-3xl text-orange-500 mr-3" />
-                <div>
+            <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+              <div className="flex-col flex md:flex-row items-center justify-center md:justify-start">
+                <FaUsers className="text-3xl text-orange-500 md:mr-3" />
+                <div className="md:text-left text-center">
                   <h2 className="text-lg font-semibold">Total Students</h2>
                   <p className="text-2xl font-bold">{totalStudents}</p>
                 </div>
@@ -165,7 +170,7 @@ const DashboardHome = () => {
       </div>
       {role === "teacher" ? (
         <>
-          <div className="mt-6 flex items-center gap-2">
+          <div className="mt-16 flex-col flex md:flex-row items-center gap-2">
             <label
               htmlFor="class-select"
               className="block text-lg text-white font-semibold mb-2"
@@ -187,7 +192,7 @@ const DashboardHome = () => {
             </select>
           </div>
 
-          <div className="mt-2 bg-white rounded-lg shadow-lg p-4">
+          <div className="mt-4 bg-white rounded-lg shadow-lg p-4">
             <h2 className="text-lg font-semibold mb-4">
               Quiz Submissions for{" "}
               {selectedClass
@@ -207,7 +212,7 @@ const DashboardHome = () => {
                 ))
               ) : (
                 <>
-                  <div className="capitalize bg-red-900 text-white badge text-center">
+                  <div className="capitalize bg-red-900 text-white badge text-sm text-center">
                     no submission for this class's quiz
                   </div>
                 </>
@@ -219,20 +224,24 @@ const DashboardHome = () => {
         <>
           {/* Chart displaying scores */}
           {submissions.length > 0 ? (
-            <div className="mt-6  rounded-lg shadow-lg">
-              <h2 className="text-lg font-semibold mb-4 text-center pt-4 text-white">Score Chart</h2>
-              <BarChart width={600} height={300} data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="quiz" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="score" fill="#8884d8" />
-              </BarChart>
+            <div className="mt-6 rounded-lg shadow-lg">
+              <h2 className="text-lg font-semibold mb-4 text-center pt-4 text-white">
+                Score Chart
+              </h2>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="quiz" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="score" fill="#8884d8" />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           ) : (
-            <div className="text-center font-bold">
-              no quiz submission found for this user
+            <div className="text-center text-sm font-bold">
+              No quiz submission found for this user
             </div>
           )}
         </>

@@ -112,7 +112,7 @@ const DashboardHome = () => {
   }));
 
   return (
-    <div className="w-full basis-3/5 p-4 rounded-xl min-h-[80vh] bg-secondary">
+    <div className="w-full basis-3/5 p-10 rounded-xl min-h-[80vh] bg-secondary">
       <div className="topText mb-4">
         <h1 className="text-2xl font-bold text-white">
           Welcome Back, {userdb?.name}
@@ -231,8 +231,8 @@ const DashboardHome = () => {
               </BarChart>
             </div>
           ) : (
-            <div className="text-center font-bold">
-              no quiz submission found for this user
+            <div className="text-center font-bold mt-10 text-white">
+              No quiz submission found for this user
             </div>
           )}
         </>

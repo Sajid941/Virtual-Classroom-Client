@@ -19,7 +19,9 @@ const JoinMeetButton = ({ id }) => {
             input: "url",
             showCancelButton: true,
             confirmButtonText: "Add",
+            confirmButtonColor:'#004085',
             cancelButtonText: "Cancel",
+            cancelButtonColor:"#007BFF",
             showLoaderOnConfirm: true,
             preConfirm: async (link) => {
                 if (!link) {
@@ -64,7 +66,7 @@ const JoinMeetButton = ({ id }) => {
             {
                 userdb?.role == "teacher" ?
                     <>
-                        <button className='btn bg-secondary text-white border-secondary' onClick={handleSubmit}>Meet Setting</button>
+                        <button className='btn bg-secondary text-white border-secondary rounded-none' onClick={handleSubmit}>Meet Setting</button>
                     </>
                     : null
             }

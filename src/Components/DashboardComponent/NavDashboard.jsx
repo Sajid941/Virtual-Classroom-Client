@@ -10,7 +10,7 @@ const NavDashboard = ({ handleToggleDrawer }) => {
     const { userdb } = useUser();
     return (
         <div className="flex justify-center">
-            <div className="navbar pt-5 mx-auto md:px-10 lg:px-20 w-full gap-6 lg:gap-0 fixed backdrop-blur-md bg-opacity-15">
+            <div className="navbar pt-5 mx-auto md:px-10 lg:px-20 w-full gap-6 lg:gap-0 fixed backdrop-blur-md bg-opacity-15 z-50">
                 {/* Logo Section */}
                 <div className="container mx-auto">
                     <div className="flex-1 flex items-center">
@@ -33,7 +33,7 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                     <div className="flex-none gap-2 items-center">
                         <div className="dropdown dropdown-end flex items-center gap-3">
                             <div className="wrap">
-                                <h1 className="font-bold text-xl text-secondary hidden md:block">
+                                <h1 className="font-bold text-xl text-secondary md:block">
                                     {userdb?.name}
                                 </h1>
                                 <span className="text-sm text-gray-600">

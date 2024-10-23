@@ -138,8 +138,8 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
     };
 
     return (
-        <div className="">
-            <div className="drawer w-64 fixed md:drawer-open">
+        <div className="sticky top-20">
+            <div className="drawer w-full  md:drawer-open">
                 <input
                     id="my-drawer-2"
                     type="checkbox"
@@ -153,7 +153,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         aria-label="close sidebar"
                         className="drawer-overlay"
                     ></label>
-                    <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2 h-screen md:h-4/5 md:rounded-xl w-64 space-y-5 pt-5 md:pt-5">
+                    <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2 h-screen md:h-4/5 md:rounded-xl  space-y-5 pt-5 md:pt-5">
                         <ul className="space-y-5 p-5 pl-8">
                             {/* Sidebar Links */}
                             <li>
@@ -321,7 +321,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         type="file"
                         {...registerCreateClass("classImage", { required: "Class image is required" })}
                         // accept="image/*"
-                        className={`w-full  file-input file-input-bordered ${
+                        className={`w-full p-2 border rounded ${
                             errorsCreateClass.classImage ? "border-red-500" : "border-gray-300"
                         }`}
                     />
@@ -335,12 +335,12 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         <div className="flex justify-end space-x-2">
                             <button
                                 type="button"
-                                className="btn bg-primary hover:bg-[#068fff] text-white "
+                                className="btn bg-primary text-white rounded-none"
                                 onClick={() => setIsFormOpen(false)}
                             >
                                 Cancel
                             </button>
-                            <button type="submit" className="btn bg-secondary text-white hover:bg-[#0053b3] ">
+                            <button type="submit" className="btn bg-secondary text-white rounded-none">
                                 Create Class
                             </button>
                         </div>
@@ -380,12 +380,12 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         </div>
 
                         <div className="flex justify-end space-x-2 ">
-                            <button type="submit" className="btn bg-secondary text-white hover:bg-[#0053b3]">
+                            <button type="submit" className="btn bg-secondary rounded-none text-white">
                                 Join Class
                             </button>
                             <button
                                 type="button"
-                                className="btn bg-primary hover:bg-[#068fff] text-white"
+                                className="btn bg-primary rounded-none text-white"
                                 onClick={() => setIsJoinClassFormOpen(false)}
                             >
                                 Cancel

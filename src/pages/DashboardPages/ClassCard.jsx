@@ -44,11 +44,11 @@ const ClassCard = ({ classData, refetch }) => {
   return (
     <div className="relative px-5 md:px-0">
       <div
-        className="absolute top-2 right-4 text-red-500 p-2 rounded cursor-pointer bg-Primary group  hover:text-red-400 z-10"
+        className="absolute top-2 right-4 text-2xl text-white p-2 rounded cursor-pointer bg-Primary group z-30 hover:text-red-400"
         onClick={handleDelete}
       >
         <div className=" lg:tooltip" data-tip="delete class">
-          <FaTrash size={20}/>
+          <FaTrash className="" />
         </div>
       </div>
 
@@ -80,7 +80,7 @@ const ClassCard = ({ classData, refetch }) => {
               Conducting By:{" "}
               <span className="font-semibold">{classData?.teacher.name}</span>
             </p>
-            <div className="flex space-x-2">
+            <div className="flex space-x-2 ">
               {classData?.quizzes?.length > 0 ? (
                 <>
                   <div

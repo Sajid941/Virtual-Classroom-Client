@@ -22,6 +22,7 @@ import ChatTab from "../../Components/ClassComponents/ChatTab";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import SubmitQuiz from "../../Components/SubmitQuizModal/SubmitQuizModal";
+import './styles.css'
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -141,7 +142,7 @@ const DetailedClass = () => {
         <div className="absolute"></div>
         <div className="relative flex flex-col items-center justify-center text-center h-full px-5">
           <button
-            className="absolute top-5 left-5 flex items-center bg-[#004085] text-white px-4 py-2 rounded-md"
+            className="absolute top-5 left-5 flex items-center bg-secondary text-white px-4 py-2 rounded-none"
             onClick={() => navigate(-1)}
           >
             <AiOutlineLeft className="mr-2" /> {/* Arrow Icon */}
@@ -165,7 +166,7 @@ const DetailedClass = () => {
       {/* Main Content Section */}
       <div className="container mx-auto py-10 px-5 md:px-10">
         <Tabs>
-          <TabList className="flex space-x-4 border-b mb-4">
+          <TabList className="flex space-x-4 border-b-2 border-secondary mb-4 ">
             <Tab className="px-4 py-2 cursor-pointer">Resources</Tab>
             <Tab className="px-4 py-2 cursor-pointer">Assignments</Tab>
             <Tab className="px-4 py-2 cursor-pointer">Quizzes</Tab>

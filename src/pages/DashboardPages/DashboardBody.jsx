@@ -12,7 +12,6 @@ const DashboardBody = () => {
   const axiosPublic = useAxiosPublic();
   const axiosPrivate=useAxiosPrivate();
   const { role } = useRole();
-  console.log(role);
 
   const {
     data: classes = [], // Set default value to an empty array to avoid undefined issues

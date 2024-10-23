@@ -9,7 +9,6 @@ import ForumCards from "../../Components/ForumComponents/ForumCards";
 const Forum = () => {
   const [discussionCategory,setDiscussionCategory] = useState("All")
   const [isShowDrawer,setIsShowDrawer] = useState(false)
-  console.log(discussionCategory);
   return (
     <div className="min-h-screen bg-white">
       <Helmet>

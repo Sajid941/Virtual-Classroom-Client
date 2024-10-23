@@ -11,7 +11,6 @@ const ForumCards = ({ discussionCategory }) => {
   const axiosPublic = useAxiosPublic()
   const [searchText, setSearchText] = useState("")
   const [sort, setSort] = useState("newest")
-console.log(sort);
   const { data: discussions, isPending, refetch } = useQuery({
     queryKey: ["discussions", discussionCategory],
     queryFn: async () => {

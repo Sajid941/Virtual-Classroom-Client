@@ -36,7 +36,6 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
         }
       );
 
-      console.log("added:", response.data);
 
       reset();
       onRequestClose();

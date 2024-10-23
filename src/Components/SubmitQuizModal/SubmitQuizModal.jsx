@@ -23,7 +23,6 @@ const SubmitQuiz = ({ quiz, classId, refetch }) => {
         score: calculateScore(), // Calculate score based on stored answers
       };
 
-      console.log(submissionData);
 
       // Make the PATCH API call using axiosPublic
       await axiosPublic.put(`/quizzes/quizsubmission/${classId}`, {

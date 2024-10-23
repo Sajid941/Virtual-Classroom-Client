@@ -28,7 +28,6 @@ const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment, re
     try {
       const response = await axiosPrivate.patch(`/classes/${classId}/assignments/${_id}/submissions`, formData, {headers: {"Content-Type": "multipart/form-data"}})
       if(response.data){
-        console.log("Submitted successfully", response.data);
         reset();
         onRequestClose();
         Swal.fire({

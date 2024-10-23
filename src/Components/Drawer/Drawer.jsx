@@ -96,7 +96,6 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
 
     const onSubmitJoinClass = async (data) => {
         const classCode = data.classCode;
-        console.log("Joining class with code:", classCode);
 
         try {
             // Fetch class by class code
@@ -122,7 +121,6 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                     );
 
                     if (patchResponse.status === 200) {
-                        console.log("Student successfully added to the class");
                         window.location.reload();
                     } else {
                         console.error("Failed to add the student to the class");

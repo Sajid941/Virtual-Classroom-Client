@@ -116,7 +116,6 @@ const DetailedClass = () => {
         );
         if (response) {
           setCanTakeQuiz(false); // Student can take the quiz
-          console.log(response.data);
           setQuizResult(response.data.submission); // Set the quiz result if it exists
         } else {
           setCanTakeQuiz(true); // Student can take the quiz
@@ -131,7 +130,6 @@ const DetailedClass = () => {
   }, [user.email]);
 
   const quizzes = classData.quizzes;
-  console.log(quizzes);
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Section */}

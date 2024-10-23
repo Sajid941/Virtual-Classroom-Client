@@ -53,7 +53,6 @@ const ChatTab = ({ classroomId }) => {
                 classroomId,
                 message: [newMessage],
             }
-            console.log(newChat);
 
             axiosPrivate.patch("/chats", newChat)
                 .then(res => {

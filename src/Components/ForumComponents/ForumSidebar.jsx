@@ -5,8 +5,6 @@ import PropTypes from "prop-types";
 import Loading from "../Loading";
 import useCategories from "../../CustomHooks/useCategories";
 import "./ForumComponents.css";
-import { useState } from "react";
-import { set } from "react-hook-form";
 
 const Sidebar = ({discussionCategory, setDiscussionCategory, isShowDrawer, setIsShowDrawer }) => {
     const { categories, isPending } = useCategories();

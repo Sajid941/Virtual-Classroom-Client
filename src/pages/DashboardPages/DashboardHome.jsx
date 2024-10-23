@@ -82,14 +82,12 @@ const DashboardHome = () => {
   }, [axiosPublicMemo, userdb, submissionsFetched]);
 
   useEffect(() => {
-    console.log("Selected Class:", selectedClass);
 
     if (selectedClass) {
       const filtered = classes.filter(
         (submission) => submission.classId === selectedClass
       );
       setFilteredSubmissions(filtered[0]?.quizzes[0]?.submissions);
-      console.log(filteredSubmissions);
     }
   }, [classes, filteredSubmissions, selectedClass, submissions]);
 

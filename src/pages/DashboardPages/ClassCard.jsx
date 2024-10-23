@@ -26,7 +26,6 @@ const ClassCard = ({ classData, refetch }) => {
           const response = await axiosPublic.delete(
             `/classes/delete/${classData?.classId}`
           );
-          console.log(response);
           Swal.fire("Deleted!", response.data.message, "success");
           // Call refetch or any function to refresh your data
           refetch();

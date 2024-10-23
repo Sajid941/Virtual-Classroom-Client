@@ -8,6 +8,7 @@ import useRole from "../../CustomHooks/useRole";
 import useAuth from "../../CustomHooks/useAuth";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const Calendar = () => {
     const axiosPublic = useAxiosPublic();
@@ -40,6 +41,9 @@ const Calendar = () => {
     );
     return (
         <div>
+            <Helmet>
+                <title>Calendar | Class Net</title>
+            </Helmet>
             {role === "teacher" && (
                 <FullCalendar
                     plugins={[dayGridPlugin, timeGridPlugin]}
@@ -109,9 +113,8 @@ const Calendar = () => {
                     events={assignments}
                     expandRows={true}
                     eventClick={(info) => {
-                       toast(info.event.extendedProps.description)
+                        toast(info.event.extendedProps.description);
                     }}
-                    
                 />
             )}
         </div>

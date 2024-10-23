@@ -86,7 +86,7 @@ const AllAssignments = () => {
                 <div className="flex lg:gap-5 flex-col lg:flex-row justify-between">
                     {/* Class Selection Dropdown */}
                     <select
-                        className="select border-gray-300 focus:border-gray-300 focus:ring-2 focus:ring-[#16a34a] w-full mb-4 bg-transparent"
+                        className="select border-gray-300 focus:border-gray-300 focus:ring-2 focus:ring-[#007bff] w-full mb-4 bg-transparent"
                         onChange={(e) => setSelectedClassName(e.target.value)}
                         value={selectedClassName}
                     >
@@ -106,7 +106,7 @@ const AllAssignments = () => {
 
                     {/* Assignment Selection Dropdown */}
                     <select
-                        className="select border-gray-300 focus:border-gray-300 focus:ring-2 focus:ring-[#16a34a] w-full mb-4 bg-transparent"
+                        className="select border-gray-300 focus:border-gray-300 focus:ring-2 focus:ring-[#007bff] w-full mb-4 bg-transparent"
                         onChange={(e) => {
                             setSelectedAssignmentName(e.target.value);
                         }}
@@ -136,7 +136,7 @@ const AllAssignments = () => {
                     value={studentName}
                     type="text"
                     placeholder="Student Name"
-                    className="input border-gray-300 focus:border-gray-300 focus:ring-2 focus:ring-[#16a34a]  w-full mb-4 bg-transparent text-white"
+                    className="input border-gray-300 focus:border-gray-300 focus:ring-2 focus:ring-[#007bff]  w-full mb-4 bg-transparent text-white"
                 />
 
                 <div className="flex-grow overflow-hidden">

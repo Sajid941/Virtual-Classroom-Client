@@ -321,7 +321,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         type="file"
                         {...registerCreateClass("classImage", { required: "Class image is required" })}
                         // accept="image/*"
-                        className={`w-full  file-input file-input-bordered ${
+                        className={`w-full p-2 border rounded ${
                             errorsCreateClass.classImage ? "border-red-500" : "border-gray-300"
                         }`}
                     />
@@ -335,12 +335,12 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         <div className="flex justify-end space-x-2">
                             <button
                                 type="button"
-                                className="btn bg-primary hover:bg-[#068fff] text-white "
+                                className="btn bg-primary text-white rounded-none"
                                 onClick={() => setIsFormOpen(false)}
                             >
                                 Cancel
                             </button>
-                            <button type="submit" className="btn bg-secondary text-white hover:bg-[#0053b3] ">
+                            <button type="submit" className="btn bg-secondary text-white rounded-none">
                                 Create Class
                             </button>
                         </div>
@@ -380,12 +380,12 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         </div>
 
                         <div className="flex justify-end space-x-2 ">
-                            <button type="submit" className="btn bg-secondary text-white hover:bg-[#0053b3]">
+                            <button type="submit" className="btn bg-secondary rounded-none text-white">
                                 Join Class
                             </button>
                             <button
                                 type="button"
-                                className="btn bg-primary hover:bg-[#068fff] text-white"
+                                className="btn bg-primary rounded-none text-white"
                                 onClick={() => setIsJoinClassFormOpen(false)}
                             >
                                 Cancel

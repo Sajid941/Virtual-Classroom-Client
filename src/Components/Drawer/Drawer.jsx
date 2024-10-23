@@ -321,7 +321,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         type="file"
                         {...registerCreateClass("classImage", { required: "Class image is required" })}
                         // accept="image/*"
-                        className={`w-full p-2 border rounded ${
+                        className={`w-full  file-input file-input-bordered ${
                             errorsCreateClass.classImage ? "border-red-500" : "border-gray-300"
                         }`}
                     />
@@ -335,12 +335,12 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         <div className="flex justify-end space-x-2">
                             <button
                                 type="button"
-                                className="btn bg-primary text-white rounded-none"
+                                className="btn bg-primary hover:bg-[#068fff] ho text-white "
                                 onClick={() => setIsFormOpen(false)}
                             >
                                 Cancel
                             </button>
-                            <button type="submit" className="btn bg-secondary text-white rounded-none">
+                            <button type="submit" className="btn bg-secondary text-white hover:bg-[#0053b3] ">
                                 Create Class
                             </button>
                         </div>

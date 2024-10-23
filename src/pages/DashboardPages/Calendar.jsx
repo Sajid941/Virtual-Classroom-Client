@@ -3,8 +3,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
-import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import useRole from "../../CustomHooks/useRole";
 import useAuth from "../../CustomHooks/useAuth";
 import dayjs from "dayjs";
@@ -51,11 +50,7 @@ const Calendar = () => {
                     }}
                     events={assignments}
                     expandRows={true}
-                    // eventClick={(info) => {
-                    //    toast(info.event.extendedProps.description)
-                    // }}
                     eventClick={(info) => {
-                        // Optionally show more information about the assignment
                         Swal.fire({
                             title: "Update Deadline",
                             input: "date",
@@ -68,6 +63,8 @@ const Calendar = () => {
                             showCancelButton: true,
                             confirmButtonText: "Update",
                             cancelButtonText: "Cancel",
+                            confirmButtonColor: "#004085",
+                            cancelButtonColor: "#007BFF",
                             preConfirm: async (date) => {
                                 if (!date) {
                                     Swal.showValidationMessage(

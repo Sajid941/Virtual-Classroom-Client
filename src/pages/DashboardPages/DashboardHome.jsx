@@ -112,7 +112,7 @@ const DashboardHome = () => {
   }));
 
   return (
-    <div className="w-full basis-3/5 p-10 rounded-xl min-h-[80vh] bg-secondary">
+  <div className="w-full basis-3/5 p-10 rounded-xl min-h-[80vh] bg-secondary">
       <div className="topText mb-4">
         <h1 className="text-2xl font-bold text-white">
           Welcome Back, {userdb?.name}

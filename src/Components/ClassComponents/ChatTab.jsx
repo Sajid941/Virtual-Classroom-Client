@@ -53,7 +53,6 @@ const ChatTab = ({ classroomId }) => {
                 classroomId,
                 message: [newMessage],
             }
-            console.log(newChat);
 
             axiosPrivate.patch("/chats", newChat)
                 .then(res => {
@@ -93,7 +92,7 @@ const ChatTab = ({ classroomId }) => {
                     {...register("message", { required: true })}
                 ></textarea>
                 <button
-                    className="mt-3 bg-blue-500 text-white px-4 py-2 rounded-lg"
+                    className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
                     type="submit"
                 >
                     Send

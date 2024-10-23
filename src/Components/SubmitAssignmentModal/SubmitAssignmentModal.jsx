@@ -28,7 +28,6 @@ const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment, re
     try {
       const response = await axiosPrivate.patch(`/classes/${classId}/assignments/${_id}/submissions`, formData, {headers: {"Content-Type": "multipart/form-data"}})
       if(response.data){
-        console.log("Submitted successfully", response.data);
         reset();
         onRequestClose();
         Swal.fire({
@@ -65,7 +64,7 @@ const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment, re
         },
       }}
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="card-body">
+      <form onSubmit={handleSubmit(onSubmit)} className="card-body z-40">
         <h2 className="font-semibold text-lg">{title}</h2>
 
         <div className="">

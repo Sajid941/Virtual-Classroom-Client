@@ -28,7 +28,6 @@ const DetailedDiscussion = () => {
     enabled: !!slug,
     keepPreviousData: true,
   });
-console.log(discussion);
   const { register, handleSubmit, reset } = useForm(); // Use useForm hook
 
   const handleGoBack = () => {

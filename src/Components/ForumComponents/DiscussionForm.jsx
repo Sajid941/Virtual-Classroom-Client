@@ -137,7 +137,7 @@ const DiscussionForm = () => {
                             <div className="">
                                 <button
                                     type="submit"
-                                    className="bg-secondary hover:bg-primary text-white font-bold py-2 px-4 rounded-none shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary w-full"
+                                    className="bg-secondary  hover:bg-primary text-white font-bold py-2 px-4 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary w-full"
                                 >
                                     Submit
                                 </button>

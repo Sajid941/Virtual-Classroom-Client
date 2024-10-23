@@ -26,7 +26,6 @@ const ClassCard = ({ classData, refetch }) => {
           const response = await axiosPublic.delete(
             `/classes/delete/${classData?.classId}`
           );
-          console.log(response);
           Swal.fire("Deleted!", response.data.message, "success");
           // Call refetch or any function to refresh your data
           refetch();
@@ -43,9 +42,9 @@ const ClassCard = ({ classData, refetch }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative px-5 md:px-0">
       <div
-        className="absolute top-2 right-4 text-2xl text-white p-2 rounded cursor-pointer bg-Primary group z-30 hover:text-red-400"
+        className="absolute top-2 right-4 text-2xl text-white p-2 rounded cursor-pointer bg-Primary group  hover:text-red-400"
         onClick={handleDelete}
       >
         <div className=" lg:tooltip" data-tip="delete class">
@@ -54,18 +53,18 @@ const ClassCard = ({ classData, refetch }) => {
       </div>
 
       <Link
-        className="wrap group shadow w-full my-4 rounded-xl z-20 relative "
+        className="wrap group shadow w-full my-4 rounded-xl relative "
         to={`/class/${classData?.classId}`}
       >
         <div className="rounded-xl overflow-hidden">
           {" "}
           {/* Added overflow-hidden */}
           <div
-            className="bg-cover h-[200px] md:h-[250px] lg:h-[300px] text-white relative z-30"
+            className="bg-cover h-[200px] md:h-[250px] lg:h-[300px] text-white relative"
             style={{ backgroundImage: `url(${classData?.classImage})` }}
           >
             <div className="bg-black/30 w-full h-full absolute"></div>
-            <div className="relative px-5 py-5 z-40">
+            <div className="relative px-5 py-5 ">
               <h2 className="font-bold text-lg ">{classData?.className}</h2>
               <p>
                 <span className="block">Section: {classData?.section}</span>
@@ -75,7 +74,6 @@ const ClassCard = ({ classData, refetch }) => {
               </p>
             </div>
             
-            <div className="absolute inset-0 bg-gradient-to-t bg-secondary/60 rounded-lg z-30"></div>
           </div>
           <div className="px-4 py-2 mb-5 bg-[#004085] text-white flex justify-between items-center rounded-b-xl">
             <p>
@@ -86,7 +84,7 @@ const ClassCard = ({ classData, refetch }) => {
               {classData?.quizzes?.length > 0 ? (
                 <>
                   <div
-                    className="text-2xl tooltip z-40"
+                    className="text-2xl tooltip"
                     data-tip={`${classData.quizzes.length} quiz`}
                   >
                     <MdQuiz />
@@ -98,7 +96,7 @@ const ClassCard = ({ classData, refetch }) => {
               {classData?.assignments?.length > 0 ? (
                 <>
                   <div
-                    className="text-2xl tooltip z-40"
+                    className="text-2xl tooltip "
                     data-tip={`${classData.assignments.length} assignment`}
                   >
                     <MdAssignment />

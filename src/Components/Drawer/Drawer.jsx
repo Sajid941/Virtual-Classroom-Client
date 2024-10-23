@@ -18,7 +18,7 @@ import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
+const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
     const [classCode, setClassCode] = useState(""); // state for storing class code
     const { userdb } = useUser();
     const { role } = useRole();
@@ -96,7 +96,6 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
 
     const onSubmitJoinClass = async (data) => {
         const classCode = data.classCode;
-        console.log("Joining class with code:", classCode);
 
         try {
             // Fetch class by class code
@@ -122,7 +121,6 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                     );
 
                     if (patchResponse.status === 200) {
-                        console.log("Student successfully added to the class");
                         window.location.reload();
                     } else {
                         console.error("Failed to add the student to the class");
@@ -146,7 +144,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                     id="my-drawer-2"
                     type="checkbox"
                     className="drawer-toggle"
-                    checked={isDrawerOpen}
+                    checked={isShowDrawer}
                     onChange={handleToggleDrawer}
                 />
                 <div className="drawer-side ">
@@ -155,7 +153,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
                         aria-label="close sidebar"
                         className="drawer-overlay"
                     ></label>
-                    <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2 h-screen md:h-4/5 md:rounded-xl w-64 space-y-5 pt-24 md:pt-5">
+                    <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2 h-screen md:h-4/5 md:rounded-xl w-64 space-y-5 pt-5 md:pt-5">
                         <ul className="space-y-5 p-5 pl-8">
                             {/* Sidebar Links */}
                             <li>
@@ -241,7 +239,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
 
             {/* Create Class Form */}
             {isFormOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 z-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 ">
                     <form
                         onSubmit={handleSubmitCreateClass(onSubmitCreateClass)}
                         className="bg-white p-6 rounded-lg shadow-lg md:w-2/5"
@@ -352,7 +350,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
 
             {/* Join Class Form */}
             {isJoinClassFormOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 z-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 ">
                     <form
                         onSubmit={handleSubmitJoinClass(onSubmitJoinClass)}
                         className="bg-white p-6 rounded-lg shadow-lg md:w-2/5"
@@ -399,7 +397,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
 
             {/* Modal for displaying class code */}
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 z-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 ">
                     <div className="bg-white p-6 rounded-lg shadow-lg w-2/5">
                         <h2 className="text-xl font-bold mb-4">
                             Class Created Successfully
@@ -424,7 +422,7 @@ const Drawer = ({ isDrawerOpen, handleToggleDrawer }) => {
 };
 
 Drawer.propTypes = {
-    isDrawerOpen: PropTypes.bool.isRequired,
+    isShowDrawer: PropTypes.bool.isRequired,
     handleToggleDrawer: PropTypes.func.isRequired,
 };
 

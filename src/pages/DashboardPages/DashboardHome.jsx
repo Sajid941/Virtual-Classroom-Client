@@ -82,14 +82,12 @@ const DashboardHome = () => {
   }, [axiosPublicMemo, userdb, submissionsFetched]);
 
   useEffect(() => {
-    console.log("Selected Class:", selectedClass);
 
     if (selectedClass) {
       const filtered = classes.filter(
         (submission) => submission.classId === selectedClass
       );
       setFilteredSubmissions(filtered[0]?.quizzes[0]?.submissions);
-      console.log(filteredSubmissions);
     }
   }, [classes, filteredSubmissions, selectedClass, submissions]);
 
@@ -120,7 +118,7 @@ const DashboardHome = () => {
           Welcome Back, {userdb?.name}
         </h1>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 z-auto">
         <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
           <div className="flex items-center">
             <FaChalkboardTeacher className="text-3xl text-blue-500 mr-3" />

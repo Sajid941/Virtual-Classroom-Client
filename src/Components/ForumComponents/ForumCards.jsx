@@ -11,7 +11,6 @@ const ForumCards = ({ discussionCategory }) => {
   const axiosPublic = useAxiosPublic()
   const [searchText, setSearchText] = useState("")
   const [sort, setSort] = useState("newest")
-console.log(sort);
   const { data: discussions, isPending, refetch } = useQuery({
     queryKey: ["discussions", discussionCategory],
     queryFn: async () => {
@@ -40,8 +39,8 @@ console.log(sort);
 
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-5 z-50 mb-5 justify-between">
-        <select value={sort} onChange={handleSort} className="select select-secondary  w-full">
+      <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-5 mb-5 justify-between">
+        <select value={sort} onChange={handleSort} className="select select-bordered  w-full">
           <option value="newest">Newest</option>
           <option value="oldest" >Oldest</option>
           <option value="asc" >Ascending</option>

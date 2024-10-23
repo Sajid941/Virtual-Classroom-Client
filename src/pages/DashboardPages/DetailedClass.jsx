@@ -116,7 +116,6 @@ const DetailedClass = () => {
         );
         if (response) {
           setCanTakeQuiz(false); // Student can take the quiz
-          console.log(response.data);
           setQuizResult(response.data.submission); // Set the quiz result if it exists
         } else {
           setCanTakeQuiz(true); // Student can take the quiz
@@ -131,7 +130,6 @@ const DetailedClass = () => {
   }, [user.email]);
 
   const quizzes = classData.quizzes;
-  console.log(quizzes);
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Section */}
@@ -141,7 +139,7 @@ const DetailedClass = () => {
       >
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="absolute"></div>
-        <div className="relative z-0 flex flex-col items-center justify-center text-center h-full px-5">
+        <div className="relative flex flex-col items-center justify-center text-center h-full px-5">
           <button
             className="absolute top-5 left-5 flex items-center bg-[#004085] text-white px-4 py-2 rounded-md"
             onClick={() => navigate(-1)}

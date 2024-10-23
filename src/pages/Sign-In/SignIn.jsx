@@ -29,7 +29,6 @@ const SignIn = () => {
     const onSubmit = async (data) => {
         try {
             const res = await logInUser(data.email, data.password);
-            console.log(res.user?.email);
             if (res.user?.email) {
                 navigate("/dashboard/dashboardHome");
             }

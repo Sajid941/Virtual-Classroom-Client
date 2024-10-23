@@ -38,8 +38,6 @@ const SignUp = () => {
                 const imageFile = data.photo[0];
                 const formData = new FormData();
                 formData.append("image", imageFile);
-                console.log(imageFile);
-                console.log(photoURL);
                 axios
                     .post(
                         `https://api.imgbb.com/1/upload?key=cf98fef2238d8ad79338385fc2dcc4e8`,
@@ -53,7 +51,6 @@ const SignUp = () => {
                     .then(async (res) => {
                         setPhotoURL(res.data.data.display_url);
                         if (res.data.data.display_url) {
-                            console.log("Done");
 
                             const result = await createUser(
                                 data.email,

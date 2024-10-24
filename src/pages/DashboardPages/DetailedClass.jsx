@@ -131,15 +131,9 @@ const DetailedClass = () => {
     }
   }, [user.email]);
 
-<<<<<<< HEAD
-  const handleAddResource =() => {
-    // Add resource modal here
-  }
-=======
   const quizzes = classData.quizzes;
 
   const isPastDue = (dueDate) => new Date(dueDate) < new Date(); // check assignment date
->>>>>>> 3e67cb2cc02e43f6f7c530ced9c9bccc7d1079c0
 
   return (
     <div className="min-h-screen bg-gray-100">

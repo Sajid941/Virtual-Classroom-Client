@@ -6,11 +6,14 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "../../Components/Loading";
 import useRole from "../../CustomHooks/useRole";
 import { Helmet } from "react-helmet-async";
+import useUserType from "../../CustomHooks/useUserType";
 
 const DashboardBody = () => {
     const { user } = useContext(AuthContext); // Get the logged-in user's data
     const axiosPublic = useAxiosPublic();
     const { role } = useRole();
+    const {userType} = useUserType();
+    console.log(userType);
 
     const {
         data: classes = [], // Set default value to an empty array to avoid undefined issues

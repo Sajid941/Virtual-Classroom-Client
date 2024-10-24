@@ -4,9 +4,20 @@ import { LiaComment } from "react-icons/lia";
 import { TbPacman } from "react-icons/tb";
 import useRole from "../../CustomHooks/useRole";
 import LeaderBoard from "./LeaderBoard";
+import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
 
 const DashboardSidebar = () => {
+  const axiosPublic=useAxiosPublic()
   const [time, setTime] = useState(moment().format("h : mm : ss  A"));
+  const { data: discussions, isPending } = useQuery({
+    queryKey: ["discussions", "latest"],
+    queryFn: async () => {
+      const res = await axiosPublic(`/discussions?sort=newest&limit=3`);
+      return res.data;
+    }
+  });
+  console.log(discussions);
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(moment().format("h:mm:ss A"));
@@ -30,30 +41,8 @@ const DashboardSidebar = () => {
         )}
         {role === "student" && (
           <div>
-            <h4 className="text-xl font-semibold">Recent Post in Forum:</h4>
-            <div className="mt-5">
-              <div className="bg-white w-full rounded-md px-5 py-2  text-black ">
-                <div>
-                  <h3 className="text-xl font-bold">
-                    Facing Problem On Debugging
-                  </h3>
-                  <div className="mt-2 flex gap-5">
-                    <p className="flex items-center w-fit relative">
-                      <LiaComment size={25} />
-                      <span className="bg-[#ffc107] text-xs  px-1.5 rounded-full absolute left-3 top-3">
-                        10
-                      </span>
-                    </p>
-                    <p className="flex items-center w-fit relative">
-                      <TbPacman size={25} />
-                      <span className="bg-[#ffc107] text-xs  px-1.5 rounded-full absolute left-3 top-3">
-                        80
-                      </span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <h4 className="text-lg font-semibold">Recent Post in Forum:</h4>
+            
           </div>
         )}
       </div>

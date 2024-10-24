@@ -96,7 +96,6 @@ const DetailedClass = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        console.log("client ",id);
         
         const response = await axiosPublic.delete(`/classes/delete-assignment/${id}`);
 
@@ -133,6 +132,9 @@ const DetailedClass = () => {
   }, [user.email]);
 
   const quizzes = classData.quizzes;
+
+  const isPastDue = (dueDate) => new Date(dueDate) < new Date(); // check assignment date
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Section */}
@@ -218,7 +220,7 @@ const DetailedClass = () => {
                 classData.assignments.map((assignment, index) => (
                   <div
                     key={index}
-                    className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4"
+                    className="flex flex-col md:flex-row justify-between items-start lg:items-center gap-4 mb-4 border-b pb-2"
                   >
                     <h3 className="font-semibold text-lg">
                       {assignment.title}
@@ -262,20 +264,21 @@ const DetailedClass = () => {
                       </button>
                     )}
 
-                    {role === "student" && (
+                    {(role === "student" && assignment.end) && (
                       <div>
                         {assignment.assignmentSubmissions &&
                         assignment.assignmentSubmissions.find(
                           (submitted_student) =>
                             submitted_student.student_email === user?.email
                         ) ? (
-                          <h3 className="border p-1 text-green-600 font-semibold">
+                          <h3 className="border px-4 py-2 text-green-600 font-semibold">
                             Submitted
                           </h3>
                         ) : (
                           <button
                             onClick={() => setIsSubmitAssignmentModalOpen(true)}
-                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center hover:bg-gray-400"
+                            className={`bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center ${isPastDue(assignment.end) ? "bg-gray-400 cursor-not-allowed" : "hover:bg-gray-400"}`}
+                            disabled={isPastDue(assignment.end)}
                           >
                             <IoDocumentAttachOutline size={18} />
                             Submit

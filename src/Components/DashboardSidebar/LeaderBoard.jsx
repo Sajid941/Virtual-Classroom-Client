@@ -11,6 +11,7 @@ const LeaderBoard = () => {
 
   const [selectedClassName, setSelectedClassName] = useState("");
   const [sortedSubmissions, setSortedSubmissions] = useState([]);
+  const [allClassNames, setAllClassNames] = useState([]);
 
   const {
     data: responseData = {},
@@ -34,6 +35,12 @@ const LeaderBoard = () => {
   });
 
   const { classNames = [], submissions = [] } = responseData;
+
+  useEffect(()=>{
+    if(allClassNames?.length === 0 && classNames?.length > 0){
+      setAllClassNames(classNames)
+    }
+  },[classNames, allClassNames.length])
 
   // Sort submissions when 'submissions' change
   useEffect(() => {
@@ -71,7 +78,7 @@ const LeaderBoard = () => {
           value={selectedClassName}
         >
           <option value="all">All Classes</option>
-          {classNames.map((name, idx) => (
+          {allClassNames.map((name, idx) => (
             <option key={idx} value={name}>
               {name}
             </option>

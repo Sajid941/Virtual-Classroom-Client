@@ -61,10 +61,8 @@ const SubmitAssignmentModal = ({
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      // className={"w-[90%] sm:w-[70%] md:w-[50%] max-w-lg h-auto rounded-lg bg-white"}
-      // overlayClassName={"fixed inset-0 bg-black/20 flex items-center justify-center"}
       className="w-[90%] sm:w-[70%] md:w-[50%] max-w-lg h-auto p-5 bg-white rounded-lg shadow-lg overflow-auto relative"
-  overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center"
+      overlayClassName="fixed inset-0 bg-black/20 flex items-center justify-center"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="card-body z-40">
         <h2 className="font-semibold text-lg">{title}</h2>

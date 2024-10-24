@@ -27,7 +27,7 @@ const DashboardBody = () => {
             return res.data;
         },
         keepPreviousData: true,
-        enabled: !!user?.email, // Only run the query if the user has an email
+        enabled: !!user?.email && !!role, // Only run the query if the user has an email
     });
 
     // Handle loading state

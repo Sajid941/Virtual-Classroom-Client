@@ -67,7 +67,6 @@ const DetailedDiscussion = () => {
         },
         likes: [], // Initialize with an empty array of likes
       };
-      
 
       const res = await axiosPublic.patch(
         `discussions/${discussion._id}`,

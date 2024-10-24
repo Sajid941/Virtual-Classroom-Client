@@ -26,7 +26,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isJoinClassFormOpen, setIsJoinClassFormOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false); // New state for modal visibility
-
+    const [loading,setLoading]=useState(false);
     // Separate useForm for each form
     const {
         register: registerCreateClass,
@@ -64,6 +64,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
             const uploadResponse = await axios.post('https://api.cloudinary.com/v1_1/dezydstve/image/upload', formData);
             const uploadedImageUrl = uploadResponse.data.secure_url; // Get the secure URL from the response
             
+        if(uploadedImageUrl){
             const classData = {
                 classId: generateUniqueClassCode(),
                 className: data.className,
@@ -86,7 +87,9 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                 setClassCode(response.data.classId);
                 setIsFormOpen(false);
                 setIsModalOpen(true); // Open the modal after successful save
+                setLoading(false);
             }
+        }
         } catch (error) {
             console.error("Error uploading image or posting data:", error);
             toast.error("Failed to upload image or post data");
@@ -340,8 +343,18 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                             >
                                 Cancel
                             </button>
-                            <button type="submit" className="btn bg-secondary text-white rounded-none">
-                                Create Class
+                            <button
+                            onClick={()=>setLoading(true)}
+                            type="submit" className="btn bg-secondary text-white rounded-none">
+                               {loading ? (
+                                        <div className="flex justify-center items-center gap-2">
+                                            {" "}
+                                            <span className="loading loading-spinner  w-4"></span>
+                                            Loading
+                                        </div>
+                                    ) : (
+                                        "Create Class"
+                                    )}
                             </button>
                         </div>
                     </form>

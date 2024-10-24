@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import ClassCard from "./ClassCard";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { AuthContext } from "../../Provider/AuthProvider";
@@ -6,14 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "../../Components/Loading";
 import useRole from "../../CustomHooks/useRole";
 import { Helmet } from "react-helmet-async";
-import useUserType from "../../CustomHooks/useUserType";
 
 const DashboardBody = () => {
-    const { user } = useContext(AuthContext); // Get the logged-in user's data
+    const { user,isRefetch } = useContext(AuthContext); // Get the logged-in user's data
     const axiosPublic = useAxiosPublic();
     const { role } = useRole();
-    const {userType} = useUserType();
-    console.log(userType);
 
     const {
         data: classes = [], // Set default value to an empty array to avoid undefined issues
@@ -32,6 +29,12 @@ const DashboardBody = () => {
         keepPreviousData: true,
         enabled: !!user?.email && !!role, // Only run the query if the user has an email
     });
+
+    useEffect(() => {
+        if (isRefetch) {
+            refetch();
+        }    
+    }, [isRefetch,refetch]);
 
     // Handle loading state
     if (isLoading) {

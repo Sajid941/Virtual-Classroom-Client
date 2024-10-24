@@ -6,7 +6,7 @@ const useUserType = () => {
     const { user } = useAuth();
     const axiosPrivate = useAxiosPrivate();
 
-    const { data: userType = {} } = useQuery({
+    const { data: userType = {},refetch } = useQuery({
         queryKey: ["userType"],
         queryFn: async () => {
             const res = await axiosPrivate.get(`/users/userType?email=${user?.email}`);
@@ -15,7 +15,7 @@ const useUserType = () => {
         enabled: !!user?.email,
     });
     return {
-        userType,
+        userType,refetchUserType:refetch
     };
 };
 

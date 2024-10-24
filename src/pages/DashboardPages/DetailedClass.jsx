@@ -217,7 +217,7 @@ const DetailedClass = () => {
                 classData.assignments.map((assignment, index) => (
                   <div
                     key={index}
-                    className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4"
+                    className="flex flex-col md:flex-row justify-between items-start lg:items-center gap-4 mb-4 border-b pb-2"
                   >
                     <h3 className="font-semibold text-lg">
                       {assignment.title}
@@ -268,7 +268,7 @@ const DetailedClass = () => {
                           (submitted_student) =>
                             submitted_student.student_email === user?.email
                         ) ? (
-                          <h3 className="border p-1 text-green-600 font-semibold">
+                          <h3 className="border px-4 py-2 text-green-600 font-semibold">
                             Submitted
                           </h3>
                         ) : (

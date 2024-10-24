@@ -7,6 +7,7 @@ import { AiOutlineSchedule } from "react-icons/ai";
 import { MdAssignmentAdd, MdAddToPhotos } from "react-icons/md";
 import { IoCreateOutline } from "react-icons/io5";
 import { RiErrorWarningFill } from "react-icons/ri";
+import { FaWallet } from "react-icons/fa";
 
 import { NavLink } from "react-router-dom";
 import DashboardSidebar from "../DashboardSidebar/DashboardSidebar";
@@ -20,17 +21,19 @@ import axios from "axios";
 import useUserType from "../../CustomHooks/useUserType";
 import useTotalClassCount from "../../CustomHooks/useTotalClassCount";
 import Swal from "sweetalert2";
+import useAuth from "../../CustomHooks/useAuth";
 
 const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
     const [classCode, setClassCode] = useState(""); // state for storing class code
     const { userdb } = useUser();
+    const { user } = useAuth();
     const { role } = useRole();
     const axiosPublic = useAxiosPublic();
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isJoinClassFormOpen, setIsJoinClassFormOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { userType ,refetchUserType} = useUserType();
-    const { totalClasses,refetchTotalClassCount } = useTotalClassCount();
+    const { userType, refetchUserType } = useUserType();
+    const { totalClasses, refetchTotalClassCount } = useTotalClassCount();
 
     // Separate useForm for each form
     const {
@@ -43,7 +46,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
         register: registerJoinClass,
         handleSubmit: handleSubmitJoinClass,
         formState: { errors: errorsJoinClass },
-        reset
+        reset,
     } = useForm();
 
     // Function to generate a 6-digit unique class code
@@ -94,10 +97,10 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
             if (response.status === 201) {
                 setClassCode(response.data.classId);
                 setIsFormOpen(false);
-                setIsModalOpen(true); 
-                refetchTotalClassCount()
-                refetchUserType()
-                reset()
+                setIsModalOpen(true);
+                refetchTotalClassCount();
+                refetchUserType();
+                reset();
             }
         } catch (error) {
             console.error("Error uploading image or posting data:", error);
@@ -149,31 +152,74 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
     };
 
     const handleShowUpgradeModal = () => {
-            Swal.fire({
-                title: "<strong>Class Creation Limit Reached</strong>",
-                imageUrl: "https://i.ibb.co/hgXFcw0/classNet.png",
-                imageHeight: "120",
-                imageWidth: "120",
-                html: `
+        Swal.fire({
+            title: "<strong>Class Creation Limit Reached</strong>",
+            imageUrl: "https://i.ibb.co/hgXFcw0/classNet.png",
+            imageHeight: "120",
+            imageWidth: "120",
+            html: `
                   You have reached your limit of <b>5 classes</b> as a normal user.<br>
                   Upgrade to <b>Premium</b> to create unlimited classes!
                 `,
-                showCloseButton: true,
-                showCancelButton: true,
-                focusConfirm: false,
-                confirmButtonText: `
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText: `
                   <i class="fa fa-arrow-up"></i> Upgrade to Premium
                 `,
-                confirmButtonAriaLabel: "Upgrade to premium",
-                confirmButtonColor: "#004085",
-                cancelButtonText: `
+            confirmButtonAriaLabel: "Upgrade to premium",
+            confirmButtonColor: "#004085",
+            cancelButtonText: `
                   <i class="fa fa-times"></i> Cancel
                 `,
-                cancelButtonAriaLabel: "Cancel",
-                cancelButtonColor: "#007BFF",
-            });
+            cancelButtonAriaLabel: "Cancel",
+            cancelButtonColor: "#007BFF",
+        });
+    };
+    const handlePayment = () => {
+        Swal.fire({
+            title: "<strong>Payment Confirmation</strong>",
+            imageUrl: "https://i.postimg.cc/ydMJrHpC/10149443.png",
+            imageHeight: "120",
+            imageWidth: "120",
+            html: `
+              You are about to make a payment of <b>5000</b> BDT for a lifetime subscription.
+              </br>
+              </br>
+              Are you sure you want to proceed?
 
-    };    
+            `,
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText: `
+              <i class="fa fa-arrow-up"></i> Yes, proceed
+            `,
+            confirmButtonAriaLabel: "Yes, proceed",
+            confirmButtonColor: "#004085",
+            cancelButtonText: `
+              <i class="fa fa-times"></i> Cancel
+            `,
+            cancelButtonAriaLabel: "Cancel",
+            cancelButtonColor: "#007BFF",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const userInfo = {
+                    name: user.displayName,
+                    email: user.email,
+                    userId: userdb._id,
+                };
+                axiosPublic
+                    .post("/payment/create-payment", userInfo)
+                    .then((res) => {
+                        console.log(res.data);
+                        if (res.data.paymentUrl) {
+                            window.location.href = res.data.paymentUrl;
+                        }
+                    });
+            }
+        });
+    };
 
     return (
         <div className="sticky top-20">
@@ -234,7 +280,13 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                                 <>
                                     <li>
                                         <button
-                                            onClick={userType.userType === "premium"?()=>setIsFormOpen(true):totalClasses.count === 5 ? handleShowUpgradeModal : () => setIsFormOpen(true)}
+                                            onClick={
+                                                userType.userType === "premium"
+                                                    ? () => setIsFormOpen(true)
+                                                    : totalClasses.count === 5
+                                                    ? handleShowUpgradeModal
+                                                    : () => setIsFormOpen(true)
+                                            }
                                             className="dashboard-link"
                                         >
                                             <IoCreateOutline size={25} />
@@ -312,7 +364,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                                             out of 5 classes remaining. Upgrade
                                             to the{" "}
                                             <a
-                                                href=""
+                                                onClick={handlePayment}
                                                 className="underline decoration-yellow-700"
                                             >
                                                 premium

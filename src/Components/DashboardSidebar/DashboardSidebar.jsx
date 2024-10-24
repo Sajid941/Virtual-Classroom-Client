@@ -5,6 +5,8 @@ import LeaderBoard from "./LeaderBoard";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { LiaComment } from 'react-icons/lia';
+import { TbPacman } from 'react-icons/tb';
 
 const DashboardSidebar = () => {
   const axiosPublic = useAxiosPublic();
@@ -66,7 +68,9 @@ const DashboardSidebar = () => {
         )}
         {role === "student" && (
           <div>
-            <h4 className="text-lg font-semibold mb-4">Recent Post in Forum:</h4>
+            <h4 className="text-lg font-semibold mb-4">
+              Recent Post in Forum:
+            </h4>
             {/* Display the first three discussions */}
             {firstThreeDiscussions.map((discussion) => (
               <div
@@ -76,20 +80,39 @@ const DashboardSidebar = () => {
                 {/* Author's Info */}
                 <Link
                   to={`/forum/discussion/${discussion?.slug}`}
-                  className="flex  items-center "
+                  className="flex items-center "
                 >
                   <img
                     src={discussion.author.profilePic} // Assuming author profile image exists
                     alt={`${discussion.author.name}'s profile`}
                     className="w-12 h-12 rounded-full mr-4"
                   />
-                  <div>
-                    <h5 className="font-bold text-md">
+                  <div className="flex-1">
+                    <h5 className="font-bold text-md text-gray-700">
                       {discussion.author.name}
                     </h5>
-                    <h5 className="text-lg font-semibold mb-2">
+                    <h5 className="text-lg font-semibold mb-2 text-gray-800">
                       {discussion.title}
                     </h5>
+
+                    {/* Display views and comments */}
+                    <div className="flex items-center space-x-4 text-gray-500 mt-2">
+                      {/* Views */}
+                      <div className="flex items-center">
+                        <TbPacman className="mr-1" /> {/* Icon for views */}
+                        <span>{discussion.views || 0} views</span>{" "}
+                        {/* Views count */}
+                      </div>
+                      {/* Comments */}
+                      <div className="flex items-center">
+                        <LiaComment className="mr-1" />{" "}
+                        {/* Icon for comments */}
+                        <span>
+                          {discussion.comments?.length || 0} comments
+                        </span>{" "}
+                        {/* Comments count */}
+                      </div>
+                    </div>
                   </div>
                 </Link>
               </div>

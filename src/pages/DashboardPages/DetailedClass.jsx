@@ -96,7 +96,6 @@ const DetailedClass = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        console.log("client ",id);
         
         const response = await axiosPublic.delete(`/classes/delete-assignment/${id}`);
 

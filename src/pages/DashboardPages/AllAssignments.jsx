@@ -199,7 +199,7 @@ const AllAssignments = () => {
                                                                 submission.submit_file
                                                             )
                                                         }
-                                                        className="bg-[#004085] btn btn-sm text-white"
+                                                        className="bg-[#004085] btn btn-sm rounded-md text-white"
                                                     >
                                                         Download
                                                     </button>
@@ -209,7 +209,7 @@ const AllAssignments = () => {
                                                 <td className="p-2 text-center">
                                                     {submission.submit_file && (
                                                         <button
-                                                            className="bg-green-600 border-0 btn btn-sm text-white"
+                                                            className="bg-green-600 border-0 btn rounded-md btn-sm text-white"
                                                             onClick={() => {
                                                                 setIsModalOpen(
                                                                     true

@@ -335,12 +335,12 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         <div className="flex justify-end space-x-2">
                             <button
                                 type="button"
-                                className="btn bg-primary text-white rounded-none"
+                                className="btn bg-primary text-white rounded-md hover:bg-secondary"
                                 onClick={() => setIsFormOpen(false)}
                             >
                                 Cancel
                             </button>
-                            <button type="submit" className="btn bg-secondary text-white rounded-none">
+                            <button type="submit" className="btn bg-secondary text-white rounded-md hover:bg-primary">
                                 Create Class
                             </button>
                         </div>
@@ -380,12 +380,12 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         </div>
 
                         <div className="flex justify-end space-x-2 ">
-                            <button type="submit" className="btn bg-secondary rounded-none text-white">
+                            <button type="submit" className="btn bg-secondary hover:bg-primary rounded-md text-white">
                                 Join Class
                             </button>
                             <button
                                 type="button"
-                                className="btn bg-primary rounded-none text-white"
+                                className="btn bg-primary rounded-md text-white hover:bg-secondary"
                                 onClick={() => setIsJoinClassFormOpen(false)}
                             >
                                 Cancel
@@ -408,7 +408,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         <div className="flex justify-end mt-4">
                             <button
                                 type="button"
-                                className="btn btn-primary"
+                                className="btn btn-primary rounded-md"
                                 onClick={() => setIsModalOpen(false)}
                             >
                                 Close

@@ -55,7 +55,7 @@ const JoinMeetButton = ({ id }) => {
             <div>
                 {
                     meetLink ? <>
-                        <a href={meetLink} className='btn bg-green-600 border-green-700 text-white' target="_blank">Join Meet</a>
+                        <a href={meetLink} className='btn bg-green-600 border-none rounded-md hover:bg-secondary text-white' target="_blank">Join Meet</a>
                     </> :
                     <>
                         <p>Meet link not available</p>
@@ -66,7 +66,7 @@ const JoinMeetButton = ({ id }) => {
             {
                 userdb?.role == "teacher" ?
                     <>
-                        <button className='btn bg-secondary text-white border-secondary rounded-none' onClick={handleSubmit}>Meet Setting</button>
+                        <button className='btn bg-secondary text-white border-none rounded-md hover:bg-primary' onClick={handleSubmit}>Meet Setting</button>
                     </>
                     : null
             }

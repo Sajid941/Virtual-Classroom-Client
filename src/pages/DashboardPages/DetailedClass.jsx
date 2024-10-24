@@ -132,7 +132,10 @@ const DetailedClass = () => {
     }
   }, [user.email]);
 
-  const quizzes = classData.quizzes;
+  const handleAddResource =() => {
+    // Add resource modal here
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Section */}
@@ -144,10 +147,10 @@ const DetailedClass = () => {
         <div className="absolute"></div>
         <div className="relative flex flex-col items-center justify-center text-center h-full px-5">
           <button
-            className="absolute top-5 left-5 flex items-center bg-secondary text-white px-4 py-2 rounded-none"
+            className="absolute top-5 left-5 flex items-center bg-secondary group text-white px-4 py-2 rounded-md"
             onClick={() => navigate(-1)}
           >
-            <AiOutlineLeft className="mr-2" /> {/* Arrow Icon */}
+            <AiOutlineLeft className="mr-2 group-hover:-translate-x-2" /> {/* Arrow Icon */}
             Back
           </button>
           <h1 className="text-3xl md:text-5xl font-bold">
@@ -187,19 +190,21 @@ const DetailedClass = () => {
                       key={index}
                       className="p-3 rounded-lg bg-gray-200 flex flex-col items-center mb-4"
                       onClick={() => {
-                        // Handle resource click if needed
+                        window.open(resource.link, "_blank"); // Open resource in new tab
                       }}
                     >
-                      {resource.type === "ZIP" && <GoFileZip size={30} />}
-                      {resource.type === "Code" && <GoFileCode size={30} />}
-                      {resource.type === "Comments" && <GoComment size={30} />}
                       <p className="mt-2 text-sm">{resource.description}</p>
+                      <div className="flex items-center gap-2">
+                        <IoDocumentAttachOutline />
+                        <p>{resource.name}</p>
+                        
+                      </div>
                     </button>
                   ))
                 ) : role === "teacher" ? (
                   <div className="text-center">
                     <p>No resources available.</p>
-                    <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">
+                    <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg" onClick={handleAddResource}>
                       Add Resource
                     </button>
                   </div>

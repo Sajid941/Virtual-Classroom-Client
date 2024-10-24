@@ -114,124 +114,6 @@ const AllAssignments = () => {
             ))}
           </select>
 
-<<<<<<< HEAD
-                <div className="flex-grow overflow-hidden">
-                    <div className="overflow-x-auto h-full border rounded">
-                        <table className="table-auto w-full">
-                            <thead>
-                                <tr className="bg-gray-800 text-white">
-                                    <th className="p-2">#</th>
-                                    <th className="p-2">Assignment Name</th>
-                                    {userdb?.role === "teacher" && (
-                                        <th className="p-2">Student Name</th>
-                                    )}
-                                    <th className="p-2">Submission Date</th>
-                                    <th className="p-2">Marks</th>
-                                    <th className="p-2">Feedback</th>
-                                    <th className="p-2">Action</th>
-                                    <th className="p-2">
-                                        {userdb?.role === "teacher" && "Action"}
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {submissions?.length ? (
-                                    submissions?.map((submission, index) => (
-                                        <tr
-                                            key={submission._id}
-                                            className="hover:bg-gray-200 hover:text-black"
-                                        >
-                                            <td className="p-2 text-center">
-                                                {index + 1}
-                                            </td>
-                                            <td className="p-2">
-                                                {submission.assignmentName}
-                                            </td>
-                                            {userdb?.role === "teacher" && (
-                                                <td className="p-2">
-                                                    {submission.student_name}
-                                                </td>
-                                            )}
-                                            <td className="p-2">
-                                                {
-                                                    submission.submitAt.split(
-                                                        "T"
-                                                    )[0]
-                                                }
-                                            </td>
-                                            <td className="p-2">
-                                                {submission.student_marks &&
-                                                    submission.student_marks}
-                                            </td>
-                                            <td className="p-2">
-                                                {submission.assignment_feedback &&
-                                                    submission.assignment_feedback}
-                                            </td>
-                                            <td className="p-2 text-center">
-                                                {submission.submit_file && (
-                                                    <button
-                                                        onClick={() =>
-                                                            handleDownloadSubmitAssignment(
-                                                                submission.submit_file
-                                                            )
-                                                        }
-                                                        className="bg-[#004085] btn btn-sm rounded-md text-white"
-                                                    >
-                                                        Download
-                                                    </button>
-                                                )}
-                                            </td>
-                                            {userdb?.role === "teacher" && (
-                                                <td className="p-2 text-center">
-                                                    {submission.submit_file && (
-                                                        <button
-                                                            className="bg-green-600 border-0 btn rounded-md btn-sm text-white"
-                                                            onClick={() => {
-                                                                setIsModalOpen(
-                                                                    true
-                                                                );
-                                                                setClassId(
-                                                                    submission.classID
-                                                                );
-                                                                setAssignmentId(
-                                                                    submission.assignmentId
-                                                                );
-                                                                setSubmissionId(
-                                                                    submission._id
-                                                                );
-                                                            }}
-                                                        >
-                                                            Feedback
-                                                        </button>
-                                                    )}
-                                                </td>
-                                            )}
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td
-                                            colSpan={8}
-                                            className="py-4 text-center"
-                                        >
-                                            No submissions yet
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <AssignmentFeedbackModal
-                    isOpen={isModalOpen}
-                    onRequestClose={() => setIsModalOpen(false)}
-                    classId={classId}
-                    assignmentId={assignmentId}
-                    submissionId={submissionId}
-                    refetch={refetch}
-                ></AssignmentFeedbackModal>
-            </div>
-=======
           {/* Assignment Selection Dropdown */}
           <select
             className="select border-gray-300 focus:border-gray-300 focus:ring-2 focus:ring-[#007bff] w-full mb-4 bg-transparent"
@@ -247,7 +129,6 @@ const AllAssignments = () => {
               </option>
             ))}
           </select>
->>>>>>> 3e67cb2cc02e43f6f7c530ced9c9bccc7d1079c0
         </div>
 
         {/* Search bar to search student */}

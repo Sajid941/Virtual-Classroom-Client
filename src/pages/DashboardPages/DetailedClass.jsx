@@ -96,7 +96,9 @@ const DetailedClass = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await axiosPublic.delete(`/classes/delete/${id}`);
+        console.log("client ",id);
+        
+        const response = await axiosPublic.delete(`/classes/delete-assignment/${id}`);
 
         if (response.data.message) {
           Swal.fire({
@@ -291,12 +293,14 @@ const DetailedClass = () => {
                         />
                       </div>
                     )}
-                    {/* </div> */}
                   </div>
                 ))
-              ) : role === "teacher" ? (
+              ) : (
+                <p>No assignments available.</p>
+              )}
+              {role === "teacher" && (
                 <div className="text-center">
-                  <p>No assignments available.</p>
+                  {/* <p>No assignments available.</p> */}
                   <button
                     onClick={() => setIsAssignmentModalOpen(true)}
                     className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
@@ -313,9 +317,7 @@ const DetailedClass = () => {
                     refetch={refetch}
                   />
                 </div>
-              ) : (
-                <p>No assignments available.</p>
-              )}
+              ) }
             </div>
           </TabPanel>
 

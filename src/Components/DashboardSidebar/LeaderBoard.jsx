@@ -66,7 +66,7 @@ const LeaderBoard = () => {
 
       <div className="flex items-center my-1 gap-1">
         <select
-          className="select w-full max-w-xs input-bordered"
+          className="select w-full max-w-xs input-bordered text-black"
           onChange={(e) => setSelectedClassName(e.target.value)}
           value={selectedClassName}
         >

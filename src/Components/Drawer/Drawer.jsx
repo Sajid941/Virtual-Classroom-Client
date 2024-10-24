@@ -6,7 +6,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { AiOutlineSchedule } from "react-icons/ai";
 import { MdAssignmentAdd, MdAddToPhotos } from "react-icons/md";
 import { IoCreateOutline } from "react-icons/io5";
-// import { GrDocumentPerformance } from "react-icons/gr";
+import { RiErrorWarningFill } from "react-icons/ri";
 
 import { NavLink } from "react-router-dom";
 import DashboardSidebar from "../DashboardSidebar/DashboardSidebar";
@@ -17,6 +17,9 @@ import useUser from "../../CustomHooks/useUser";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import axios from "axios";
+import useUserType from "../../CustomHooks/useUserType";
+import useTotalClassCount from "../../CustomHooks/useTotalClassCount";
+import Swal from "sweetalert2";
 
 const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
     const [classCode, setClassCode] = useState(""); // state for storing class code
@@ -25,7 +28,9 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
     const axiosPublic = useAxiosPublic();
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isJoinClassFormOpen, setIsJoinClassFormOpen] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false); // New state for modal visibility
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { userType ,refetchUserType} = useUserType();
+    const { totalClasses,refetchTotalClassCount } = useTotalClassCount();
 
     // Separate useForm for each form
     const {
@@ -38,6 +43,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
         register: registerJoinClass,
         handleSubmit: handleSubmitJoinClass,
         formState: { errors: errorsJoinClass },
+        reset
     } = useForm();
 
     // Function to generate a 6-digit unique class code
@@ -52,18 +58,21 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
 
     const onSubmitCreateClass = async (data) => {
         // Procedure to get Cloudinary image link
-    
+
         // Get the image file from the form
         const imageFile = data.classImage[0]; // Ensure data.classImage is an array
         const formData = new FormData();
         formData.append("file", imageFile); // Use "file" as the key for Cloudinary
         formData.append("upload_preset", "ClassNet"); // Your upload preset
-    
+
         try {
             // Upload the file to Cloudinary
-            const uploadResponse = await axios.post('https://api.cloudinary.com/v1_1/dezydstve/image/upload', formData);
+            const uploadResponse = await axios.post(
+                "https://api.cloudinary.com/v1_1/dezydstve/image/upload",
+                formData
+            );
             const uploadedImageUrl = uploadResponse.data.secure_url; // Get the secure URL from the response
-            
+
             const classData = {
                 classId: generateUniqueClassCode(),
                 className: data.className,
@@ -79,20 +88,22 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                 quizzes: [],
                 assignments: [],
             };
-    
+
             // Posting class data to the server
             const response = await axiosPublic.post("/classes", classData);
             if (response.status === 201) {
                 setClassCode(response.data.classId);
                 setIsFormOpen(false);
-                setIsModalOpen(true); // Open the modal after successful save
+                setIsModalOpen(true); 
+                refetchTotalClassCount()
+                refetchUserType()
+                reset()
             }
         } catch (error) {
             console.error("Error uploading image or posting data:", error);
             toast.error("Failed to upload image or post data");
         }
     };
-    
 
     const onSubmitJoinClass = async (data) => {
         const classCode = data.classCode;
@@ -136,6 +147,33 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
 
         setIsJoinClassFormOpen(false);
     };
+
+    const handleShowUpgradeModal = () => {
+            Swal.fire({
+                title: "<strong>Class Creation Limit Reached</strong>",
+                imageUrl: "https://i.ibb.co/hgXFcw0/classNet.png",
+                imageHeight: "120",
+                imageWidth: "120",
+                html: `
+                  You have reached your limit of <b>5 classes</b> as a normal user.<br>
+                  Upgrade to <b>Premium</b> to create unlimited classes!
+                `,
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: `
+                  <i class="fa fa-arrow-up"></i> Upgrade to Premium
+                `,
+                confirmButtonAriaLabel: "Upgrade to premium",
+                confirmButtonColor: "#004085",
+                cancelButtonText: `
+                  <i class="fa fa-times"></i> Cancel
+                `,
+                cancelButtonAriaLabel: "Cancel",
+                cancelButtonColor: "#007BFF",
+            });
+
+    };    
 
     return (
         <div className="sticky top-20">
@@ -196,7 +234,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                                 <>
                                     <li>
                                         <button
-                                            onClick={() => setIsFormOpen(true)}
+                                            onClick={userType.userType === "premium"?()=>setIsFormOpen(true):totalClasses.count === 5 ? handleShowUpgradeModal : () => setIsFormOpen(true)}
                                             className="dashboard-link"
                                         >
                                             <IoCreateOutline size={25} />
@@ -240,111 +278,157 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
             {/* Create Class Form */}
             {isFormOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 ">
-                    <form
-                        onSubmit={handleSubmitCreateClass(onSubmitCreateClass)}
-                        className="bg-white p-6 rounded-lg shadow-lg md:w-2/5"
-                    >
-                        <h2 className="text-xl font-bold mb-4">
-                            Create a Class
-                        </h2>
-                        {/* Form Fields */}
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium mb-1">
-                                Class Name
-                            </label>
-                            <input
-                                type="text"
-                                {...registerCreateClass("className", {
-                                    required: "Class name is required",
-                                })}
-                                className={`w-full p-2 border rounded ${
-                                    errorsCreateClass.className
-                                        ? "border-red-500"
-                                        : "border-gray-300"
-                                }`}
-                            />
-                            {errorsCreateClass.className && (
-                                <p className="text-red-500 text-xs mt-1">
-                                    {errorsCreateClass.className.message}
-                                </p>
+                    {userType.userType !== "premium" &&
+                    totalClasses.count === 5 ? null : (
+                        <form
+                            onSubmit={handleSubmitCreateClass(
+                                onSubmitCreateClass
                             )}
-                        </div>
+                            className="bg-white p-6 rounded-lg shadow-lg md:w-2/5"
+                        >
+                            <h2 className="text-xl font-bold mb-4">
+                                Create a Class
+                            </h2>
+                            {/* Class Limitation Message */}
+                            {userType.userType === "normal" &&
+                                totalClasses.count < 5 && (
+                                    <div
+                                        className={`flex gap-2 mb-4 ${
+                                            totalClasses.count === 4
+                                                ? "bg-red-100 border border-red-500 text-red-700"
+                                                : "bg-yellow-100 border border-yellow-500 text-yellow-700 "
+                                        } px-4 py-3 rounded `}
+                                    >
+                                        <RiErrorWarningFill
+                                            className={`mt-[1px] ${
+                                                totalClasses.count === 4
+                                                    ? "text-red-500 "
+                                                    : "text-yellow-500"
+                                            } `}
+                                            size={30}
+                                        />
+                                        <p className="">
+                                            You have {5 - totalClasses.count}{" "}
+                                            out of 5 classes remaining. Upgrade
+                                            to the{" "}
+                                            <a
+                                                href=""
+                                                className="underline decoration-yellow-700"
+                                            >
+                                                premium
+                                            </a>{" "}
+                                            version to create unlimited classes.
+                                        </p>
+                                    </div>
+                                )}
 
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium mb-1">
-                                Section
-                            </label>
-                            <input
-                                type="text"
-                                {...registerCreateClass("section", {
-                                    required: "Section is required",
-                                })}
-                                className={`w-full p-2 border rounded ${
-                                    errorsCreateClass.section
-                                        ? "border-red-500"
-                                        : "border-gray-300"
-                                }`}
-                            />
-                            {errorsCreateClass.section && (
-                                <p className="text-red-500 text-xs mt-1">
-                                    {errorsCreateClass.section.message}
-                                </p>
-                            )}
-                        </div>
+                            {/* Form Fields */}
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-1">
+                                    Class Name
+                                </label>
+                                <input
+                                    type="text"
+                                    {...registerCreateClass("className", {
+                                        required: "Class name is required",
+                                    })}
+                                    className={`w-full p-2 border rounded ${
+                                        errorsCreateClass.className
+                                            ? "border-red-500"
+                                            : "border-gray-300"
+                                    }`}
+                                />
+                                {errorsCreateClass.className && (
+                                    <p className="text-red-500 text-xs mt-1">
+                                        {errorsCreateClass.className.message}
+                                    </p>
+                                )}
+                            </div>
 
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium mb-1">
-                                Subject
-                            </label>
-                            <input
-                                type="text"
-                                {...registerCreateClass("subject", {
-                                    required: "Subject is required",
-                                })}
-                                className={`w-full p-2 border rounded ${
-                                    errorsCreateClass.subject
-                                        ? "border-red-500"
-                                        : "border-gray-300"
-                                }`}
-                            />
-                            {errorsCreateClass.subject && (
-                                <p className="text-red-500 text-xs mt-1">
-                                    {errorsCreateClass.subject.message}
-                                </p>
-                            )}
-                        </div>
-                        
-                        {/* Image thumbnail */}
-                        <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">Class Thumbnail</label>
-                    <input
-                        type="file"
-                        {...registerCreateClass("classImage", { required: "Class image is required" })}
-                        // accept="image/*"
-                        className={`w-full p-2 border rounded ${
-                            errorsCreateClass.classImage ? "border-red-500" : "border-gray-300"
-                        }`}
-                    />
-                    {errorsCreateClass.classImage && (
-                        <p className="text-red-500 text-xs mt-1">{errorsCreateClass.classImage.message}</p>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-1">
+                                    Section
+                                </label>
+                                <input
+                                    type="text"
+                                    {...registerCreateClass("section", {
+                                        required: "Section is required",
+                                    })}
+                                    className={`w-full p-2 border rounded ${
+                                        errorsCreateClass.section
+                                            ? "border-red-500"
+                                            : "border-gray-300"
+                                    }`}
+                                />
+                                {errorsCreateClass.section && (
+                                    <p className="text-red-500 text-xs mt-1">
+                                        {errorsCreateClass.section.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-1">
+                                    Subject
+                                </label>
+                                <input
+                                    type="text"
+                                    {...registerCreateClass("subject", {
+                                        required: "Subject is required",
+                                    })}
+                                    className={`w-full p-2 border rounded ${
+                                        errorsCreateClass.subject
+                                            ? "border-red-500"
+                                            : "border-gray-300"
+                                    }`}
+                                />
+                                {errorsCreateClass.subject && (
+                                    <p className="text-red-500 text-xs mt-1">
+                                        {errorsCreateClass.subject.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Image thumbnail */}
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-1">
+                                    Class Thumbnail
+                                </label>
+                                <input
+                                    type="file"
+                                    {...registerCreateClass("classImage", {
+                                        required: "Class image is required",
+                                    })}
+                                    // accept="image/*"
+                                    className={`w-full p-2 border rounded ${
+                                        errorsCreateClass.classImage
+                                            ? "border-red-500"
+                                            : "border-gray-300"
+                                    }`}
+                                />
+                                {errorsCreateClass.classImage && (
+                                    <p className="text-red-500 text-xs mt-1">
+                                        {errorsCreateClass.classImage.message}
+                                    </p>
+                                )}
+                            </div>
+                            <div className="flex justify-end space-x-2">
+                                <button
+                                    type="button"
+                                    className="btn bg-primary text-white rounded-none"
+                                    onClick={() => setIsFormOpen(false)}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="btn bg-secondary text-white rounded-none"
+                                >
+                                    Create Class
+                                </button>
+                            </div>
+                        </form>
                     )}
-                </div>
-
-
-
-                        <div className="flex justify-end space-x-2">
-                            <button
-                                type="button"
-                                className="btn bg-primary text-white rounded-none"
-                                onClick={() => setIsFormOpen(false)}
-                            >
-                                Cancel
-                            </button>
-                            <button type="submit" className="btn bg-secondary text-white rounded-none">
-                                Create Class
-                            </button>
-                        </div>
-                    </form>
                 </div>
             )}
 
@@ -380,7 +464,10 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         </div>
 
                         <div className="flex justify-end space-x-2 ">
-                            <button type="submit" className="btn bg-secondary rounded-none text-white">
+                            <button
+                                type="submit"
+                                className="btn bg-secondary rounded-none text-white"
+                            >
                                 Join Class
                             </button>
                             <button

@@ -6,9 +6,17 @@ import useUser from "../../CustomHooks/useUser";
 import useAxiosPrivate from "../../CustomHooks/useAxiosPrivate";
 import Swal from "sweetalert2";
 
-const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment, refetch}) => {
+const SubmitAssignmentModal = ({
+  isOpen,
+  onRequestClose,
+  classId,
+  assignment,
+  refetch,
+}) => {
   const { register, handleSubmit, reset } = useForm();
   const [file, setFile] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const axiosPrivate = useAxiosPrivate();
 
@@ -16,6 +24,7 @@ const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment, re
   const { title, _id } = assignment;
 
   const onSubmit = async () => {
+    setIsLoading(true);
     const formData = new FormData();
 
     formData.append("student_name", userdb.name);
@@ -26,43 +35,34 @@ const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment, re
     }
 
     try {
-      const response = await axiosPrivate.patch(`/classes/${classId}/assignments/${_id}/submissions`, formData, {headers: {"Content-Type": "multipart/form-data"}})
-      if(response.data){
+      const response = await axiosPrivate.patch(
+        `/classes/${classId}/assignments/${_id}/submissions`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      if (response.data) {
         reset();
+        setIsLoading(false);
         onRequestClose();
         Swal.fire({
           position: "top-end",
           icon: "success",
           title: "Submitted successfully",
           showConfirmButton: false,
-          timer: 2000
+          timer: 2000,
         });
         refetch();
       }
     } catch (error) {
-      console.error("Assignment not submitted", error)
+      console.error("Assignment not submitted", error);
     }
-    
   };
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      style={{
-        content: {
-          width: "50%",
-          height: "50%",
-          margin: "auto",
-          padding: "20px",
-          borderRadius: "10px",
-        },
-        overlay: {
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        },
-      }}
+      className="w-[90%] sm:w-[70%] md:w-[50%] max-w-lg h-auto p-5 bg-white rounded-lg shadow-lg overflow-auto relative"
+      overlayClassName="fixed inset-0 bg-black/20 flex items-center justify-center"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="card-body z-40">
         <h2 className="font-semibold text-lg">{title}</h2>
@@ -77,17 +77,23 @@ const SubmitAssignmentModal = ({ isOpen, onRequestClose, classId, assignment, re
           />
         </div>
 
-        <div className="flex justify-center gap-1">
-          <button
-            type="submit"
-            className="px-4 py-2 bg-[#004085] text-white hover:bg-gray-400 rounded-md"
-          >
-            Submit
-          </button>
+        <div className="flex flex-col lg:flex-row justify-center gap-1">
+          {isLoading ? (
+            <div className="w-24 px-4 py-2 bg-[#004085] text-white rounded-md flex justify-center items-center">
+              <span className="loading loading-spinner w-4"></span>
+            </div>
+          ) : (
+            <button
+              type="submit"
+              className="px-4 py-2 bg-[#004085] text-white hover:bg-gray-400 rounded-md"
+            >
+              Submit
+            </button>
+          )}
           <button
             type="button"
             onClick={onRequestClose}
-            className="mr-2 px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md"
+            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md"
           >
             Cancel
           </button>
@@ -102,7 +108,7 @@ SubmitAssignmentModal.propTypes = {
   onRequestClose: PropTypes.func,
   assignment: PropTypes.object,
   classId: PropTypes.string,
-  refetch: PropTypes.func
+  refetch: PropTypes.func,
 };
 
 export default SubmitAssignmentModal;

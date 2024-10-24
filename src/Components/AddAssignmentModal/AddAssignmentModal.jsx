@@ -6,7 +6,13 @@ import Modal from "react-modal";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import Swal from "sweetalert2";
 
-const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch }) => {
+const AddAssignmentModal = ({
+  isOpen,
+  onRequestClose,
+  classId,
+  className,
+  refetch,
+}) => {
   const { register, handleSubmit, reset } = useForm();
 
   const [file, setFile] = useState();
@@ -36,17 +42,18 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
         }
       );
 
-
-      reset();
-      onRequestClose();
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Assignment posted successfully",
-        showConfirmButton: false,
-        timer: 1500
-      });
-      refetch();
+      if (response.data) {
+        reset();
+        onRequestClose();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Assignment posted successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        refetch();
+      }
     } catch (error) {
       console.error("assignment not added", error);
     }
@@ -109,9 +116,12 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
             />
           </div>
           <div>
-            <input 
-            {...register("classId", { required: true })}
-            type="text" defaultValue={classId} className="hidden" />
+            <input
+              {...register("classId", { required: true })}
+              type="text"
+              defaultValue={classId}
+              className="hidden"
+            />
           </div>
 
           <div className="flex justify-center">
@@ -129,7 +139,6 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
             >
               Cancel
             </button>
-            
           </div>
         </form>
       </Modal>
@@ -142,7 +151,7 @@ AddAssignmentModal.propTypes = {
   onRequestClose: PropTypes.func,
   classId: PropTypes.string,
   refetch: PropTypes.func,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default AddAssignmentModal;

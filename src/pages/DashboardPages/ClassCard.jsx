@@ -1,13 +1,13 @@
-import { GoFileCode, GoComment, GoFileZip } from "react-icons/go";
-import { RxCrossCircled } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import Swal from "sweetalert2";
 import { MdAssignment, MdQuiz } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
+import useTotalClassCount from "../../CustomHooks/useTotalClassCount";
 const ClassCard = ({ classData, refetch }) => {
   const axiosPublic = useAxiosPublic();
+  const {refetchTotalClassCount}=useTotalClassCount()
 
   const handleDelete = async () => {
     Swal.fire({
@@ -29,6 +29,7 @@ const ClassCard = ({ classData, refetch }) => {
           Swal.fire("Deleted!", response.data.message, "success");
           // Call refetch or any function to refresh your data
           refetch();
+          refetchTotalClassCount()
         } catch (error) {
           Swal.fire(
             "Error!",
@@ -116,4 +117,5 @@ const ClassCard = ({ classData, refetch }) => {
 export default ClassCard;
 ClassCard.propTypes = {
   classData: PropTypes.object,
+  refetch: PropTypes.func
 };

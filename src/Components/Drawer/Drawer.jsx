@@ -72,7 +72,8 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                 formData
             );
             const uploadedImageUrl = uploadResponse.data.secure_url; // Get the secure URL from the response
-
+            
+        if(uploadedImageUrl){
             const classData = {
                 classId: generateUniqueClassCode(),
                 className: data.className,
@@ -99,6 +100,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                 refetchUserType()
                 reset()
             }
+        }
         } catch (error) {
             console.error("Error uploading image or posting data:", error);
             toast.error("Failed to upload image or post data");

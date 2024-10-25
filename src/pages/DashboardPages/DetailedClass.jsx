@@ -203,7 +203,7 @@ const DetailedClass = () => {
                 ) : role === "teacher" ? (
                   <div className="text-center">
                     <p>No resources available.</p>
-                    <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg" onClick={handleAddResource}>
+                    <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg" >
                       Add Resource
                     </button>
                   </div>

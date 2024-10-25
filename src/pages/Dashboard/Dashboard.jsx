@@ -38,12 +38,12 @@ const Dashboard = () => {
           </aside>
 
           {/* Main content area */}
-          <main className="flex-grow md:flex-initial md:basis-8/12">
+          <main className="flex-grow md:flex-initial md:basis-7/12">
             <Outlet />
           </main>
 
           {/* Sidebar for extra content on larger screens */}
-          <aside className="hidden xl:block xl:basis-2/12">
+          <aside className="hidden xl:block xl:basis-3/12">
             <DashboardSidebar />
           </aside>
           <Toaster />

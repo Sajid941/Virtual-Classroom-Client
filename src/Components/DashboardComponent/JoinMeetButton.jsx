@@ -19,7 +19,9 @@ const JoinMeetButton = ({ id }) => {
             input: "url",
             showCancelButton: true,
             confirmButtonText: "Add",
+            confirmButtonColor:'#004085',
             cancelButtonText: "Cancel",
+            cancelButtonColor:"#007BFF",
             showLoaderOnConfirm: true,
             preConfirm: async (link) => {
                 if (!link) {
@@ -53,7 +55,7 @@ const JoinMeetButton = ({ id }) => {
             <div>
                 {
                     meetLink ? <>
-                        <a href={meetLink} className='btn bg-green-600 border-green-700 text-white' target="_blank">Join Meet</a>
+                        <a href={meetLink} className='btn bg-green-600 border-none rounded-md hover:bg-secondary text-white' target="_blank">Join Meet</a>
                     </> :
                     <>
                         <p>Meet link not available</p>
@@ -64,7 +66,7 @@ const JoinMeetButton = ({ id }) => {
             {
                 userdb?.role == "teacher" ?
                     <>
-                        <button className='btn bg-secondary text-white border-secondary' onClick={handleSubmit}>Meet Setting</button>
+                        <button className='btn bg-secondary text-white border-none rounded-md hover:bg-primary' onClick={handleSubmit}>Meet Setting</button>
                     </>
                     : null
             }

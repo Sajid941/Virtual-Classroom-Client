@@ -1,51 +1,121 @@
-import { GoFileCode, GoComment, GoFileZip } from "react-icons/go";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-const ClassCard = ({ classData }) => {
+import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+import Swal from "sweetalert2";
+import { MdAssignment, MdQuiz } from "react-icons/md";
+import { FaTrash } from "react-icons/fa";
+import useTotalClassCount from "../../CustomHooks/useTotalClassCount";
+const ClassCard = ({ classData, refetch }) => {
+  const axiosPublic = useAxiosPublic();
+  const {refetchTotalClassCount}=useTotalClassCount()
+
+  const handleDelete = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      imageUrl: "https://i.ibb.co/hgXFcw0/classNet.png",
+      imageHeight: "120",
+      imageWidth: "120",
+      showCancelButton: true,
+      confirmButtonColor: "#004085",
+      cancelButtonColor: "#007BFF",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await axiosPublic.delete(
+            `/classes/delete/${classData?.classId}`
+          );
+          Swal.fire("Deleted!", response.data.message, "success");
+          // Call refetch or any function to refresh your data
+          refetch();
+          refetchTotalClassCount()
+        } catch (error) {
+          Swal.fire(
+            "Error!",
+            "There was a problem deleting the class.",
+            "error"
+          );
+          console.error("Error deleting the class:", error);
+        }
+      }
+    });
+  };
+
   return (
-    <Link
-      to={`/class/${classData?.classId}`}
-      className="shadow w-full my-4 rounded-xl"
-    >
-      <div className="rounded-xl overflow-hidden">
-        {" "}
-        {/* Added overflow-hidden */}
-        <div
-          className="bg-cover h-[200px] md:h-[250px] lg:h-[300px] text-white relative "
-          style={{ backgroundImage: `url(${classData?.classImage})` }}
-        >
-          <div className="bg-black/30 w-full h-full absolute"></div>
-          <div className="relative px-5 py-5">
-            <h2 className="font-bold text-lg z-10">{classData?.className}</h2>
-            <p>
-              <span className="block">Section: {classData?.section}</span>
-              <span className="block font-semibold">
-                Subject: {classData?.subject}
-              </span>
-            </p>
-          </div>
-        </div>
-        <div className="px-4 py-2 mb-5 bg-[#004085] text-white flex justify-between items-center rounded-b-xl">
-          <p>
-            Conducting By:{" "}
-            <span className="font-semibold">{classData?.teacher.name}</span>
-          </p>
-          <div className="flex space-x-2 ">
-            {classData?.resources.map((resource, index) => (
-              <button key={index} className="p-2 rounded">
-                {resource.type === "ZIP" && <GoFileZip size={30} />}
-                {resource.type === "Code" && <GoFileCode size={30} />}
-                {resource.type === "Comments" && <GoComment size={30} />}
-              </button>
-            ))}
-          </div>
+    <div className="relative px-5 md:px-0">
+      <div
+        className="absolute top-2 right-4 text-2xl text-white p-2 rounded cursor-pointer bg-Primary group z-30 hover:text-red-400"
+        onClick={handleDelete}
+      >
+        <div className=" lg:tooltip" data-tip="delete class">
+          <FaTrash className="" />
         </div>
       </div>
-    </Link>
+
+      <Link
+        className="wrap group shadow w-full my-4 rounded-xl relative "
+        to={`/class/${classData?.classId}`}
+      >
+        <div className="rounded-xl overflow-hidden">
+          {" "}
+          {/* Added overflow-hidden */}
+          <div
+            className="bg-cover h-[200px] md:h-[250px] lg:h-[300px] text-white relative"
+            style={{ backgroundImage: `url(${classData?.classImage})` }}
+          >
+            <div className="bg-black/30 w-full h-full absolute"></div>
+            <div className="relative px-5 py-5 ">
+              <h2 className="font-bold text-lg ">{classData?.className}</h2>
+              <p>
+                <span className="block">Section: {classData?.section}</span>
+                <span className="block font-semibold">
+                  Subject: {classData?.subject}
+                </span>
+              </p>
+            </div>
+            
+          </div>
+          <div className="px-4 py-2 mb-5 bg-[#004085] text-white flex justify-between items-center rounded-b-xl">
+            <p>
+              Conducting By:{" "}
+              <span className="font-semibold">{classData?.teacher.name}</span>
+            </p>
+            <div className="flex space-x-2 ">
+              {classData?.quizzes?.length > 0 ? (
+                <>
+                  <div
+                    className="text-2xl tooltip"
+                    data-tip={`${classData.quizzes.length} quiz`}
+                  >
+                    <MdQuiz />
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+              {classData?.assignments?.length > 0 ? (
+                <>
+                  <div
+                    className="text-2xl tooltip "
+                    data-tip={`${classData.assignments.length} assignment`}
+                  >
+                    <MdAssignment />
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
+        </div>
+      </Link>
+    </div>
   );
 };
 
 export default ClassCard;
 ClassCard.propTypes = {
   classData: PropTypes.object,
+  refetch: PropTypes.func
 };

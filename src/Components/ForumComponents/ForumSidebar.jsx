@@ -6,7 +6,7 @@ import Loading from "../Loading";
 import useCategories from "../../CustomHooks/useCategories";
 import "./ForumComponents.css";
 
-const Sidebar = ({ setDiscussionCategory, isShowDrawer, setIsShowDrawer }) => {
+const Sidebar = ({discussionCategory, setDiscussionCategory, isShowDrawer, setIsShowDrawer }) => {
     const { categories, isPending } = useCategories();
 
     const handleShowModal = () => {
@@ -29,12 +29,6 @@ const Sidebar = ({ setDiscussionCategory, isShowDrawer, setIsShowDrawer }) => {
                     checked={isShowDrawer}
                     onChange={() => setIsShowDrawer(!isShowDrawer)}
                 />
-                {/* <div className="drawer-content flex flex-col items-center justify-center">
-                    Page content here
-                    <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden">
-                        Open drawer
-                    </label>
-                </div> */}
 
                 <div className="drawer-side z-20 scrollbar-hide">
                     <label
@@ -45,11 +39,11 @@ const Sidebar = ({ setDiscussionCategory, isShowDrawer, setIsShowDrawer }) => {
                     <div className="menu bg-base-200 lg:bg-white lg:rounded-xl lg:border-2  text-[#4b5563] min-h-full p-4 scrollbar-hide ">
                         <div className="wrap">
                             <button
-                                className="btn bg-transparent border rounded-lg text-xl w-full justify-start shadow-gray-600 gap-5"
+                                className="btn group bg-transparent   border rounded-lg text-xl w-full justify-start shadow-gray-600 gap-5"
                                 onClick={handleShowModal}
                             >
-                                <FaPlusSquare className="text-gray-600" />
-                                <span className="text-gray-600 text-lg">
+                                <FaPlusSquare className="text-gray-600 group-hover:text-black" />
+                                <span className="text-gray-600 text-lg group-hover:text-black">
                                     Post a discussion
                                 </span>
                             </button>
@@ -61,7 +55,7 @@ const Sidebar = ({ setDiscussionCategory, isShowDrawer, setIsShowDrawer }) => {
                                 className=" hover:text-black text-xl font-semibold"
                             >
                                 <span className="flex gap-4">
-                                    <GoDotFill size={30} color="#00d7c0" />
+                                    <GoDotFill size={30} color={discussionCategory === "All" ? "#ffc107" : "#004085"} />
                                     All
                                 </span>
                             </li>
@@ -75,7 +69,7 @@ const Sidebar = ({ setDiscussionCategory, isShowDrawer, setIsShowDrawer }) => {
                                     className=" hover:text-black text-xl font-semibold"
                                 >
                                     <span className="flex gap-4">
-                                        <GoDotFill size={30} color="#00d7c0" />{" "}
+                                        <GoDotFill size={30} color={discussionCategory === category ? "#ffc107" : "#004085"} />{" "}
                                         {category}
                                     </span>
                                 </li>
@@ -93,4 +87,5 @@ Sidebar.propTypes = {
     setDiscussionCategory: PropTypes.func.isRequired,
     isShowDrawer: PropTypes.bool.isRequired,
     setIsShowDrawer: PropTypes.func.isRequired,
+    discussionCategory: PropTypes.string
 };

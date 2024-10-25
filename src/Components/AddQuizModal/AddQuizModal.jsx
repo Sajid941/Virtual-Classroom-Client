@@ -46,7 +46,6 @@ const AddQuizModal = ({ isOpen, onRequestClose, classId, refetch }) => {
                 },
                 { withCredentials: true }
             );
-            console.log(response);
             if (response.status === 200) {
                 toast.success("Quiz added successfully!");
 
@@ -74,8 +73,8 @@ const AddQuizModal = ({ isOpen, onRequestClose, classId, refetch }) => {
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Add Quiz"
-            className="max-w-3xl mx-auto mt-20 bg-white p-6 rounded-lg shadow-lg overflow-auto max-h-[90vh]"
-            overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start z-50"
+            className="max-w-3xl mx-auto mt-20 bg-white p-6 rounded-lg shadow-lg overflow-auto max-h-[90vh] z-40"
+            overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start"
         >
             <h2 className="text-2xl font-semibold mb-4">Add New Quiz</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -270,13 +269,13 @@ const AddQuizModal = ({ isOpen, onRequestClose, classId, refetch }) => {
                     <button
                         type="button"
                         onClick={onRequestClose}
-                        className="mr-4 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg"
+                        className="mr-4 bg-primary text-white px-4 py-2 rounded-none w-full"
                     >
                         Cancel
                     </button>
                     <button
                         type="submit"
-                        className="bg-[#004085] text-white px-4 py-2 rounded-lg"
+                        className="bg-secondary text-white px-4 py-2 rounded-none w-full"
                     >
                         Add Quiz
                     </button>

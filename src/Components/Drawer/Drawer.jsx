@@ -7,7 +7,6 @@ import { AiOutlineSchedule } from "react-icons/ai";
 import { MdAssignmentAdd, MdAddToPhotos } from "react-icons/md";
 import { IoCreateOutline } from "react-icons/io5";
 import { RiErrorWarningFill } from "react-icons/ri";
-import { FaWallet } from "react-icons/fa";
 
 import { NavLink } from "react-router-dom";
 import DashboardSidebar from "../DashboardSidebar/DashboardSidebar";
@@ -151,31 +150,6 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
         setIsJoinClassFormOpen(false);
     };
 
-    const handleShowUpgradeModal = () => {
-        Swal.fire({
-            title: "<strong>Class Creation Limit Reached</strong>",
-            imageUrl: "https://i.ibb.co/hgXFcw0/classNet.png",
-            imageHeight: "120",
-            imageWidth: "120",
-            html: `
-                  You have reached your limit of <b>5 classes</b> as a normal user.<br>
-                  Upgrade to <b>Premium</b> to create unlimited classes!
-                `,
-            showCloseButton: true,
-            showCancelButton: true,
-            focusConfirm: false,
-            confirmButtonText: `
-                  <i class="fa fa-arrow-up"></i> Upgrade to Premium
-                `,
-            confirmButtonAriaLabel: "Upgrade to premium",
-            confirmButtonColor: "#004085",
-            cancelButtonText: `
-                  <i class="fa fa-times"></i> Cancel
-                `,
-            cancelButtonAriaLabel: "Cancel",
-            cancelButtonColor: "#007BFF",
-        });
-    };
     const handlePayment = () => {
         Swal.fire({
             title: "<strong>Payment Confirmation</strong>",
@@ -218,6 +192,35 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                         }
                     });
             }
+        });
+    };
+
+    const handleShowUpgradeModal = () => {
+        Swal.fire({
+            title: "<strong>Class Creation Limit Reached</strong>",
+            imageUrl: "https://i.ibb.co/hgXFcw0/classNet.png",
+            imageHeight: "120",
+            imageWidth: "120",
+            html: `
+                  You have reached your limit of <b>5 classes</b> as a normal user.<br>
+                  Upgrade to <b>Premium</b> to create unlimited classes!
+                `,
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText: `
+                  <i class="fa fa-arrow-up"></i> Upgrade to Premium
+                `,
+            confirmButtonAriaLabel: "Upgrade to premium",
+            preConfirm: () => {
+                handlePayment();
+            },
+            confirmButtonColor: "#004085",
+            cancelButtonText: `
+                  <i class="fa fa-times"></i> Cancel
+                `,
+            cancelButtonAriaLabel: "Cancel",
+            cancelButtonColor: "#007BFF",
         });
     };
 
@@ -283,7 +286,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                                             onClick={
                                                 userType.userType === "premium"
                                                     ? () => setIsFormOpen(true)
-                                                    : totalClasses.count === 5
+                                                    : totalClasses.count > 5
                                                     ? handleShowUpgradeModal
                                                     : () => setIsFormOpen(true)
                                             }
@@ -331,7 +334,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
             {isFormOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 ">
                     {userType.userType !== "premium" &&
-                    totalClasses.count === 5 ? null : (
+                    totalClasses.count > 5 ? null : (
                         <form
                             onSubmit={handleSubmitCreateClass(
                                 onSubmitCreateClass

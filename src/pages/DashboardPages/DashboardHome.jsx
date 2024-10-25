@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import useUser from "../../CustomHooks/useUser";
 import { AuthContext } from "../../Provider/AuthProvider";
 import useRole from "../../CustomHooks/useRole";
+import premium from "../../assets/premium.svg";
+import sparkle from "../../assets/sparkle.svg";
 import {
   FaChalkboardTeacher,
   FaTasks,
@@ -21,6 +23,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import useUserType from "../../CustomHooks/useUserType";
 
 const DashboardHome = () => {
   const { userdb } = useUser();
@@ -31,7 +34,7 @@ const DashboardHome = () => {
   const [selectedClass, setSelectedClass] = useState("");
   const [filteredSubmissions, setFilteredSubmissions] = useState([]);
   const axiosPublic = useAxiosPublic();
-
+  const { userType } = useUserType();
   const axiosPublicMemo = useMemo(() => axiosPublic, [axiosPublic]);
 
   const {
@@ -119,8 +122,22 @@ const DashboardHome = () => {
   return (
     <div className=" basis-3/5 p-10  mx-4 md:mx-0 rounded-xl md:min-h-[80vh] bg-secondary ">
       <div className="topText  mb-6">
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="text-2xl font-bold text-white relative w-fit">
           Welcome Back, {userdb?.name}
+          {userType?.userType === "premium" && (
+            <div className="relative group">
+              <img
+                src={premium}
+                alt=""
+                className="absolute w-7 -right-10 -top-8 cursor-pointer animate-spark group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-300"
+                
+              />
+              
+              <span className="absolute -top-12  text-sm text-yellow-400 hidden group-hover:inline -right-12 ">
+                Premium
+              </span>
+            </div>
+          )}
         </h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 z-auto">

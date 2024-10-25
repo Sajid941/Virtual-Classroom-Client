@@ -11,8 +11,8 @@ const UserMenu = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box  w-52 p-2 shadow mt-44 "
         >
-            <li hidden={pathname === "/profile"}>
-                <Link to="/profile" className="justify-between">
+            <li hidden={pathname === "/dashboard/profile"}>
+                <Link to="/dashboard/profile" className="justify-between">
                     Profile
                     <span className="badge">New</span>
                 </Link>

@@ -19,7 +19,7 @@ const Dashboard = () => {
                 <NavDashboard handleToggleDrawer={handleToggleDrawer} />
             </nav>
             {/* Responsive Layout */}
-            <div className="flex flex-col md:flex-row w-full justify-between container mx-auto gap-5 mt-24">
+            <div className="flex flex-col md:flex-row w-full   justify-between container mx-auto gap-5 mt-24">
                 {/* Drawer for mobile and tablet view */}
                 <aside className="md:hidden w-64 z-50">
                     <Drawer
@@ -37,12 +37,12 @@ const Dashboard = () => {
                 </aside>
 
                 {/* Main content area */}
-                <main className="flex-grow md:flex-initial md:basis-7/12">
+                <main className="flex-grow md:flex-initial md:basis-8/12">
                     <Outlet />
                 </main>
 
                 {/* Sidebar for extra content on larger screens */}
-                <aside className="hidden xl:block xl:basis-3/12">
+                <aside className="hidden xl:block xl:basis-2/12">
                     <DashboardSidebar />
                 </aside>
                 <Toaster />

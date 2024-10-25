@@ -108,7 +108,7 @@ const DashboardSidebar = () => {
                         <LiaComment className="mr-1" />{" "}
                         {/* Icon for comments */}
                         <span>
-                          {discussion.comments?.length || 0} comments
+                          {discussion.replies?.length || 0} comments
                         </span>{" "}
                         {/* Comments count */}
                       </div>

@@ -6,8 +6,8 @@ import { AuthContext } from "../Provider/AuthProvider";
 const useAxiosPrivate = () => {
 
     const axiosPrivate = axios.create({
-        baseURL: 'https://class-net-server.vercel.app',
-        //baseURL: import.meta.env.VITE_API_URL,
+        //baseURL: 'https://class-net-server.vercel.app',
+        baseURL: import.meta.env.VITE_API_URL,
         withCredentials: true,
     });
 

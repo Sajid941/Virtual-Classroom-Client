@@ -171,48 +171,13 @@ const DetailedClass = () => {
       <div className="container mx-auto py-10 px-5 md:px-10">
         <Tabs>
           <TabList className="flex space-x-4 border-b-2 border-secondary mb-4 ">
-            <Tab className="px-4 py-2 cursor-pointer">Resources</Tab>
             <Tab className="px-4 py-2 cursor-pointer">Assignments</Tab>
+            <Tab className="px-4 py-2 cursor-pointer hidden">Resources</Tab>
             <Tab className="px-4 py-2 cursor-pointer">Quizzes</Tab>
             <Tab className="px-4 py-2 cursor-pointer">Chat</Tab>
             <Tab className="px-4 py-2 cursor-pointer">Students</Tab>
           </TabList>
 
-          {/* Resources Tab */}
-          <TabPanel>
-            <div className="bg-white p-6 shadow rounded-lg mb-6">
-              <h2 className="text-2xl font-semibold mb-4">Resources</h2>
-              <div className="flex flex-wrap space-x-4">
-                {classData?.resources?.length ? (
-                  classData.resources.map((resource, index) => (
-                    <button
-                      key={index}
-                      className="p-3 rounded-lg bg-gray-200 flex flex-col items-center mb-4"
-                      onClick={() => {
-                        window.open(resource.link, "_blank"); // Open resource in new tab
-                      }}
-                    >
-                      <p className="mt-2 text-sm">{resource.description}</p>
-                      <div className="flex items-center gap-2">
-                        <IoDocumentAttachOutline />
-                        <p>{resource.name}</p>
-                        
-                      </div>
-                    </button>
-                  ))
-                ) : role === "teacher" ? (
-                  <div className="text-center">
-                    <p>No resources available.</p>
-                    <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg" onClick={handleAddResource}>
-                      Add Resource
-                    </button>
-                  </div>
-                ) : (
-                  <p>No resources available.</p>
-                )}
-              </div>
-            </div>
-          </TabPanel>
 
           {/* Assignments Tab */}
           <TabPanel>
@@ -248,19 +213,19 @@ const DetailedClass = () => {
 
                     {assignment.fileUrl && (
                       <button
-                        onClick={() =>
+                      onClick={() =>
                           handleDownloadAssignment(assignment.fileUrl)
                         }
                         className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
-                      >
+                        >
                         Download
                       </button>
                     )}
 
                     {assignment.fileUrl && role === "teacher" && (
                       <button
-                        onClick={() => handleDeleteFile(assignment._id)}
-                        className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
+                      onClick={() => handleDeleteFile(assignment._id)}
+                      className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
                       >
                         Delete
                       </button>
@@ -278,9 +243,9 @@ const DetailedClass = () => {
                           </h3>
                         ) : (
                           <button
-                            onClick={() => setIsSubmitAssignmentModalOpen(true)}
-                            className={`bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center ${isPastDue(assignment.end) ? "bg-gray-400 cursor-not-allowed" : "hover:bg-gray-400"}`}
-                            disabled={isPastDue(assignment.end)}
+                          onClick={() => setIsSubmitAssignmentModalOpen(true)}
+                          className={`bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center ${isPastDue(assignment.end) ? "bg-gray-400 cursor-not-allowed" : "hover:bg-gray-400"}`}
+                          disabled={isPastDue(assignment.end)}
                           >
                             <IoDocumentAttachOutline size={18} />
                             Submit
@@ -325,6 +290,41 @@ const DetailedClass = () => {
               ) }
             </div>
           </TabPanel>
+                          {/* Resources Tab */}
+                          <TabPanel>
+                            <div className="bg-white p-6 shadow hidden rounded-lg mb-6">
+                              <h2 className="text-2xl font-semibold mb-4">Resources</h2>
+                              <div className="flex flex-wrap space-x-4">
+                                {classData?.resources?.length ? (
+                                  classData.resources.map((resource, index) => (
+                                    <button
+                                      key={index}
+                                      className="p-3 rounded-lg bg-gray-200 flex flex-col items-center mb-4"
+                                      onClick={() => {
+                                        window.open(resource.link, "_blank"); // Open resource in new tab
+                                      }}
+                                    >
+                                      <p className="mt-2 text-sm">{resource.description}</p>
+                                      <div className="flex items-center gap-2">
+                                        <IoDocumentAttachOutline />
+                                        <p>{resource.name}</p>
+                                        
+                                      </div>
+                                    </button>
+                                  ))
+                                ) : role === "teacher" ? (
+                                  <div className="text-center">
+                                    <p>No resources available.</p>
+                                    <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">
+                                      Add Resource
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <p>No resources available.</p>
+                                )}
+                              </div>
+                            </div>
+                          </TabPanel>
 
           {/* Quizzes Tab */}
           <TabPanel>

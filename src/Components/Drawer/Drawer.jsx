@@ -236,7 +236,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
             className="drawer-overlay"
           ></label>
           <div className="scrollbar-hide bg-white overflow-auto mb-2 md:border-2 h-screen md:h-4/5 md:rounded-xl  space-y-5 pt-5 md:pt-5">
-            <ul className="space-y-5 p-5 pl-8">
+            <ul className="space-y-5 p-5">
               {/* Sidebar Links */}
               <li>
                 <NavLink
@@ -298,7 +298,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
                   <li>
                     <button
                       onClick={() => setIsJoinClassFormOpen(true)}
-                      className="dashboard-link"
+                      className="dashboard-link "
                     >
                       <MdAddToPhotos size={25} />
                       Join A Class

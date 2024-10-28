@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import useUser from "../../CustomHooks/useUser";
 import { AuthContext } from "../../Provider/AuthProvider";
 import useRole from "../../CustomHooks/useRole";
+import premium from "../../assets/premium.svg";
+import sparkle from "../../assets/sparkle.svg";
 import {
   FaChalkboardTeacher,
   FaTasks,
@@ -21,6 +23,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import useUserType from "../../CustomHooks/useUserType";
 
 const DashboardHome = () => {
   const { userdb } = useUser();
@@ -31,7 +34,7 @@ const DashboardHome = () => {
   const [selectedClass, setSelectedClass] = useState("");
   const [filteredSubmissions, setFilteredSubmissions] = useState([]);
   const axiosPublic = useAxiosPublic();
-
+  const { userType } = useUserType();
   const axiosPublicMemo = useMemo(() => axiosPublic, [axiosPublic]);
 
   const {
@@ -117,10 +120,24 @@ const DashboardHome = () => {
   }));
 
   return (
-    <div className="md:w-full basis-3/5 p-4  mx-4 md:mx-0 rounded-xl md:min-h-[80vh] bg-secondary ">
-      <div className="topText mt-5 mb-6">
-        <h1 className="text-2xl font-bold text-white">
+    <div className=" basis-3/5 p-10  mx-4 md:mx-0 rounded-xl md:min-h-[80vh] bg-secondary ">
+      <div className="topText  mb-6">
+        <h1 className="text-2xl font-bold text-white relative w-fit">
           Welcome Back, {userdb?.name}
+          {userType?.userType === "premium" && (
+            <div className="relative group">
+              <img
+                src={premium}
+                alt=""
+                className="absolute w-7 -right-10 -top-8 cursor-pointer animate-spark group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-300"
+                
+              />
+              
+              <span className="absolute -top-12  text-sm text-yellow-400 hidden group-hover:inline -right-12 ">
+                Premium
+              </span>
+            </div>
+          )}
         </h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 z-auto">
@@ -168,18 +185,19 @@ const DashboardHome = () => {
           </>
         )}
       </div>
+      <hr className="my-7 mx-3 border-gray-400" />
       {role === "teacher" ? (
         <>
-          <div className="mt-16 flex-col flex md:flex-row items-center gap-2">
+          <div className="flex items-center gap-2">
             <label
               htmlFor="class-select"
-              className="block text-lg text-white font-semibold mb-2"
+              className="block text-lg text-white font-semibold"
             >
               Class Wise Quiz Submissions
             </label>
             <select
               id="class-select"
-              className="p-2 border border-gray-300 rounded"
+              className="p-1 rounded"
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
             >
@@ -192,7 +210,7 @@ const DashboardHome = () => {
             </select>
           </div>
 
-          <div className="mt-4 bg-white rounded-lg shadow-lg p-4">
+          <div className="mt-5 bg-white rounded-lg shadow-lg p-4">
             <h2 className="text-lg font-semibold mb-4">
               Quiz Submissions for{" "}
               {selectedClass
@@ -212,8 +230,8 @@ const DashboardHome = () => {
                 ))
               ) : (
                 <>
-                  <div className="capitalize bg-red-900 text-white badge text-sm text-center">
-                    no submission for this class's quiz
+                  <div className="capitalize bg-red-600 py-3 text-white badge text-center">
+                    no submission for this {"class's"} quiz
                   </div>
                 </>
               )}
@@ -240,8 +258,8 @@ const DashboardHome = () => {
               </ResponsiveContainer>
             </div>
           ) : (
-            <div className="text-center text-sm font-bold">
-              No quiz submission found for this user
+            <div className="text-center font-bold mt-10 text-white">
+              No quiz submission found
             </div>
           )}
         </>

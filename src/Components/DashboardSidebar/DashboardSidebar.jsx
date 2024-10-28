@@ -88,10 +88,7 @@ const DashboardSidebar = () => {
                     className="w-12 h-12 rounded-full mr-4"
                   />
                   <div className="flex-1">
-                    <h5 className="font-bold text-md text-gray-700">
-                      {discussion.author.name}
-                    </h5>
-                    <h5 className="text-lg font-semibold mb-2 text-gray-800">
+                    <h5 className="text-md font-semibold mb-2 text-gray-800">
                       {discussion.title}
                     </h5>
 

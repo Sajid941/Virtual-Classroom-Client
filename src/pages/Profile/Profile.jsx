@@ -39,7 +39,7 @@ const Profile = () => {
 
   return (
     <div className="">
-      <div className="min-h-screen justify-center bg-gradient-to-r p-6 w-full bg-white shadow-lg rounded-xl border flex flex-col items-center text-center animate-slideInUp">
+      <div className="justify-center bg-gradient-to-r p-10  w-full bg-white shadow-lg rounded-xl border flex flex-col items-center text-center animate-slideInUp">
         {/* Profile Image */}
         <img
           src={userdb.profileImage}
@@ -59,7 +59,7 @@ const Profile = () => {
         {renderRoleBasedContent()}
 
         {/* Edit Profile Button */}
-        <button className="mt-8 px-6 py-2 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-600 transition-all duration-300">
+        <button className="mt-8 hidden px-6 py-2 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-600 transition-all duration-300">
           Edit Profile
         </button>
       </div>

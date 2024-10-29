@@ -1,6 +1,5 @@
 import logos from "../../assets/classNetLogoPrimary.png";
 import { TiThMenu } from "react-icons/ti";
-import UserMenu from "../UserMenu/UserMenu";
 import PropTypes from "prop-types";
 import useAuth from "../../CustomHooks/useAuth";
 import useUser from "../../CustomHooks/useUser";
@@ -59,7 +58,7 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                   />
                 </div>
               </div>
-<<<<<<< HEAD
+
               <ul
                 tabIndex={0}
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box  w-52 p-2 shadow mt-44"
@@ -86,9 +85,9 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                   </a>
                 </li>
               </ul>
-=======
+
               <UserMenu />
->>>>>>> 9faa77f75fc8b1c35df2245d368991c54f7b4173
+
             </div>
           </div>
         </div>

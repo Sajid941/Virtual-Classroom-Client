@@ -59,9 +59,9 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                   <a href="/">Home</a>
                 </li>
                 <li>
-                  <Link to="/profile" className="justify-between">
+                  <Link to="/dashboard/profile" className="justify-between">
                     Profile
-                    <span className="badge">New</span>
+                    {userdb?.newNotifications && <span className="badge">New</span>}
                   </Link>
                 </li>
                 <li>

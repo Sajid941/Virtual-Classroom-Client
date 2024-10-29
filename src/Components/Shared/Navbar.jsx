@@ -10,7 +10,7 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const { user, logOut } = useContext(AuthContext);
   const { userdb } = useUser();
-  
+
   return (
     <div>
       <div className="navbar pt-5 mx-auto md:px-10 lg:px-20 w-full gap-6 lg:gap-0 z-[999]">
@@ -42,7 +42,7 @@ const Navbar = () => {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
               >
                 <li>
-                  <Link to="/profile" className="justify-between">
+                  <Link to="/dashboard/profile" className="justify-between">
                     Profile
                     {userdb?.newNotifications && <span className="badge">New</span>}
                   </Link>
@@ -80,7 +80,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
-      
+
     </div>
   );
 };

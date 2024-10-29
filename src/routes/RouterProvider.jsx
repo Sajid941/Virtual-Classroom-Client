@@ -15,6 +15,9 @@ import DetailedDiscussion from "../Components/ForumComponents/DetailedDiscussion
 import AllAssignments from "../pages/DashboardPages/AllAssignments";
 import Calendar from "../pages/DashboardPages/Calendar";
 import Profile from "../pages/Profile/Profile";
+import PaymentSuccess from "../pages/Payment/PaymentSuccess";
+import PaymentFailed from "../pages/Payment/PaymentFailed";
+import PaymentCancel from "../pages/Payment/PaymentCancel";
 
 const router = createBrowserRouter([
     // Root routes
@@ -95,6 +98,8 @@ const router = createBrowserRouter([
             },
         ],
     },
+
+    //Details class route
     {
         path: "/class/:id",
         element: (
@@ -102,6 +107,22 @@ const router = createBrowserRouter([
                 <DetailedClass />
             </PrivateRoute>
         ),
+    },
+
+    //Payment routes
+    {
+        path: "/paymentSuccess",
+        element: <PaymentSuccess />,
+    },
+
+    {
+        path: "/paymentFailed",
+        element: <PaymentFailed />,
+    },
+
+    {
+        path: "/paymentCancel",
+        element: <PaymentCancel />,
     },
 ]);
 

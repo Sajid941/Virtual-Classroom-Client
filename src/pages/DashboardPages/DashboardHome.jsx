@@ -3,7 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import useUser from "../../CustomHooks/useUser";
 import { AuthContext } from "../../Provider/AuthProvider";
 import useRole from "../../CustomHooks/useRole";
-import { FaChalkboardTeacher, FaTasks, FaClipboardList } from "react-icons/fa";
+import premium from "../../assets/premium.svg";
+import sparkle from "../../assets/sparkle.svg";
+import {
+  FaChalkboardTeacher,
+  FaTasks,
+  FaClipboardList,
+  FaUsers,
+} from "react-icons/fa";
 import Loading from "../../Components/Loading";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import {
@@ -14,7 +21,9 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
+import useUserType from "../../CustomHooks/useUserType";
 
 const DashboardHome = () => {
   const { userdb } = useUser();
@@ -25,7 +34,7 @@ const DashboardHome = () => {
   const [selectedClass, setSelectedClass] = useState("");
   const [filteredSubmissions, setFilteredSubmissions] = useState([]);
   const axiosPublic = useAxiosPublic();
-
+  const { userType } = useUserType();
   const axiosPublicMemo = useMemo(() => axiosPublic, [axiosPublic]);
 
   const {
@@ -54,6 +63,10 @@ const DashboardHome = () => {
 
     setAssignmentCount(totalAssignments);
   }, [classes]);
+  //total students
+  const totalStudents = classes.reduce((acc, currentClass) => {
+    return acc + (currentClass.students?.length || 0);
+  }, 0);
 
   // State to track whether submissions have been fetched
   const [submissionsFetched, setSubmissionsFetched] = useState(false);
@@ -78,19 +91,13 @@ const DashboardHome = () => {
   }, [axiosPublicMemo, userdb, submissionsFetched]);
 
   useEffect(() => {
-    console.log("Selected Class:", selectedClass);
-
     if (selectedClass) {
       const filtered = classes.filter(
         (submission) => submission.classId === selectedClass
       );
-      console.log("Filtered Submissions:", filtered[0]?.quizzes[0].submissions); // Check the filtered results
       setFilteredSubmissions(filtered[0]?.quizzes[0]?.submissions);
-      console.log(filteredSubmissions);
-    } else {
-      setFilteredSubmissions(submissions);
     }
-  }, [classes, selectedClass, submissions]);
+  }, [classes, filteredSubmissions, selectedClass, submissions]);
 
   if (isLoading) {
     return <Loading />;
@@ -113,57 +120,88 @@ const DashboardHome = () => {
   }));
 
   return (
-    <div className="w-full basis-3/5 p-4 rounded-xl min-h-[80vh] bg-secondary">
-      <div className="topText mb-4">
-        <h1 className="text-2xl font-bold text-white">
+    <div className=" basis-3/5 p-10  mx-4 md:mx-0 rounded-xl md:min-h-[80vh] bg-secondary ">
+      <div className="topText  mb-6">
+        <h1 className="text-2xl font-bold text-white relative w-fit">
           Welcome Back, {userdb?.name}
+          {userType?.userType === "premium" && (
+            <div className="relative group">
+              <img
+                src={premium}
+                alt=""
+                className="absolute w-7 -right-10 -top-8 cursor-pointer animate-spark group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-300"
+                
+              />
+              
+              <span className="absolute -top-12  text-sm text-yellow-400 hidden group-hover:inline -right-12 ">
+                Premium
+              </span>
+            </div>
+          )}
         </h1>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
-          <div className="flex items-center">
-            <FaChalkboardTeacher className="text-3xl text-blue-500 mr-3" />
-            <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 z-auto">
+        <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+          <div className="flex-col flex md:flex-row items-center justify-center md:justify-start">
+            <FaChalkboardTeacher className="text-3xl text-blue-500 md:mr-3" />
+            <div className="text-center md:text-left">
               <h2 className="text-lg font-semibold">Classes</h2>
               <p className="text-2xl font-bold">{classes?.length}</p>
             </div>
           </div>
         </div>
-        <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
-          <div className="flex items-center">
-            <FaTasks className="text-3xl text-green-500 mr-3" />
-            <div>
+        <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+          <div className="flex-col flex md:flex-row items-center justify-center md:justify-start">
+            <FaTasks className="text-3xl text-green-500 md:mr-3" />
+            <div className="text-center md:text-left">
               <h2 className="text-lg font-semibold">Assignments</h2>
               <p className="text-2xl font-bold">{assignmentCount}</p>
             </div>
           </div>
         </div>
-        <div className="card bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
-          <div className="flex items-center">
-            <FaClipboardList className="text-3xl text-orange-500 mr-3" />
-            <div>
-              <h2 className="text-lg font-semibold">Quizzes</h2>
-              <p className="text-2xl font-bold">{submissions.length}</p>
+        {role === "student" ? (
+          <>
+            <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+              <div className="flex-col flex md:flex-row items-center justify-center md:justify-start">
+                <FaClipboardList className="text-3xl text-orange-500 md:mr-3" />
+                <div className="md:text-left text-center">
+                  <h2 className="text-lg font-semibold">Quizzes</h2>
+                  <p className="text-2xl font-bold">{submissions.length}</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        ) : (
+          <>
+            <div className="card  bg-white shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105">
+              <div className="flex-col flex md:flex-row items-center justify-center md:justify-start">
+                <FaUsers className="text-3xl text-orange-500 md:mr-3" />
+                <div className="md:text-left text-center">
+                  <h2 className="text-lg font-semibold">Total Students</h2>
+                  <p className="text-2xl font-bold">{totalStudents}</p>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
+      <hr className="my-7 mx-3 border-gray-400" />
       {role === "teacher" ? (
         <>
-          <div className="mt-6">
+          <div className="flex items-center gap-2">
             <label
               htmlFor="class-select"
-              className="block text-lg font-semibold mb-2"
+              className="block text-lg text-white font-semibold"
             >
-              Select Class:
+              Class Wise Quiz Submissions
             </label>
             <select
               id="class-select"
-              className="p-2 border border-gray-300 rounded"
+              className="p-1 rounded"
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
             >
-              <option value="">All Classes</option>
+              <option value="">Select Classes</option>
               {classes.map((cls) => (
                 <option key={cls.classId} value={cls.classId}>
                   {cls.className}
@@ -172,16 +210,16 @@ const DashboardHome = () => {
             </select>
           </div>
 
-          <div className="mt-6 bg-white rounded-lg shadow-lg p-4">
+          <div className="mt-5 bg-white rounded-lg shadow-lg p-4">
             <h2 className="text-lg font-semibold mb-4">
               Quiz Submissions for{" "}
               {selectedClass
                 ? classes.find((cls) => cls.classId === selectedClass)
                     ?.className
-                : "All Classes"}
+                : "select class"}
             </h2>
             <ul>
-              {filteredSubmissions.length > 0 ? (
+              {filteredSubmissions?.length > 0 ? (
                 filteredSubmissions.map((submission) => (
                   <li key={submission.id} className="mb-2">
                     <div className="flex justify-between">
@@ -192,8 +230,8 @@ const DashboardHome = () => {
                 ))
               ) : (
                 <>
-                  <div className="capitalize bg-red-900 text-white badge text-center">
-                    no submission for this class's quiz
+                  <div className="capitalize bg-red-600 py-3 text-white badge text-center">
+                    no submission for this {"class's"} quiz
                   </div>
                 </>
               )}
@@ -203,17 +241,27 @@ const DashboardHome = () => {
       ) : (
         <>
           {/* Chart displaying scores */}
-          <div className="mt-6 bg-white rounded-lg shadow-lg p-4">
-            <h2 className="text-lg font-semibold mb-4">Score Chart</h2>
-            <BarChart width={600} height={300} data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="quiz" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="score" fill="#8884d8" />
-            </BarChart>
-          </div>
+          {submissions.length > 0 ? (
+            <div className="mt-6 rounded-lg shadow-lg">
+              <h2 className="text-lg font-semibold mb-4 text-center pt-4 text-white">
+                Quizes Score Chart
+              </h2>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="quiz" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="score" fill="#8884d8" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <div className="text-center font-bold mt-10 text-white">
+              No quiz submission found
+            </div>
+          )}
         </>
       )}
     </div>

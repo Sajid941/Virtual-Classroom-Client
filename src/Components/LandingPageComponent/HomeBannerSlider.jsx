@@ -4,8 +4,10 @@ import "swiper/css/pagination";
 import "./styles.css";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
+import useRole from "../../CustomHooks/useRole";
 
 const HomeBannerSlider = () => {
+  const { role } = useRole();
   return (
     <div className="">
       <Swiper
@@ -14,7 +16,7 @@ const HomeBannerSlider = () => {
           clickable: true,
         }}
         autoplay={{
-          delay: 2500,
+          delay: 4000,
           disableOnInteraction: true,
         }}
         navigation={true}
@@ -26,7 +28,7 @@ const HomeBannerSlider = () => {
             className="min-h-screen w-full flex items-center justify-center relative"
             style={{
               backgroundImage:
-                "url('https://i.ibb.co/ngh5dsy/ivan-aleksic-PDRFee-Dni-Ck-unsplash.jpg')", // Use actual image URL
+                "url('https://res.cloudinary.com/dklikxmpm/image/upload/v1729790423/ivan-aleksic-PDRFeeDniCk-unsplash_jmzykl.jpg')", // Use actual image URL
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -37,7 +39,7 @@ const HomeBannerSlider = () => {
             {/* Content on top of the overlay */}
             <div className="wrap z-20 text-center">
               <img
-                src="https://i.ibb.co/WnvkLbP/class-Net-White.png"
+                src="https://res.cloudinary.com/dklikxmpm/image/upload/v1729790392/classNetWhite_sn1whn.png"
                 alt=""
                 className="w-1/4 md:w-1/6 mx-auto"
               />
@@ -55,12 +57,21 @@ const HomeBannerSlider = () => {
                 >
                   Learn More
                 </Link>
-                <Link
-                  to={"/signin"}
-                  className="btn border-none capitalize rounded-none bg-accent font-semibold"
-                >
-                  Take a Class
-                </Link>
+                {role === "teacher" ? (
+                  <Link
+                    to={"/dashboard/classes"}
+                    className="btn border-none capitalize rounded-none bg-accent font-semibold"
+                  >
+                    Create Class
+                  </Link>
+                ) : (
+                  <Link
+                    to={"/dashboard/classes"}
+                    className="btn border-none capitalize rounded-none bg-accent font-semibold"
+                  >
+                    Join a Class
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -72,7 +83,7 @@ const HomeBannerSlider = () => {
             className="min-h-screen w-full flex items-center justify-center relative"
             style={{
               backgroundImage:
-                "url('https://i.ibb.co/Qv2Lh79/alam-kusuma-g7-O1rq-MVre-U-unsplash.jpg')", // Use actual image URL
+                "url('https://res.cloudinary.com/dklikxmpm/image/upload/v1729790391/alam-kusuma-g7O1rqMVreU-unsplash_xi3j4y.jpg')", // Use actual image URL
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -83,7 +94,7 @@ const HomeBannerSlider = () => {
               {/* GIF Column */}
               <div className="flex justify-center">
                 <img
-                  src="https://i.ibb.co/f123B2F/71d53d15713275-56295ff92b224.gif" // Example GIF URL
+                  src="https://res.cloudinary.com/dklikxmpm/image/upload/v1729790195/Online_Sales_liakqv.gif" // Example GIF URL
                   alt="Learning GIF"
                   className="w-full h-auto max-w-xs md:max-w-sm rounded-md"
                 />
@@ -106,12 +117,21 @@ const HomeBannerSlider = () => {
                   >
                     Join Our Forum
                   </Link>
-                  <Link
-                    to={"/contact"}
-                    className="btn border-none capitalize rounded-none bg-accent font-semibold"
-                  >
-                    Attend a Class
-                  </Link>
+                  {role === "teacher" ? (
+                    <Link
+                      to={"/dashboard/classes"}
+                      className="btn border-none capitalize rounded-none bg-accent font-semibold"
+                    >
+                      Create Class
+                    </Link>
+                  ) : (
+                    <Link
+                      to={"/dashboard/classes"}
+                      className="btn border-none capitalize rounded-none bg-accent font-semibold"
+                    >
+                      Join a Class
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

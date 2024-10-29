@@ -1,20 +1,59 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { LiaComment } from "react-icons/lia";
-import { TbPacman } from "react-icons/tb";
 import useRole from "../../CustomHooks/useRole";
+import LeaderBoard from "./LeaderBoard";
+import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { LiaComment } from 'react-icons/lia';
+import { TbPacman } from 'react-icons/tb';
 
 const DashboardSidebar = () => {
-  const [time, setTime] = useState(moment().format("h : mm : ss  A"));
+  const axiosPublic = useAxiosPublic();
+  const [time, setTime] = useState(moment().format("h:mm:ss A"));
+
+  // Using useQuery correctly to avoid continuous fetching
+  const {
+    data: discussions,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["discussions"], // Unique key for caching
+    queryFn: async () => {
+      const res = await axiosPublic.get(
+        `/discussions?category=All&sort=newest`
+      );
+      return res.data;
+    },
+    keepPreviousData: true,
+    refetchOnWindowFocus: false, // Prevent refetching on window focus
+    refetchOnReconnect: false, // Prevent refetching on network reconnect
+    retry: 1, // Retry fetching only once if there's an error
+  });
+
+  // Set time every second
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(moment().format("h:mm:ss A"));
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
   const { role } = useRole();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error fetching discussions: {error.message}</div>;
+  }
+
+  // Get the first three discussions
+  const firstThreeDiscussions = discussions.slice(0, 3);
+
   return (
-    <div className="">
+    <div>
       <div className="border-b-2 pb-5">
         <h1 className="text-xl font-semibold">
           {moment().format("MMMM D, YYYY")}
@@ -24,48 +63,57 @@ const DashboardSidebar = () => {
       <div className="mt-5">
         {role === "teacher" && (
           <div>
-            <h4 className="text-xl font-semibold">Student Leader Board:</h4>
-            <h6 className="font-semibold">
-              Assignment:{" "}
-              <span className="font-normal text-accent">ThermoDynamics</span>
-            </h6>
-            <div className="mt-5">
-              <div className="bg-white w-full rounded-md px-5 py-2 flex gap-6 text-black items-center">
-                <h1 className="text-4xl font-bold">1</h1>
-                <div>
-                  <h3 className="text-2xl font-bold">Jhon Foe</h3>
-                  <p>Total Mark: 90</p>
-                </div>
-              </div>
-            </div>
+            <LeaderBoard />
           </div>
         )}
         {role === "student" && (
           <div>
-            <h4 className="text-xl font-semibold">Recent Post in Forum:</h4>
-            <div className="mt-5">
-              <div className="bg-white w-full rounded-md px-5 py-2  text-black ">
-                <div>
-                  <h3 className="text-xl font-bold">
-                    Facing Problem On Debugging
-                  </h3>
-                  <div className="mt-2 flex gap-5">
-                    <p className="flex items-center w-fit relative">
-                      <LiaComment size={25} />
-                      <span className="bg-[#ffc107] text-xs  px-1.5 rounded-full absolute left-3 top-3">
-                        10
-                      </span>
-                    </p>
-                    <p className="flex items-center w-fit relative">
-                      <TbPacman size={25} />
-                      <span className="bg-[#ffc107] text-xs  px-1.5 rounded-full absolute left-3 top-3">
-                        80
-                      </span>
-                    </p>
+            <h4 className="text-lg font-semibold mb-4">
+              Recent Post in Forum:
+            </h4>
+            {/* Display the first three discussions */}
+            {firstThreeDiscussions.map((discussion) => (
+              <div
+                key={discussion.id}
+                className="border rounded-lg shadow-lg p-4 mb-3 bg-white hover:translate-x-2 transition-transform duration-200"
+              >
+                {/* Author's Info */}
+                <Link
+                  to={`/forum/discussion/${discussion?.slug}`}
+                  className="flex items-center "
+                >
+                  <img
+                    src={discussion.author.profilePic} // Assuming author profile image exists
+                    alt={`${discussion.author.name}'s profile`}
+                    className="w-12 h-12 rounded-full mr-4"
+                  />
+                  <div className="flex-1">
+                    <h5 className="text-md font-semibold mb-2 text-gray-800">
+                      {discussion.title}
+                    </h5>
+
+                    {/* Display views and comments */}
+                    <div className="flex items-center space-x-4 text-gray-500 mt-2">
+                      {/* Views */}
+                      <div className="flex items-center">
+                        <TbPacman className="mr-1" /> {/* Icon for views */}
+                        <span>{discussion.views || 0} views</span>{" "}
+                        {/* Views count */}
+                      </div>
+                      {/* Comments */}
+                      <div className="flex items-center">
+                        <LiaComment className="mr-1" />{" "}
+                        {/* Icon for comments */}
+                        <span>
+                          {discussion.replies?.length || 0} comments
+                        </span>{" "}
+                        {/* Comments count */}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div>
-            </div>
+            ))}
           </div>
         )}
       </div>

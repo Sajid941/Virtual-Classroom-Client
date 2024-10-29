@@ -18,9 +18,11 @@ import JoinMeetButton from "../../Components/DashboardComponent/JoinMeetButton";
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import SubmitAssignmentModal from "../../Components/SubmitAssignmentModal/SubmitAssignmentModal";
 import ChatTab from "../../Components/ClassComponents/ChatTab";
-import SubmitQuizModal from "../../Components/SubmitQuizModal/SubmitQuizModal";
+
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
+import SubmitQuiz from "../../Components/SubmitQuizModal/SubmitQuizModal";
+import './styles.css'
 
 const DetailedClass = () => {
   const { id } = useParams();
@@ -37,8 +39,7 @@ const DetailedClass = () => {
   const [quizResult, setQuizResult] = useState(null); // To store the quiz result
 
   const [isQuizModalOpen, setIsQuizModalOpen] = useState(false); // State for AddQuizModal
-  const [isSubmitQuizModalOpen, setIsSubmitQuizModalOpen] = useState(false);
-  const [selectedQuiz, setSelectedQuiz] = useState(null); // State to store selected quiz
+
   const [students, setStudents] = useState(null); // State to store selected quiz
 
   // Fetch classes based on the user's email
@@ -95,7 +96,8 @@ const DetailedClass = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await axiosPublic.delete(`/classes/delete/${id}`);
+        
+        const response = await axiosPublic.delete(`/classes/delete-assignment/${id}`);
 
         if (response.data.message) {
           Swal.fire({
@@ -116,7 +118,6 @@ const DetailedClass = () => {
         );
         if (response) {
           setCanTakeQuiz(false); // Student can take the quiz
-          console.log(response.data);
           setQuizResult(response.data.submission); // Set the quiz result if it exists
         } else {
           setCanTakeQuiz(true); // Student can take the quiz
@@ -130,13 +131,10 @@ const DetailedClass = () => {
     }
   }, [user.email]);
 
-  const handleTakeQuiz = (quiz) => {
-    console.log(quiz);
-    setSelectedQuiz(quiz); // Set the selected quiz
-    setIsSubmitQuizModalOpen(true);
-  };
-  const quizzes = classData.quizzes
-  console.log(quizzes);
+  const quizzes = classData.quizzes;
+
+  const isPastDue = (dueDate) => new Date(dueDate) < new Date(); // check assignment date
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Section */}
@@ -145,12 +143,13 @@ const DetailedClass = () => {
         style={{ backgroundImage: `url(${classData.classImage})` }}
       >
         <div className="absolute inset-0 bg-black/50"></div>
-        <div className="relative z-0 flex flex-col items-center justify-center text-center h-full px-5">
+        <div className="absolute"></div>
+        <div className="relative flex flex-col items-center justify-center text-center h-full px-5">
           <button
-            className="absolute top-5 left-5 flex items-center bg-[#004085] text-white px-4 py-2 rounded-md"
+            className="absolute top-5 left-5 flex items-center bg-secondary group text-white px-4 py-2 rounded-md"
             onClick={() => navigate(-1)}
           >
-            <AiOutlineLeft className="mr-2" /> {/* Arrow Icon */}
+            <AiOutlineLeft className="mr-2 group-hover:-translate-x-2" /> {/* Arrow Icon */}
             Back
           </button>
           <h1 className="text-3xl md:text-5xl font-bold">
@@ -171,47 +170,14 @@ const DetailedClass = () => {
       {/* Main Content Section */}
       <div className="container mx-auto py-10 px-5 md:px-10">
         <Tabs>
-          <TabList className="flex space-x-4 border-b mb-4">
-            <Tab className="px-4 py-2 cursor-pointer">Resources</Tab>
+          <TabList className="flex space-x-4 border-b-2 border-secondary mb-4 ">
             <Tab className="px-4 py-2 cursor-pointer">Assignments</Tab>
+            <Tab className="px-4 py-2 cursor-pointer hidden">Resources</Tab>
             <Tab className="px-4 py-2 cursor-pointer">Quizzes</Tab>
             <Tab className="px-4 py-2 cursor-pointer">Chat</Tab>
             <Tab className="px-4 py-2 cursor-pointer">Students</Tab>
           </TabList>
 
-          {/* Resources Tab */}
-          <TabPanel>
-            <div className="bg-white p-6 shadow rounded-lg mb-6">
-              <h2 className="text-2xl font-semibold mb-4">Resources</h2>
-              <div className="flex flex-wrap space-x-4">
-                {classData?.resources?.length ? (
-                  classData.resources.map((resource, index) => (
-                    <button
-                      key={index}
-                      className="p-3 rounded-lg bg-gray-200 flex flex-col items-center mb-4"
-                      onClick={() => {
-                        // Handle resource click if needed
-                      }}
-                    >
-                      {resource.type === "ZIP" && <GoFileZip size={30} />}
-                      {resource.type === "Code" && <GoFileCode size={30} />}
-                      {resource.type === "Comments" && <GoComment size={30} />}
-                      <p className="mt-2 text-sm">{resource.description}</p>
-                    </button>
-                  ))
-                ) : role === "teacher" ? (
-                  <div className="text-center">
-                    <p>No resources available.</p>
-                    <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">
-                      Add Resource
-                    </button>
-                  </div>
-                ) : (
-                  <p>No resources available.</p>
-                )}
-              </div>
-            </div>
-          </TabPanel>
 
           {/* Assignments Tab */}
           <TabPanel>
@@ -221,7 +187,7 @@ const DetailedClass = () => {
                 classData.assignments.map((assignment, index) => (
                   <div
                     key={index}
-                    className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4"
+                    className="flex flex-col md:flex-row justify-between items-start lg:items-center gap-4 mb-4 border-b pb-2"
                   >
                     <h3 className="font-semibold text-lg">
                       {assignment.title}
@@ -247,38 +213,39 @@ const DetailedClass = () => {
 
                     {assignment.fileUrl && (
                       <button
-                        onClick={() =>
+                      onClick={() =>
                           handleDownloadAssignment(assignment.fileUrl)
                         }
                         className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
-                      >
+                        >
                         Download
                       </button>
                     )}
 
                     {assignment.fileUrl && role === "teacher" && (
                       <button
-                        onClick={() => handleDeleteFile(assignment._id)}
-                        className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
+                      onClick={() => handleDeleteFile(assignment._id)}
+                      className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
                       >
                         Delete
                       </button>
                     )}
 
-                    {role === "student" && (
+                    {(role === "student" && assignment.end) && (
                       <div>
                         {assignment.assignmentSubmissions &&
                         assignment.assignmentSubmissions.find(
                           (submitted_student) =>
                             submitted_student.student_email === user?.email
                         ) ? (
-                          <h3 className="border p-1 text-green-600 font-semibold">
+                          <h3 className="border px-4 py-2 text-green-600 font-semibold">
                             Submitted
                           </h3>
                         ) : (
                           <button
-                            onClick={() => setIsSubmitAssignmentModalOpen(true)}
-                            className="bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center hover:bg-gray-400"
+                          onClick={() => setIsSubmitAssignmentModalOpen(true)}
+                          className={`bg-[#004085] text-white px-4 py-2 rounded-lg flex gap-1 items-center ${isPastDue(assignment.end) ? "bg-gray-400 cursor-not-allowed" : "hover:bg-gray-400"}`}
+                          disabled={isPastDue(assignment.end)}
                           >
                             <IoDocumentAttachOutline size={18} />
                             Submit
@@ -296,12 +263,14 @@ const DetailedClass = () => {
                         />
                       </div>
                     )}
-                    {/* </div> */}
                   </div>
                 ))
-              ) : role === "teacher" ? (
+              ) : (
+                <p>No assignments available.</p>
+              )}
+              {role === "teacher" && (
                 <div className="text-center">
-                  <p>No assignments available.</p>
+                  {/* <p>No assignments available.</p> */}
                   <button
                     onClick={() => setIsAssignmentModalOpen(true)}
                     className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg"
@@ -318,11 +287,44 @@ const DetailedClass = () => {
                     refetch={refetch}
                   />
                 </div>
-              ) : (
-                <p>No assignments available.</p>
-              )}
+              ) }
             </div>
           </TabPanel>
+                          {/* Resources Tab */}
+                          <TabPanel>
+                            <div className="bg-white p-6 shadow hidden rounded-lg mb-6">
+                              <h2 className="text-2xl font-semibold mb-4">Resources</h2>
+                              <div className="flex flex-wrap space-x-4">
+                                {classData?.resources?.length ? (
+                                  classData.resources.map((resource, index) => (
+                                    <button
+                                      key={index}
+                                      className="p-3 rounded-lg bg-gray-200 flex flex-col items-center mb-4"
+                                      onClick={() => {
+                                        window.open(resource.link, "_blank"); // Open resource in new tab
+                                      }}
+                                    >
+                                      <p className="mt-2 text-sm">{resource.description}</p>
+                                      <div className="flex items-center gap-2">
+                                        <IoDocumentAttachOutline />
+                                        <p>{resource.name}</p>
+                                        
+                                      </div>
+                                    </button>
+                                  ))
+                                ) : role === "teacher" ? (
+                                  <div className="text-center">
+                                    <p>No resources available.</p>
+                                    <button className="mt-3 bg-[#004085] text-white px-4 py-2 rounded-lg">
+                                      Add Resource
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <p>No resources available.</p>
+                                )}
+                              </div>
+                            </div>
+                          </TabPanel>
 
           {/* Quizzes Tab */}
           <TabPanel>
@@ -346,22 +348,11 @@ const DetailedClass = () => {
                       {canTakeQuiz ? (
                         <>
                           {/* Show the "Take Quiz" button if the user can take the quiz */}
-                          <button
-                            onClick={() => handleTakeQuiz(quiz.questions)}
-                            className="mt-2 bg-[#004085] text-white px-4 py-2 rounded-lg"
-                          >
-                            Take Quiz
-                          </button>
-
                           {/* SubmitQuizModal for quiz submission */}
-                          <SubmitQuizModal
-                            isOpen={isSubmitQuizModalOpen}
+                          <SubmitQuiz
                             quiz={quiz}
-                            onRequestClose={() =>
-                              setIsSubmitQuizModalOpen(false)
-                            }
-                            classId={id}
                             refetch={refetch}
+                            classId={classData.classId}
                           />
                         </>
                       ) : (
@@ -395,29 +386,55 @@ const DetailedClass = () => {
                   </div>
                 ) : role === "teacher" && classData?.quizzes?.length > 0 ? (
                   <>
-                    {classData.quizzes[0]?.submissions.map((submission) => {
-                      return (
-                        <div
-                          key={submission._id}
-                          className="border p-4 rounded-lg mb-4 shadow"
-                        >
-                          <h3 className="font-semibold text-lg">
-                            Quiz Submission
-                          </h3>
-                          <div className="card card-body shadow">
-                            <p className="text-md">
-                              Student: {submission.studentEmail}
-                            </p>
-                            <p className="text-md">
-                              Score: {submission.score}/
-                              {submission.totalQuestions}
+                    {classData.quizzes[0]?.submissions.length > 0 ? (
+                      <>
+                        {" "}
+                        {classData.quizzes[0]?.submissions.map((submission) => {
+                          return (
+                            <div
+                              key={submission._id}
+                              className="border p-4 rounded-lg mb-4 shadow"
+                            >
+                              <h3 className="font-semibold text-lg">
+                                Quiz Submission
+                              </h3>
+                              <div className="card card-body shadow">
+                                <p className="text-md">
+                                  Student: {submission.studentEmail}
+                                </p>
+                                <p className="text-md">
+                                  Score: {submission.score}/
+                                  {submission.totalQuestions}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </>
+                    ) : (
+                      <>
+                        {classData.quizzes.map((quiz, index) => (
+                          <div
+                            key={index}
+                            className="p-4 border rounded-lg mb-4 shadow"
+                          >
+                            <h3 className="font-semibold text-lg">
+                              {quiz.title}
+                            </h3>
+                            <p className="text-md">{quiz.description}</p>
+                            <p className="text-sm">
+                              <span className="font-semibold">Due: </span>
+                              {new Date(quiz.dueDate).toLocaleDateString()}
                             </p>
                           </div>
-                        </div>
-                      );
-                    })}
+                        ))}
+                        <div className="div">no submission found</div>
+                      </>
+                    )}
                   </>
-                ):''}
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </TabPanel>

@@ -6,7 +6,13 @@ import Modal from "react-modal";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import Swal from "sweetalert2";
 
-const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch }) => {
+const AddAssignmentModal = ({
+  isOpen,
+  onRequestClose,
+  classId,
+  className,
+  refetch,
+}) => {
   const { register, handleSubmit, reset } = useForm();
 
   const [file, setFile] = useState();
@@ -36,32 +42,32 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
         }
       );
 
-      console.log("added:", response.data);
-
-      reset();
-      onRequestClose();
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Assignment posted successfully",
-        showConfirmButton: false,
-        timer: 1500
-      });
-      refetch();
+      if (response.data) {
+        reset();
+        onRequestClose();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Assignment posted successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        refetch();
+      }
     } catch (error) {
       console.error("assignment not added", error);
     }
   };
 
   return (
-    <div className="relative z-50">
+    <div className="relative z-40">
       <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
         <div className="flex gap-2">
           <MdAssignmentAdd size={25} />
           <h2 className="text-2xl font-semibold mb-4">Upload Assignment</h2>
         </div>
         {/* assignment form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="card-body">
+        <form onSubmit={handleSubmit(onSubmit)} className="card-body p-0">
           <div className="form-control">
             <input
               {...register("title", { required: true })}
@@ -110,15 +116,18 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
             />
           </div>
           <div>
-            <input 
-            {...register("classId", { required: true })}
-            type="text" defaultValue={classId} className="hidden" />
+            <input
+              {...register("classId", { required: true })}
+              type="text"
+              defaultValue={classId}
+              className="hidden"
+            />
           </div>
 
           <div className="flex justify-center">
             <button
               type="submit"
-              className="mr-2 px-4 py-2 hover:bg-gray-400 bg-[#004085] text-white rounded-md"
+              className="mr-2 px-4 py-2 hover:bg-gray-400 bg-[#004085] text-white rounded-none w-full"
             >
               Submit
             </button>
@@ -126,11 +135,10 @@ const AddAssignmentModal = ({ isOpen, onRequestClose, classId,className, refetch
             <button
               type="button"
               onClick={onRequestClose}
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md"
+              className="px-4 py-2 bg-primary text-white rounded-none w-full"
             >
               Cancel
             </button>
-            
           </div>
         </form>
       </Modal>
@@ -143,7 +151,7 @@ AddAssignmentModal.propTypes = {
   onRequestClose: PropTypes.func,
   classId: PropTypes.string,
   refetch: PropTypes.func,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default AddAssignmentModal;

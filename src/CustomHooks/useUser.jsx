@@ -8,7 +8,7 @@ const useUser = () => {
   const axiosPublic = useAxiosPublic(); // Custom axios instance
 
   const {
-    data: userdb,     // User data fetched from the API
+    data: userdb,     // User data fetched from the API 
     isLoading,        // Loading state
     isError,          // Error state
     error,            // Error object for more details
@@ -17,7 +17,7 @@ const useUser = () => {
     queryKey: ["users", user?.email],   // Query key based on user email
     queryFn: async () => {
       if (!user?.email) return null;    // Prevent the API call if the user is not logged in
-      const res = await axiosPublic.get(`/users/email?email=${user.email}`, {
+      const res = await axiosPublic.get(`/users/email?email=${user.email}`, { 
         withCredentials: true,          // Ensures cookies are included in the request
       });
       return res.data;

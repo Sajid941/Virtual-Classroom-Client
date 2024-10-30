@@ -10,7 +10,7 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const { user, logOut } = useContext(AuthContext);
   const { userdb } = useUser();
-  
+
   return (
     <div>
       <div className="navbar pt-5 mx-auto md:px-10 lg:px-20 w-full gap-6 lg:gap-0 z-[999]">
@@ -80,7 +80,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
-      
+
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import logos from "../../assets/classNetLogoPrimary.png";
 import { TiThMenu } from "react-icons/ti";
+import UserMenu from "../UserMenu/UserMenu";
 import PropTypes from "prop-types";
 import useAuth from "../../CustomHooks/useAuth";
 import useUser from "../../CustomHooks/useUser";
@@ -58,36 +59,7 @@ const NavDashboard = ({ handleToggleDrawer }) => {
                   />
                 </div>
               </div>
-
-              <ul
-                tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box  w-52 p-2 shadow mt-44"
-              >
-                <li>
-                  <a href="/">Home</a>
-                </li>
-                <li>
-                  <Link to="/dashboard/profile" className="justify-between">
-                    Profile
-                    {userdb?.newNotifications && <span className="badge">New</span>}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/forum">Forum</Link>
-                </li>
-                <li>
-                  <a
-                    onClick={logOut}
-                    className="flex justify-between text-red-500 font-semibold"
-                  >
-                    Logout
-                    <IoIosLogOut size={15} />
-                  </a>
-                </li>
-              </ul>
-
               <UserMenu />
-
             </div>
           </div>
         </div>

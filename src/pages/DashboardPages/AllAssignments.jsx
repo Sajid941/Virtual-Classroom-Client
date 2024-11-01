@@ -3,7 +3,6 @@ import useUser from "../../CustomHooks/useUser";
 import useAuth from "../../CustomHooks/useAuth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { useEffect, useState } from "react";
-import fileDownload from "js-file-download";
 import AssignmentFeedbackModal from "../../Components/AssignmentFeedbackModal/AssignmentFeedbackModal";
 import { Helmet } from "react-helmet-async";
 import Loading from "../../Components/Loading";
@@ -67,23 +66,8 @@ const AllAssignments = () => {
     refetch();
   }, [studentName, selectedClassName, selectedAssignmentName, refetch]);
 
-  // Download submitted assignment file
-  const handleDownloadSubmitAssignment = async (filename) => {
-    const submittedFileName = filename.replace("/submittedAssignments/", "");
-
-    axiosPublic({
-      url: `classes/submitted-file-download/${encodeURIComponent(
-        submittedFileName
-      )}`,
-      method: "GET",
-      responseType: "blob", // Important for handling binary files
-    })
-      .then((response) => {
-        fileDownload(response.data, submittedFileName);
-      })
-      .catch((error) => {
-        console.error("Error downloading file:", error);
-      });
+  const handleDownloadSubmitAssignment = async (downloadUrl) => {
+    window.open(`${downloadUrl}?fl_attachment=true`, '_blank');
   };
 
   if (isLoading) return <Loading />;
@@ -189,7 +173,7 @@ const AllAssignments = () => {
                           <button
                             onClick={() =>
                               handleDownloadSubmitAssignment(
-                                submission.submit_file
+                                submission.submit_file.path
                               )
                             }
                             className="bg-[#004085] btn btn-sm text-white"

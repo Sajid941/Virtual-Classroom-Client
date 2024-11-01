@@ -33,7 +33,7 @@ const AddAssignmentModal = ({
 
     try {
       const response = await axiosPublic.patch(
-        `/classes/${classId}`,
+        `/assignment/${classId}`,
         formData,
         {
           headers: {

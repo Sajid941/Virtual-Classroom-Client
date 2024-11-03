@@ -35,10 +35,10 @@ const Calendar = () => {
             return assignmentsData;
         },
     });
-    console.log(
-        "assignments",
-        dayjs(assignments[0]?.start).format("YYYY-MM-DD")
-    );
+    // console.log(
+    //     "assignments",
+    //     dayjs(assignments[0]?.start).format("YYYY-MM-DD")
+    // );
     return (
         <div>
             <Helmet>

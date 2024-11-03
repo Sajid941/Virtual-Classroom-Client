@@ -56,7 +56,7 @@ const ChatTab = ({ classroomId }) => {
 
             axiosPrivate.patch("/chats", newChat)
                 .then(res => {
-                    console.log('Chat updated successfully:', res.data);
+                    // console.log('Chat updated successfully:', res.data);
                 })
                 .catch(err => {
                     console.error('Error sending message:', err.response ? err.response.data : err.message);

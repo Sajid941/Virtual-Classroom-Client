@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
                 axiosPublic
                     .post("/jwt", { email: currentUser?.email })
                     .then((res) => {
-                        console.log(res.data);
+                        // console.log(res.data);
                     });
             } else {
                 axiosPublic.delete("/jwt");

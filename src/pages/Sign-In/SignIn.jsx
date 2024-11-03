@@ -10,7 +10,6 @@ import sideImg from "../../assets/images/SignIn-pana .svg";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import toast, { Toaster } from "react-hot-toast";
-import './styles.css'
 
 const SignIn = () => {
   const { logInUser, signInWithGoogle } = useAuth();
@@ -84,7 +83,7 @@ const SignIn = () => {
     return navigate("/");
   }
   return (
-    <div className="flex justify-center items-center bg-signin pt-5 min-h-screen bg-cover bg-center bg-no-repeat wrap_signin">
+    <div className="flex justify-center items-center bg pt-5 min-h-screen bg-cover bg-center bg-no-repeat wrap">
       <Helmet>
         <title>Sign In | Class Net</title>
       </Helmet>
@@ -102,12 +101,12 @@ const SignIn = () => {
             />
           </div>
 
-          <p className="mt-3 text-xl text-center text-white">Welcome back!</p>
+          <p className="mt-3 text-xl text-center ">Welcome back!</p>
 
           <a
             onClick={handleGoogleSignIn}
             href="#"
-            className="flex items-center justify-center mt-4 border-gray-400/30 text-white transition-colors duration-300 transform border rounded-lg "
+            className="flex items-center justify-center mt-4 border-gray-400/30  transition-colors duration-300 transform border rounded-lg "
           >
             <div className="px-4 py-2">
               <svg className="w-6 h-6" viewBox="0 0 40 40">
@@ -138,7 +137,7 @@ const SignIn = () => {
             hidden
             onClick={handleGithubSignIn}
             href="#"
-            className=" items-center hidden justify-center mt-4 border-gray-400/30 text-white transition-colors duration-300 transform border rounded-lg "
+            className=" items-center hidden justify-center mt-4 border-gray-400/30  transition-colors duration-300 transform border rounded-lg "
           >
             <div className="px-4 py-2">
               <FaGithub size={20} />
@@ -154,7 +153,7 @@ const SignIn = () => {
 
             <a
               href="#"
-              className="text-xs text-center text-white uppercase hover:underline"
+              className="text-xs text-center  uppercase hover:underline"
             >
               or login with email
             </a>
@@ -164,14 +163,14 @@ const SignIn = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mt-4">
               <label
-                className="block mb-2 text-sm font-medium text-white"
+                className="block mb-2 text-sm font-medium "
                 htmlFor="LoggingEmailAddress"
               >
                 Email Address
               </label>
               <input
                 id="LoggingEmailAddress"
-                className="block w-full px-4 py-2 text-white bg-transparent border rounded-lg focus:border-yellow-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-yellow-300"
+                className="block w-full px-4 py-2  bg-transparent border rounded-lg focus:border-yellow-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-yellow-300"
                 placeholder="john@example.com"
                 type="email"
                 name="email"
@@ -187,19 +186,19 @@ const SignIn = () => {
             <div className="mt-4">
               <div className="flex justify-between">
                 <label
-                  className="block mb-2 text-sm font-medium text-white"
+                  className="block mb-2 text-sm font-medium "
                   htmlFor="loggingPassword"
                 >
                   Password
                 </label>
-                <a href="#" className="text-xs text-white hover:underline">
+                <a href="#" className="text-xs  hover:underline">
                   Forget Password?
                 </a>
               </div>
               <div className="relative">
                 <input
                   id="loggingPassword"
-                  className="block w-full px-4 py-2 text-white bg-transparent border rounded-lg focus:border-yellow-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-yellow-300"
+                  className="block w-full px-4 py-2  bg-transparent border rounded-lg focus:border-yellow-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-yellow-300"
                   placeholder="••••••••"
                   type={showPassword ? "text" : "password"}
                   name="password"
@@ -209,7 +208,7 @@ const SignIn = () => {
                 />
                 <div
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute top-1/4 text-white right-3 hover:cursor-pointer"
+                  className="absolute top-1/4  right-3 hover:cursor-pointer"
                 >
                   {showPassword ? (
                     <IoMdEyeOff size={20} />
@@ -229,7 +228,7 @@ const SignIn = () => {
               <button
                 onClick={() => setLoading(true)}
                 type="submit"
-                className="w-full px-6 py-3 text-sm font-medium tracking-wide capitalize transition-colors duration-300 transform bg-white text-black rounded-lg focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
+                className="w-full px-6 py-3 text-sm font-medium btn bg-accent hover:bg-accent/80"
               >
                 {loading ? (
                   <div className="flex justify-center items-center gap-2">
@@ -245,7 +244,7 @@ const SignIn = () => {
           </form>
 
           <div className="text-center mt-4">
-            <p className="text-sm font-light text-white">
+            <p className="text-sm font-light ">
               {"Don't have an account? "}
               <Link
                 to="/signUp"

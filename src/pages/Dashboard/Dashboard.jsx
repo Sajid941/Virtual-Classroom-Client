@@ -14,7 +14,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="wrap md:px-10 lg:px-20">
+      <div className="md:px-10 lg:px-20">
         {/* Navbar */}
         <nav className="z-50">
           <NavDashboard handleToggleDrawer={handleToggleDrawer} />

@@ -10,7 +10,7 @@ const ForumNavbar = ({ isShowDrawer, setIsShowDrawer }) => {
     const { user } = useAuth();
     return (
         <div>
-            <div className="navbar pt-5 mx-auto md:px-10 lg:px-20 w-full gap-6 lg:gap-0 fixed g-white/10 backdrop-blur-md bg-opacity-15">
+            <div className="navbar pt-5 mx-auto md:px-10 lg:px-20 w-full gap-6 lg:gap-0 fixed g-white/10 backdrop-blur-md bg-opacity-15 z-10">
                 <div className="flex-1">
                     <button
                         onClick={() => setIsShowDrawer(!isShowDrawer)}

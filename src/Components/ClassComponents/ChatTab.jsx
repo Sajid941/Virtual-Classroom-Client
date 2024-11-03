@@ -6,9 +6,13 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import useAxiosPrivate from "../../CustomHooks/useAxiosPrivate";
 
 // Connect to Socket.io server
-const socket = io.connect("https://class-net-server.vercel.app",{
+const socket = io("https://class-net-server.vercel.app", {
     transports: ["websocket"],
+    reconnection: true,
+    reconnectionAttempts: 5,
+    reconnectionDelay: 1000,
 });
+
 
 const ChatTab = ({ classroomId }) => {
     const { user } = useContext(AuthContext);

@@ -194,7 +194,7 @@ const DetailedClass = () => {
                     {assignment.added_file && (
                       <p className="text-sm">
                         <span className="font-semibold">File: </span>
-                        {assignment.added_file.originalname}
+                        {assignment.added_file.originalname.slice(0, 6) + "..." + assignment.added_file.originalname.slice(assignment.added_file.originalname.lastIndexOf("."))}
                       </p>
                     )}
 

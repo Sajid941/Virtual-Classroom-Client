@@ -210,7 +210,7 @@ const Drawer = ({ isShowDrawer, handleToggleDrawer }) => {
           userId: userdb._id,
         };
         axiosPublic.post("/payment/create-payment", userInfo).then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.paymentUrl) {
             window.location.href = res.data.paymentUrl;
           }

@@ -35,7 +35,7 @@ const SignIn = () => {
     } catch (err) {
       console.error("Login error:", err);
       setLoading(false);
-      console.log(err.message);
+      // console.log(err.message);
       if (err.message === "Firebase: Error (auth/invalid-credential).") {
         toast.error("Invalid email or password. Please try again.");
       } else {

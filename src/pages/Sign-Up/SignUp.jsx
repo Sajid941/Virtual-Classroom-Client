@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import logo from "../../assets/classNet.png";
 import { Helmet } from "react-helmet-async";
 import useAuth from "../../CustomHooks/useAuth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
@@ -130,18 +129,11 @@ const SignUp = () => {
       <Helmet>
         <title>Sign Up | Class Net</title>
       </Helmet>
-      <section className="bg-[url('https://i.postimg.cc/KvmxRJP8/Blue-and-White-Neon-Tech-Online-Sale-Cyber-Monday-Banner-4.png')] py-5 min-h-screen bg-cover bg-fixed bg-center bg-no-repeat">
-        <div className="flex flex-col items-center mt-10 px-6 py-8 mx-auto lg:py-0">
-          <a
-            href="#"
-            className="flex items-center mb-6 text-2xl font-semibold text-white"
-          >
-            <img className="w-10 h-10 mr-2 " src={logo} alt="logo" />
-            Class Net
-          </a>
-          <div className="bg-opacity-15 backdrop-blur-sm text-white rounded-lg shadow border border-gray-400/35 md:mt-0 md:w-2/4 xl:p-0">
+      <section className="">
+        <div className="flex flex-col items-center justify-center min-h-screen px-6 py-8 mx-auto lg:py-0">
+          <div className="bg-opacity-15 backdrop-blur-sm  rounded-lg shadow border border-gray-400/35 md:mt-0 md:w-2/4 xl:p-0">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">
+              <h1 className="text-xl font-bold leading-tight tracking-tight  md:text-2xl">
                 Welcome 🎉!
               </h1>
               <form
@@ -153,7 +145,7 @@ const SignUp = () => {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block mb-2 text-sm font-medium text-white"
+                      className="block mb-2 text-sm font-medium "
                     >
                       Your Name <span className="text-red-500">*</span>{" "}
                     </label>
@@ -161,7 +153,7 @@ const SignUp = () => {
                       type="text"
                       name="name"
                       id="name"
-                      className={`block w-full px-4 py-2 text-white bg-transparent border rounded-lg focus:border-yellow-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-yellow-300 ${
+                      className={`block w-full px-4 py-2  bg-transparent border rounded-lg focus:border-yellow-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-yellow-300 ${
                         errors.name ? "border-red-500" : ""
                       } `}
                       placeholder="Jhon Doe"
@@ -178,7 +170,7 @@ const SignUp = () => {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block mb-2 text-sm font-medium text-white"
+                      className="block mb-2 text-sm font-medium "
                     >
                       Your email <span className="text-red-500">*</span>{" "}
                     </label>
@@ -186,7 +178,7 @@ const SignUp = () => {
                       type="email"
                       name="email"
                       id="email"
-                      className={`block w-full px-4 py-2 text-white bg-transparent border rounded-lg focus:border-yellow-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-yellow-300 ${
+                      className={`block w-full px-4 py-2  bg-transparent border rounded-lg focus:border-yellow-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-yellow-300 ${
                         errors.email ? "border-red-500" : ""
                       }`}
                       placeholder="name@company.com"
@@ -204,7 +196,7 @@ const SignUp = () => {
                   <div>
                     <label
                       htmlFor="role"
-                      className="block mb-2 text-sm font-medium text-white"
+                      className="block mb-2 text-sm font-medium "
                     >
                       Join As <span className="text-red-500">*</span>{" "}
                     </label>
@@ -214,7 +206,7 @@ const SignUp = () => {
                       {...register("role", {
                         required: "Role is required",
                       })}
-                      className={`block w-full px-4 py-2 text-white bg-transparent border rounded-lg focus:border-yellow-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-yellow-300 ${
+                      className={`block w-full px-4 py-2  bg-transparent border rounded-lg focus:border-yellow-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-yellow-300 ${
                         errors.role ? "border-red-500" : ""
                       }`}
                     >
@@ -233,7 +225,7 @@ const SignUp = () => {
                   <div>
                     <label
                       htmlFor="photo"
-                      className="block mb-2 text-sm font-medium text-white"
+                      className="block mb-2 text-sm font-medium "
                     >
                       Your Photo <span className="text-red-500">*</span>{" "}
                     </label>
@@ -241,7 +233,7 @@ const SignUp = () => {
                       type="file"
                       name="photo"
                       id="photo"
-                      className={`file-input text-white bg-transparent border text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full ${
+                      className={`file-input  bg-transparent border text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full ${
                         errors.photo ? "border-red-500" : ""
                       }`}
                       {...register("photo", {
@@ -257,7 +249,7 @@ const SignUp = () => {
                   <div>
                     <label
                       htmlFor="password"
-                      className="block mb-2 text-sm font-medium text-white"
+                      className="block mb-2 text-sm font-medium "
                     >
                       Password <span className="text-red-500">*</span>{" "}
                     </label>
@@ -267,7 +259,7 @@ const SignUp = () => {
                         name="password"
                         id="password"
                         placeholder="••••••••"
-                        className="bg-transparent border border-gray-300  placeholder-white placeholder-opacity-35  text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                        className="bg-transparent border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                         {...register("password", {
                           required: true,
                         })}
@@ -293,7 +285,7 @@ const SignUp = () => {
                   <div>
                     <label
                       htmlFor="confirm-password"
-                      className="block mb-2 text-sm font-medium text-white"
+                      className="block mb-2 text-sm font-medium "
                     >
                       Confirm password <span className="text-red-500">*</span>{" "}
                     </label>
@@ -303,7 +295,7 @@ const SignUp = () => {
                         name="confirmPassword"
                         id="confirm-password"
                         placeholder="••••••••"
-                        className="bg-transparent border border-gray-300  placeholder-white placeholder-opacity-35  text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                        className="bg-transparent border border-gray-300  text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                         {...register("confirmPassword", { required: true })}
                       />
                       <div
@@ -327,7 +319,7 @@ const SignUp = () => {
                 <button
                   onClick={() => setLoading(true)}
                   type="submit"
-                  className="w-full lg:w-auto bg-white text-black font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  className="w-full lg:w-auto bg-accent hover:bg-accent/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
                   {loading ? (
                     <div className="flex justify-center items-center gap-2">

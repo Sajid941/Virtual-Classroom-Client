@@ -84,7 +84,7 @@ const SignIn = () => {
     return navigate("/");
   }
   return (
-    <div className="flex justify-center items-center bg-signin pt-5 min-h-screen bg-cover bg-center bg-no-repeat wrap">
+    <div className="flex justify-center items-center bg-signin pt-5 min-h-screen bg-cover bg-center bg-no-repeat wrap_signin">
       <Helmet>
         <title>Sign In | Class Net</title>
       </Helmet>

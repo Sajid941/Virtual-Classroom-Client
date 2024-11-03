@@ -14,9 +14,9 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="wrap md:px-10 lg:px-20">
+      <div className="md:px-10 lg:px-20">
         {/* Navbar */}
-        <nav className="z-50">
+        <nav className="z-40">
           <NavDashboard handleToggleDrawer={handleToggleDrawer} />
         </nav>
         {/* Responsive Layout */}
@@ -30,7 +30,7 @@ const Dashboard = () => {
           </aside>
 
           {/* Sidebar (visible on larger screens) */}
-          <aside className="hidden md:block md:basis-2/12 z-40">
+          <aside className="hidden md:block md:basis-2/12 z-30">
             <Drawer
               isShowDrawer={isShowDrawer}
               handleToggleDrawer={handleToggleDrawer}

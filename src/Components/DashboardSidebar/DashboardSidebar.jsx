@@ -5,8 +5,8 @@ import LeaderBoard from "./LeaderBoard";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { LiaComment } from 'react-icons/lia';
-import { TbPacman } from 'react-icons/tb';
+import { LiaComment } from "react-icons/lia";
+import { TbPacman } from "react-icons/tb";
 
 const DashboardSidebar = () => {
   const axiosPublic = useAxiosPublic();
@@ -72,48 +72,43 @@ const DashboardSidebar = () => {
               Recent Post in Forum:
             </h4>
             {/* Display the first three discussions */}
-            {firstThreeDiscussions.map((discussion) => (
-              <div
-                key={discussion.id}
-                className="border rounded-lg shadow-lg p-4 mb-3 bg-white hover:translate-x-2 transition-transform duration-200"
-              >
-                {/* Author's Info */}
-                <Link
-                  to={`/forum/discussion/${discussion?.slug}`}
-                  className="flex items-center "
+              {firstThreeDiscussions.map((discussion) => (
+                <div
+                  key={discussion._id}
+                  className="max-w-sm w-full h-28 border rounded-lg shadow p-4 mb-4 bg-white transition-transform duration-200 hover:translate-x-2"
                 >
-                  <img
-                    src={discussion.author.profilePic} // Assuming author profile image exists
-                    alt={`${discussion.author.name}'s profile`}
-                    className="w-12 h-12 rounded-full mr-4"
-                  />
-                  <div className="flex-1">
-                    <h5 className="text-md font-semibold mb-2 text-gray-800">
-                      {discussion.title}
-                    </h5>
-
+                  {/* Author's Info */}
+                  <Link
+                    to={`/forum/discussion/${discussion?.slug}`}
+                    className="flex flex-col h-full"
+                  >
+                    <div className="flex items-center mb-3">
+                      <img
+                        src={discussion.author.profilePic} // Assuming author profile image exists
+                        alt={`${discussion.author.name}'s profile`}
+                        className="w-12 h-12 rounded-full mr-4"
+                      />
+                      <h5 className="text-lg font-semibold text-gray-800 truncate">
+                        {discussion.title}
+                      </h5>
+                    </div>
+              
                     {/* Display views and comments */}
-                    <div className="flex items-center space-x-4 text-gray-500 mt-2">
+                    <div className="flex items-center space-x-4 text-gray-500 mt-auto">
                       {/* Views */}
                       <div className="flex items-center">
                         <TbPacman className="mr-1" /> {/* Icon for views */}
-                        <span>{discussion.views || 0} views</span>{" "}
-                        {/* Views count */}
+                        <span>{discussion.views || 0} views</span>
                       </div>
                       {/* Comments */}
                       <div className="flex items-center">
-                        <LiaComment className="mr-1" />{" "}
-                        {/* Icon for comments */}
-                        <span>
-                          {discussion.replies?.length || 0} comments
-                        </span>{" "}
-                        {/* Comments count */}
+                        <LiaComment className="mr-1" /> {/* Icon for comments */}
+                        <span>{discussion.replies?.length || 0} comments</span>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
+                  </Link>
+                </div>
+              ))}
           </div>
         )}
       </div>

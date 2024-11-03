@@ -67,21 +67,8 @@ const DetailedClass = () => {
   }, [classData.students]);
 
   // Handle download assignment
-  const handleDownloadAssignment = async (filename) => {
-    const cleanedFileName = filename.replace("/assignmentUploads/", "");
-
-    axiosPublic({
-      url: `classes/download/${encodeURIComponent(cleanedFileName)}`,
-      method: "GET",
-      responseType: "blob", // Important for handling binary files
-    })
-      .then((response) => {
-        fileDownload(response.data, cleanedFileName);
-      })
-      .catch((error) => {
-        console.error("Error downloading file:", error);
-        toast.error("Failed to download the assignment. Please try again.");
-      });
+  const handleDownloadAssignment = async (fileUrl) => {
+    window.open(`${fileUrl}?fl_attachment=true`, '_blank')
   };
 
   // Handle delete of teacher added assignment
@@ -204,17 +191,17 @@ const DetailedClass = () => {
                       <span className="font-semibold">Due Date: </span>
                       {new Date(assignment.end).toLocaleDateString()}
                     </p>
-                    {assignment.fileUrl && (
+                    {assignment.added_file && (
                       <p className="text-sm">
                         <span className="font-semibold">File: </span>
-                        {assignment.fileUrl.split("-")[1]}
+                        {assignment.added_file.originalname.slice(0, 6) + "..." + assignment.added_file.originalname.slice(assignment.added_file.originalname.lastIndexOf("."))}
                       </p>
                     )}
 
-                    {assignment.fileUrl && (
+                    {assignment.added_file && (
                       <button
                       onClick={() =>
-                          handleDownloadAssignment(assignment.fileUrl)
+                          handleDownloadAssignment(assignment.added_file.path)
                         }
                         className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"
                         >
@@ -222,7 +209,7 @@ const DetailedClass = () => {
                       </button>
                     )}
 
-                    {assignment.fileUrl && role === "teacher" && (
+                    {assignment.added_file && role === "teacher" && (
                       <button
                       onClick={() => handleDeleteFile(assignment._id)}
                       className="bg-[#004085] text-white px-4 py-2 rounded-lg hover:bg-gray-400"

@@ -6,7 +6,9 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import useAxiosPrivate from "../../CustomHooks/useAxiosPrivate";
 
 // Connect to Socket.io server
-const socket = io.connect("https://class-net-server.vercel.app");
+const socket = io.connect("https://class-net-server.vercel.app",{
+    transports: ["websocket"],
+});
 
 const ChatTab = ({ classroomId }) => {
     const { user } = useContext(AuthContext);
@@ -56,7 +58,7 @@ const ChatTab = ({ classroomId }) => {
 
             axiosPrivate.patch("/chats", newChat)
                 .then(res => {
-                    console.log('Chat updated successfully:', res.data);
+                    // console.log('Chat updated successfully:', res.data);
                 })
                 .catch(err => {
                     console.error('Error sending message:', err.response ? err.response.data : err.message);

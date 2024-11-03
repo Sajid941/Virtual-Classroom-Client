@@ -20,7 +20,7 @@ const useAxiosPrivate = () => {
                 return res;
             },
             (error) => {
-                console.log(error.response.status);
+                // console.log(error.response.status);
                 if (
                     error.response.status === 401 ||
                     error.response.status === 403

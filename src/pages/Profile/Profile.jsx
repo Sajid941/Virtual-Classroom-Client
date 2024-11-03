@@ -2,7 +2,7 @@ import React from "react";
 import useUser from "../../CustomHooks/useUser";
 
 const Profile = () => {
-  const { userdb } = useUser();
+  const { userdb, refetch } = useUser();
 
   // Role-based content for Teacher and Student
   const renderRoleBasedContent = () => {

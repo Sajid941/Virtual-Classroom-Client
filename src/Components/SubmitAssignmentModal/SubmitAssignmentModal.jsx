@@ -36,10 +36,11 @@ const SubmitAssignmentModal = ({
 
     try {
       const response = await axiosPrivate.patch(
-        `/classes/${classId}/assignments/${_id}/submissions`,
+        `/assignment/${classId}/assignments/${_id}/submissions`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
+      
       if (response.data) {
         reset();
         setIsLoading(false);
@@ -55,6 +56,7 @@ const SubmitAssignmentModal = ({
       }
     } catch (error) {
       console.error("Assignment not submitted", error);
+      setIsLoading(false);
     }
   };
   return (
